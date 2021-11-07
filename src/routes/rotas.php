@@ -12,12 +12,11 @@ $objProcessamentoRotas = new ProcessamentoRotas();
 # Definições das rotas do sistema.
 try {
 
-
-
+    #/rotas/blogs/{id}/comentario/{id}
 
     #Rota raiz do sistema
     $objProcessamentoRotas->definirMetodoGET(
-        "/rotas/sistemas",                                      # Rota HTTP
+        "/rotas/postsgastos/{id}",                                                    # Rota HTTP
         "PaginaInicialController",                              # Nome Classe Controlador
         "inicio",                                               # Nome método inicial de ataque
         __DIR_CONTROLADORES__."/PaginaInicialController.php"    # Endereço de inclusão do arquivo controlador respectivo
