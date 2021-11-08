@@ -1,7 +1,8 @@
 <?php
 
-//Incluindo classe geral para processamento de rotas.
+//Incluindo classes fundamentais
 require __DIR_RAIZ__ . "/".GBCFGS::$nomeDirLibsSis. "/ProcessamentoRotas.php";
+require __DIR_RAIZ__ . "/".GBCFGS::$nomeDirLibsSis. "/ControladoresModo.php";
 //------------------
 
 use Sistema\ProcessamentoRotas;
@@ -15,30 +16,24 @@ try {
     # Definições das rotas do sistema --------------------------------------------------
 
     #Rota raiz do sistema
-    $objProcessamentoRotas->definirRota_GET(
-        "/",                              # Rota HTTP
-        "PaginaInicialController",                              # Nome Classe Controlador
-        "inicio",                                               # Nome método inicial de ataque
-        null,                                                   # Argumento passado 
-        __DIR_CONTROLADORES__."/PaginaInicialController.php"    # Endereço de inclusão do arquivo controlador respectivo
-    ); 
 
     $objProcessamentoRotas->definirRota_TODOS(
-        "/rotas/posts/{id}/comments/10/{id}",                   # Rota HTTP
+        "/",                   # Rota HTTP
         "PaginaInicialController",                              # Nome Classe Controlador
         "inicio",                                               # Nome método inicial de ataque
         null,                                                   # Argumento passado 
         __DIR_CONTROLADORES__."/PaginaInicialController.php"    # Endereço de inclusão do arquivo controlador respectivo
     ); 
 
-
-    $objProcessamentoRotas->definirRota_DELETE(
-        "/",                                                    # Rota HTTP
-        "PaginaInicialController",                              # Nome Classe Controlador
+    $objProcessamentoRotas->definirRota_GET(
+        "/teste",                                               # Rota HTTP
+        "TesteController",                                      # Nome Classe Controlador
         "inicio",                                               # Nome método inicial de ataque
         null,                                                   # Argumento passado 
         __DIR_CONTROLADORES__."/PaginaInicialController.php"    # Endereço de inclusão do arquivo controlador respectivo
     ); 
+
+    
 
     # Acionando processamento rotas ---------------------------------------------------
 

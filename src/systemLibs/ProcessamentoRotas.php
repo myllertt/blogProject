@@ -12,10 +12,12 @@ namespace Sistema{
         private function _setConfiguracoes(){
             $this->CFGS = [];
 
-            $this->CFGS['mtdsAceitos'] = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];            
+            $this->CFGS['mtdsAceitos'] = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];  
+            $this->CFGS['mtdsALL'] = "ALL"; //Tipo de método que envolve todos
+
         }
 
-        private function _encaminharErroDefinicoes(String $msg) : void{
+        private function _encaminharErroDefinicoes(string $msg) : void{
             throw new \Exception( get_class($this).": Falha na definição das rotas: \n Inf(".$msg.")" );
         }
 
@@ -52,10 +54,10 @@ namespace Sistema{
         /**
          * Método responsável por processar o parâmetro de uma rota individualmente e descobrir se ele é um parâmetro normal(/rota) ou dinâmico ({id}) 
          *
-         * @param String $parm
+         * @param string $parm
          * @return true|string|false - True: Condição de sucesso de um parâmetro normal, string: Condição de sucesso de um parâmetro dinâmica, e este caso será retornado o nome do parâmetro. false: Neste caso indica um erro ao processar o parâmetro
          */
-        private function _processarParmRotaIndividualmente(String $parm){
+        private function _processarParmRotaIndividualmente(string $parm){
 
             /*
                 Ao chegar neste ponto subentende que os caractéres básicos de um parâmetro já foram validados pelas funções anteriores
@@ -112,7 +114,7 @@ namespace Sistema{
             
         }
 
-        private function _processarParametrosRota(String $rota) {
+        private function _processarParametrosRota(string $rota) {
             
             if(strlen($rota) <= 0)
                 return false;
@@ -127,7 +129,7 @@ namespace Sistema{
             //Array de retorno padrão raiz
             $arrFinalRetorno = [
                 'strRota' => $rota,
-                'strRotaCMP' => "/", //String facilitadora de comparação
+                'strRotaCMP' => "/", //string facilitadora de comparação
                 'arrPrmOrdem' => [], //Array que representa a ordem e tipo dos parâmetros da rota.
                 'arrPrmDinam' => [] //Array de facilitaçao dos parâmetros dinâmicos esperados
             ];
@@ -196,7 +198,7 @@ namespace Sistema{
 
         }
 
-        private function _definirRotaMetodo(string $metodo, String $rota, String $nomeClasseControlador, String $nomeMetodoChamadoInicial, $argumento, String $linkInclusao = null) : void {
+        private function _definirRotaMetodo(string $metodo, string $rota, string $nomeClasseControlador, string $nomeMetodoChamadoInicial, $argumento, string $linkInclusao = null) : void {
 
             //A rota não pode ser em braco
             if($rota == "")
@@ -255,10 +257,10 @@ namespace Sistema{
         }
 
         private function _compararArrayReqComArrayRota(array &$arrayReqExp, array &$arrayRotaExp){
-
+            
             $cntParms = 0;
 
-            $arrayRetFinal = []; 
+            $arrayRetFinal = [];
             
             foreach ($arrayRotaExp as $elemRota) {
                 
@@ -277,7 +279,7 @@ namespace Sistema{
 
                 $cntParms++;
             }
-
+            
             //Evitando que a requisição enviada seja maior do que a rota definida
             if(isset($arrayReqExp[$cntParms])){
                 return false;
@@ -288,7 +290,7 @@ namespace Sistema{
         }
 
         private function _localizarRotaNoArrayDefinicoes(string $metodo, string $rota){
-
+            
             //Se não enviar nada então ouve não precisa prosseguir
             if($rota == "")
                 return false;
@@ -300,18 +302,123 @@ namespace Sistema{
             //Removendo primeiro carac para regularizar o explode
             $rota = substr($rota, 1);
 
-            //Explosão de rota.
-            $explRotaReq = explode("/", $rota);
+            //Evitando um array de string vazia após o explode
+            if(strlen($rota) > 0){
+                //Explosão de rota.
+                $explRotaReq = explode("/", $rota);
+            } else {
+                $explRotaReq = [];
+            }            
+
+            //==== Buscando rota em um método específico configurado ================
             
+            //Auxiliar de resultado.
+            $auxRes;
+
             if(isset($this->arrayRotasConfigs[$metodo])){
                 
                 foreach ($this->arrayRotasConfigs[$metodo] as $key => $elemRota) {
-                    var_dump($this->_compararArrayReqComArrayRota($explRotaReq, $this->arrayRotasConfigs[$metodo][$key]['arrPrmOrdem']));
+
+                    $auxRes = $this->_compararArrayReqComArrayRota($explRotaReq, $this->arrayRotasConfigs[$metodo][$key]['arrPrmOrdem']);
+
+                    if($auxRes !== false){
+                        
+                        //Enviando retorno com o achado
+                        return [
+                            'mtd' => $metodo,   # Método
+                            'key' => $key,      # Chave do array
+                            'vDnm' => $auxRes   # Valores capturados dinâmicamente se assim tiver
+                        ];
+
+                        break;
+                    }
+
                 }
 
             }
 
+            //==== Buscando rota em definições que aceitam todos os métodos ================
+
+            if(isset($this->arrayRotasConfigs[ $this->CFGS['mtdsALL'] ])){
+                
+                foreach ($this->arrayRotasConfigs[ $this->CFGS['mtdsALL'] ] as $key => $elemRota) {
+
+                    $auxRes = $this->_compararArrayReqComArrayRota($explRotaReq, $this->arrayRotasConfigs[$this->CFGS['mtdsALL']][$key]['arrPrmOrdem']);
+
+                    if($auxRes !== false){             
+
+                        //Enviando retorno com o achado
+                        return [
+                            'mtd' => $this->CFGS['mtdsALL'],    # Método
+                            'key' => $key,                      # Chave do array
+                            'vDnm' => $auxRes                   # Valores capturados dinâmicamente se assim tiver
+                        ];
+
+                        break;
+                    }
+
+                }
+
+            }
+
+            return false;
+        }
+
+        private function _acionarControlador(array $arrayInfsRota){ //throw exception
+
+            //Muito improvável de ocorrer
+            if(!isset($this->arrayRotasConfigs[ $arrayInfsRota['mtd'] ]) || !isset($this->arrayRotasConfigs[ $arrayInfsRota['mtd'] ] [$arrayInfsRota['key']]))
+                throw new \Exception("Falha interna!", 1010);
+
+            $arrayRota = &$this->arrayRotasConfigs[ $arrayInfsRota['mtd'] ] [$arrayInfsRota['key']];
             
+            //Verificando se é necessário incluir algum arquivo de controlar.
+            if($arrayRota['linkInc']){
+                if(!@include_once($arrayRota['linkInc'])){
+                    throw new \Exception("Falha interna! - Link de inclusão inválido", 2020);
+                }
+            }
+
+            $classNameContld = $arrayRota['nmClsContr'];
+
+            //Verificando se classe configurada para respectivo controlador existe
+            if(!class_exists($classNameContld)){
+                throw new \Exception("Falha interna! - A classe ".$arrayRota['nmClsContr']." não foi encontrada", 5977);
+            }
+            
+           
+
+            //Instanciado e configurando objeto Request
+            $objRequest = new \Sistema\ProcessamentoRotas\Request();
+
+            $objRequest->metodo = $arrayInfsRota['mtd'];
+            $objRequest->argsLink = $arrayRota['arrPrmDinam']; //configurar
+            $objRequest->argsMetodos = ""; //configurar
+            $objRequest->argRotaRAW = $arrayRota['arg'];
+
+            #---------------
+            
+            //Instanciando classe respectiva. Neste caso a chamando dinâmicamente
+            $objClasseContld = new $classNameContld( $objRequest );
+
+            //Nome método de ataque
+            $nomeMetdoAtaque = $arrayRota['mtdIniCall'];
+
+            if($nomeMetdoAtaque){
+                
+                //Verificando se o método de ataque existe na classe instanciada
+                if(method_exists(get_class($objClasseContld), $nomeMetdoAtaque)){
+
+                    //Invocando método de ataque
+                    $objClasseContld->$nomeMetdoAtaque();
+
+                } else {
+                    throw new \Exception("Falha interna! - A classe ".$arrayRota['nmClsContr']." não possui o método de ataque ".$arrayRota['mtdIniCall']."()", 25158);
+                }
+                    
+            }
+            //
+           
         }
 
         function __construct(){
@@ -321,39 +428,39 @@ namespace Sistema{
         //----------Métodos Públicos -----------------------------------------------
 
         # Métodos para configurações de rotas.
-        public function definirRota_GET(String $rota, String $nomeClasseControlador, String $nomeMetodoChamadoInicial, $argumento, String $linkInclusao = null) : void {
+        public function definirRota_GET(string $rota, string $nomeClasseControlador, string $nomeMetodoChamadoInicial, $argumento, string $linkInclusao = null) : void {
 
             $this->_definirRotaMetodo("GET", $rota, $nomeClasseControlador, $nomeMetodoChamadoInicial, $argumento, $linkInclusao);
 
         }
 
-        public function definirRota_POST(String $rota, String $nomeClasseControlador, String $nomeMetodoChamadoInicial, $argumento, String $linkInclusao = null) : void {
+        public function definirRota_POST(string $rota, string $nomeClasseControlador, string $nomeMetodoChamadoInicial, $argumento, string $linkInclusao = null) : void {
 
             $this->_definirRotaMetodo("POST", $rota, $nomeClasseControlador, $nomeMetodoChamadoInicial, $argumento, $linkInclusao);
 
         }
 
-        public function definirRota_PUT(String $rota, String $nomeClasseControlador, String $nomeMetodoChamadoInicial, $argumento, String $linkInclusao = null) : void {
+        public function definirRota_PUT(string $rota, string $nomeClasseControlador, string $nomeMetodoChamadoInicial, $argumento, string $linkInclusao = null) : void {
 
             $this->_definirRotaMetodo("PUT", $rota, $nomeClasseControlador, $nomeMetodoChamadoInicial, $argumento,  $linkInclusao);
 
         }
 
-        public function definirRota_DELETE(String $rota, String $nomeClasseControlador, String $nomeMetodoChamadoInicial, $argumento, String $linkInclusao = null) : void {
+        public function definirRota_DELETE(string $rota, string $nomeClasseControlador, string $nomeMetodoChamadoInicial = null, $argumento = null, string $linkInclusao = null) : void {
 
             $this->_definirRotaMetodo("DELETE", $rota, $nomeClasseControlador, $nomeMetodoChamadoInicial, $argumento,  $linkInclusao);
 
         }
 
-        public function definirRota_PATCH(String $rota, String $nomeClasseControlador, String $nomeMetodoChamadoInicial, $argumento, String $linkInclusao = null) : void {
+        public function definirRota_PATCH(string $rota, string $nomeClasseControlador, string $nomeMetodoChamadoInicial = null, $argumento = null, string $linkInclusao = null) : void {
 
             $this->_definirRotaMetodo("PATCH", $rota, $nomeClasseControlador, $nomeMetodoChamadoInicial, $argumento,  $linkInclusao);
 
         }
 
-        public function definirRota_TODOS(String $rota, String $nomeClasseControlador, String $nomeMetodoChamadoInicial, $argumento, String $linkInclusao = null) : void {
+        public function definirRota_TODOS(string $rota, string $nomeClasseControlador, string $nomeMetodoChamadoInicial = null, $argumento = null, string $linkInclusao = null) : void {
 
-            $this->_definirRotaMetodo("ALL", $rota, $nomeClasseControlador, $nomeMetodoChamadoInicial, $argumento,  $linkInclusao);
+            $this->_definirRotaMetodo($this->CFGS['mtdsALL'], $rota, $nomeClasseControlador, $nomeMetodoChamadoInicial, $argumento,  $linkInclusao);
 
         }
         //------------------------------------
@@ -371,8 +478,25 @@ namespace Sistema{
             //Obtendo rota requisitada
             $rotaRequisitada = $this->_obterRotaRequisitada();
 
-            $this->_localizarRotaNoArrayDefinicoes($metodoRequest, $rotaRequisitada);
-            
+            //Buscando rota no sistema
+            $retArrInfLocRota = $this->_localizarRotaNoArrayDefinicoes($metodoRequest, $rotaRequisitada);
+
+            //Rota não encontrada
+            if($retArrInfLocRota === false){ 
+                http_response_code(404);
+                exit;
+            }
+
+            try {
+                
+                //Acionando controlador responsável
+                $this->_acionarControlador($retArrInfLocRota);       
+
+            } catch (\Exception $e) {
+                http_response_code(500);
+                exit;
+            }
+                    
 
         }
 
@@ -389,6 +513,7 @@ namespace Sistema\ProcessamentoRotas{
         public $metodo; 
         public $argsLink; //Argumentos passado pelo link
         public $argsMetodos; //Argumentos passados pelo método.
+        public $argRotaRAW; //Argumento passado de forma sem ser padrão a rota;
 
     }
 
