@@ -9,20 +9,40 @@ use Sistema\ProcessamentoRotas;
 # Instancia do processamento de rotas
 $objProcessamentoRotas = new ProcessamentoRotas();
 
-# Definições das rotas do sistema.
+
 try {
 
-    #/rotas/blogs/{id}/comentario/{id}
+    # Definições das rotas do sistema --------------------------------------------------
 
     #Rota raiz do sistema
-    $objProcessamentoRotas->definirMetodoGET(
-        "/rotas/postsgastos/{id}",                                                    # Rota HTTP
+    $objProcessamentoRotas->definirRota_GET(
+        "/",                              # Rota HTTP
         "PaginaInicialController",                              # Nome Classe Controlador
         "inicio",                                               # Nome método inicial de ataque
+        null,                                                   # Argumento passado 
+        __DIR_CONTROLADORES__."/PaginaInicialController.php"    # Endereço de inclusão do arquivo controlador respectivo
+    ); 
+
+    $objProcessamentoRotas->definirRota_TODOS(
+        "/rotas/posts/{id}/comments/10/{id}",                   # Rota HTTP
+        "PaginaInicialController",                              # Nome Classe Controlador
+        "inicio",                                               # Nome método inicial de ataque
+        null,                                                   # Argumento passado 
         __DIR_CONTROLADORES__."/PaginaInicialController.php"    # Endereço de inclusão do arquivo controlador respectivo
     ); 
 
 
+    $objProcessamentoRotas->definirRota_DELETE(
+        "/",                                                    # Rota HTTP
+        "PaginaInicialController",                              # Nome Classe Controlador
+        "inicio",                                               # Nome método inicial de ataque
+        null,                                                   # Argumento passado 
+        __DIR_CONTROLADORES__."/PaginaInicialController.php"    # Endereço de inclusão do arquivo controlador respectivo
+    ); 
+
+    # Acionando processamento rotas ---------------------------------------------------
+
+    $objProcessamentoRotas->iniciarProcessamento();
 
 } catch(Exception $e) {
 
