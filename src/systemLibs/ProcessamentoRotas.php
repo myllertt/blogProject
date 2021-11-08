@@ -152,6 +152,9 @@ namespace Sistema{
 
             $strCMP = "/";
 
+            //Contador de parâmetro
+            $cntPrms = 0;
+
             foreach ($expParametros as $parametro) {
 
                 //Detecção de duplicidade de barras(//)
@@ -184,8 +187,10 @@ namespace Sistema{
                     $strCMP .= "*/"; //Concatenando str de comparação
 
                     //Armazenando facilitador de parâmetro dinâmico
-                    $arrFinalRetorno['arrPrmDinam'][] = $procParm;
+                    $arrFinalRetorno['arrPrmDinam'][ $cntPrms ] = $procParm;
                 }
+
+                $cntPrms++;
             }
 
             //Removendo a última barra "/"
@@ -365,11 +370,11 @@ namespace Sistema{
         }
 
         private function _acionarControlador(array $arrayInfsRota){ //throw exception
-
+            
             //Muito improvável de ocorrer
             if(!isset($this->arrayRotasConfigs[ $arrayInfsRota['mtd'] ]) || !isset($this->arrayRotasConfigs[ $arrayInfsRota['mtd'] ] [$arrayInfsRota['key']]))
                 throw new \Exception("Falha interna!", 1010);
-
+            
             $arrayRota = &$this->arrayRotasConfigs[ $arrayInfsRota['mtd'] ] [$arrayInfsRota['key']];
             
             //Verificando se é necessário incluir algum arquivo de controlar.
@@ -378,7 +383,7 @@ namespace Sistema{
                     throw new \Exception("Falha interna! - Link de inclusão inválido", 2020);
                 }
             }
-
+            
             $classNameContld = $arrayRota['nmClsContr'];
 
             //Verificando se classe configurada para respectivo controlador existe
@@ -386,17 +391,41 @@ namespace Sistema{
                 throw new \Exception("Falha interna! - A classe ".$arrayRota['nmClsContr']." não foi encontrada", 5977);
             }
             
-           
+            /**
+             * Função utilizada para formatar os parâmetros dinâmicos
+             */
+            $formatarParDinamicos = function($arrayValoresDinamicos) use ($arrayRota) : array{
+                
+                //Array de retorno final
+                $arrRetFinal = [];
+                
+                foreach ($arrayValoresDinamicos as $key => $valor) {
+                    
+                    //Verificando se o indice existe na estrutura de rotas definidas
+                    if(array_key_exists($key, $arrayRota['arrPrmDinam'])){
 
-            //Instanciado e configurando objeto Request
+                        $arrRetFinal[] = [
+                            'tag' => $arrayRota['arrPrmDinam'][ $key ],
+                            'val' => $valor
+                        ];
+
+                    }
+
+                }
+                
+                return $arrRetFinal;
+            };
+
+            //Instanciando e configurando objeto Request
             $objRequest = new \Sistema\ProcessamentoRotas\Request();
 
-            $objRequest->metodo = $arrayInfsRota['mtd'];
-            $objRequest->argsLink = $arrayRota['arrPrmDinam']; //configurar
-            $objRequest->argsMetodos = ""; //configurar
-            $objRequest->argRotaRAW = $arrayRota['arg'];
-
+            $objRequest->metodo =       $arrayInfsRota['mtd'];
+            $objRequest->strLinkReq =   $arrayRota['strRota'];
+            $objRequest->argsLink =     $formatarParDinamicos($arrayInfsRota['vDnm']); //configurar
+            $objRequest->argsMetodos =  ""; //configurar
+            $objRequest->argRotaRAW =   $arrayRota['arg'];
             #---------------
+            
             
             //Instanciando classe respectiva. Neste caso a chamando dinâmicamente
             $objClasseContld = new $classNameContld( $objRequest );
@@ -510,10 +539,11 @@ namespace Sistema\ProcessamentoRotas{
     
     class Request {
         
-        public $metodo; 
-        public $argsLink; //Argumentos passado pelo link
-        public $argsMetodos; //Argumentos passados pelo método.
-        public $argRotaRAW; //Argumento passado de forma sem ser padrão a rota;
+        public $metodo;         //Método que foi realizado a requisição. Ex: GET,POST,...
+        public $strLinkReq;     //String que contem a requisição
+        public $argsLink;       //Argumentos passado pelo link
+        public $argsMetodos;    //Argumentos passados pelo método.
+        public $argRotaRAW;     //Argumento passado de forma sem ser padrão a rota;
 
     }
 

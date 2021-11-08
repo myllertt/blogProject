@@ -8,7 +8,9 @@ class PaginaInicialController extends Controlador{
     }
 
     public function inicio(){
-        echo "Teste de controlador da Página Inicial";
+        echo "Teste de controlador da Página Inicial. ";
+
+        
     }
 
 

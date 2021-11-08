@@ -2,7 +2,6 @@
 
 //Incluindo classes fundamentais
 require __DIR_RAIZ__ . "/".GBCFGS::$nomeDirLibsSis. "/ProcessamentoRotas.php";
-require __DIR_RAIZ__ . "/".GBCFGS::$nomeDirLibsSis. "/ControladoresModo.php";
 //------------------
 
 use Sistema\ProcessamentoRotas;
@@ -26,8 +25,8 @@ try {
     ); 
 
     $objProcessamentoRotas->definirRota_GET(
-        "/teste",                                               # Rota HTTP
-        "TesteController",                                      # Nome Classe Controlador
+        "/teste/{id}",                        # Rota HTTP
+        "PaginaInicialController",                              # Nome Classe Controlador
         "inicio",                                               # Nome método inicial de ataque
         null,                                                   # Argumento passado 
         __DIR_CONTROLADORES__."/PaginaInicialController.php"    # Endereço de inclusão do arquivo controlador respectivo
