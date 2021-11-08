@@ -5,6 +5,8 @@ require __DIR_RAIZ__ . "/".GBCFGS::$nomeDirLibsSis. "/ProcessamentoRotas.php";
 //------------------
 
 use Sistema\ProcessamentoRotas;
+use Sistema\ProcessamentoRotas\PcRException; 
+use Sistema\Views\VwException; 
 
 # Instancia do processamento de rotas
 $objProcessamentoRotas = new ProcessamentoRotas();
@@ -38,12 +40,16 @@ try {
 
     $objProcessamentoRotas->iniciarProcessamento();
 
-} catch(Exception $e) {
+} catch(PcRException $e) { //Erro no processamento e definição de rotas.
 
     echo "Erro";
 
     echo $e->getMessage();
 
+} catch(VwException $e) { //Erro em alguma chamada de view
+    echo "Erro view.<br>";
+
+    echo "(".$e->getMessage().")";
 }
 
 ?>

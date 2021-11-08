@@ -1,5 +1,7 @@
 <?php
 
+use Sistema\Views\Views; 
+
 class PaginaInicialController extends Controlador{
 
     
@@ -8,8 +10,9 @@ class PaginaInicialController extends Controlador{
     }
 
     public function inicio(){
-        echo "Teste de controlador da Página Inicial. ";
-
+        
+        //Chamando view 
+        Views::abrir("home.index");
         
     }
 
