@@ -1,5 +1,9 @@
 <?php
 
+class Geraldo{
+    public $teste = "10";
+}
+
 use Sistema\Views\Views; 
 
 class PaginaInicialController extends Controlador{
@@ -10,9 +14,12 @@ class PaginaInicialController extends Controlador{
     }
 
     public function inicio(){
-        
+
+        //Teste passagem de argumentos para a view
+        $testeArgumentoView = [1,2,3,4];
+
         //Chamando view 
-        Views::abrir("home.index");
+        Views::abrir("home.index", ['testeArgumentoView' => $testeArgumentoView]);
         
     }
 

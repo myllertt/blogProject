@@ -57,13 +57,17 @@ namespace Sistema\Views {
 
         //Métodos de execuções -----------------------------------------
 
-        public static function abrir(string $idView){
+        public static function abrir(string $idView, array $arrayArgs = null){
 
             //Conferindo a existencia do ID VIEW
             if(!isset(self::$arrayArqInclusoes[ $idView ])){
                 self::throwErro(__METHOD__, "Erro! a idView (".$idView.") não existe!", 5597);
             }
 
+            //Extraindo variáveis dos argumentos e as tornando disponíveis no escopo da view.
+            if($arrayArgs !== null){
+                extract($arrayArgs, EXTR_SKIP); //Neste caso se colidir com alguma variável a mesma não será passada a diante
+            }
             
             //Tentando incluir o arquivo de view        
             if(!@include_once(self::$arrayArqInclusoes[ $idView ]['linkInc'])){

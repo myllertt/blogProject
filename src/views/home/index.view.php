@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,6 +10,12 @@
 <body>
     
     <h1>Bém-vindo(a) à página de blogs</h1>
+
+    <?php foreach($testeArgumentoView AS $ob): ?>
+
+        <h2><?php echo $ob ?></h2>
+
+    <?php endforeach; ?>
 
 </body>
 </html>
