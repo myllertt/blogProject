@@ -1,9 +1,5 @@
 <?php
 
-class Geraldo{
-    public $teste = "10";
-}
-
 use Sistema\Views\Views; 
 
 class PaginaInicialController extends Controlador{
