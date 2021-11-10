@@ -14,6 +14,9 @@ namespace Sistema{
             $this->CFGS['mtdsAceitos'] = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];  
             $this->CFGS['mtdsALL'] = "ALL"; //Tipo de método que envolve todos
 
+            //Variáveis de sub-indicação de algum método de requisição.
+            $this->CFGS['varsSubIndMethod'] = ["_method", "_METHOD"];
+
         }
 
         private function _encaminharErroDefinicoes(string $msg) : void{
@@ -239,6 +242,36 @@ namespace Sistema{
             
         }
 
+        private function _obterMetodoDaRequisicao() : string{
+
+            $metodoRequest = $_SERVER['REQUEST_METHOD'];
+
+            //Processo de sub verificação do método ---
+            if($metodoRequest == "POST"){
+                $arrayMtdVerif = &$_POST;
+            } else if($metodoRequest == "GET"){
+                $arrayMtdVerif = &$_GET;
+            }
+        
+            $auxVal; //auxiliar 
+
+            foreach ($this->CFGS['varsSubIndMethod'] as $att) {
+                if(isset($arrayMtdVerif[ $att ])){
+
+                    $auxVal = strtoupper( $arrayMtdVerif[ $att ] );
+                    
+                    if(in_array($auxVal, $this->CFGS['mtdsAceitos'], true)){                        
+                        return $auxVal;
+                    }
+                }
+            }
+            //--------------------------------------------
+
+            //Se chegar até significa que continuasse com método convencional
+            return $metodoRequest;
+
+        }
+
         private function _obterRotaRequisitada() : string{
 
             
@@ -419,13 +452,13 @@ namespace Sistema{
             //Instanciando e configurando objeto Request
             $objRequest = new \Sistema\ProcessamentoRotas\Request();
 
-            $objRequest->metodo =       $arrayInfsRota['mtd'];
-            $objRequest->strLinkReq =   $arrayRota['strRota'];
-            $objRequest->argsLink =     $formatarParDinamicos($arrayInfsRota['vDnm']); //configurar
-            $objRequest->argsMetodos =  ""; //configurar
-            $objRequest->argRotaRAW =   $arrayRota['arg'];
-            #---------------
-            
+            $objRequest->metodo =               $arrayInfsRota['mtd'];
+            $objRequest->strRotaReq =           $arrayRota['strRota'];
+            $objRequest->argsViaRota =          $formatarParDinamicos($arrayInfsRota['vDnm']); //configurar
+            $objRequest->argsViaLink =          $_GET;
+            $objRequest->argsViaBody =          $_POST;
+            $objRequest->argRawControlador =    $arrayRota['arg'];
+            #----------------------------------------------
             
             //Instanciando classe respectiva. Neste caso a chamando dinâmicamente
             $objClasseContld = new $classNameContld( $objRequest );
@@ -495,9 +528,9 @@ namespace Sistema{
         //------------------------------------
 
         public function iniciarProcessamento(){
-    
+
             //Obtendo método da requisição
-            $metodoRequest = $_SERVER['REQUEST_METHOD'];
+            $metodoRequest = $this->_obterMetodoDaRequisicao();
 
             if(!in_array($metodoRequest, $this->CFGS['mtdsAceitos'], true)){
                 http_response_code(400);
@@ -509,7 +542,7 @@ namespace Sistema{
 
             //Buscando rota no sistema
             $retArrInfLocRota = $this->_localizarRotaNoArrayDefinicoes($metodoRequest, $rotaRequisitada);
-
+            
             //Rota não encontrada
             if($retArrInfLocRota === false){ 
                 http_response_code(404);
@@ -538,11 +571,12 @@ namespace Sistema\ProcessamentoRotas{
     
     class Request {
         
-        public $metodo;         //Método que foi realizado a requisição. Ex: GET,POST,...
-        public $strLinkReq;     //String que contem a requisição
-        public $argsLink;       //Argumentos passado pelo link
-        public $argsMetodos;    //Argumentos passados pelo método.
-        public $argRotaRAW;     //Argumento passado de forma sem ser padrão a rota;
+        public $metodo;             //Método que foi realizado a requisição. Ex: GET,POST,...
+        public $strRotaReq;         //String que contem a requisição
+        public $argsViaRota;        //Argumentos passado dinamicamente pela rota Ex: /postagem/{id}
+        public $argsViaLink;        //Argumentos passados pelo link da requisição. Ex: ?valor=10
+        public $argsViaBody;        //Argumentos passados pelo corpo da requisição. Normalmente via método POST
+        public $argRawControlador;  //Argumento passado de forma simples para o controlador.
 
     }
     

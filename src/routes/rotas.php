@@ -26,13 +26,15 @@ try {
         __DIR_CONTROLADORES__."/PaginaInicialController.php"    # Endereço de inclusão do arquivo controlador respectivo
     ); 
 
-    $objProcessamentoRotas->definirRota_GET(
-        "/teste/{id}",                        # Rota HTTP
+    $objProcessamentoRotas->definirRota_PUT(
+        "/",                        # Rota HTTP
         "PaginaInicialController",                              # Nome Classe Controlador
         "inicio",                                               # Nome método inicial de ataque
         null,                                                   # Argumento passado 
         __DIR_CONTROLADORES__."/PaginaInicialController.php"    # Endereço de inclusão do arquivo controlador respectivo
     ); 
+
+  
 
     # Acionando processamento rotas ---------------------------------------------------
 

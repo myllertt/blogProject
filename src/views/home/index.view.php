@@ -16,9 +16,16 @@
 
     <?php endforeach; ?>
 
+    <form action="" method="post">
+        <input type="hidden" name="_method" value="put">
+        <input type="hidden" name="valor" value="2222"></input>
+        <button type="submit" name="Postar"></button>        
+    </form>
+
 </body>
 </html>
 
 <script>
     objDELETE_Request = new DELETE_Request();
 </script>
+

@@ -14,6 +14,12 @@ class PaginaInicialController extends Controlador{
         //Teste passagem de argumentos para a view
         $testeArgumentoView = [1,2,3,4];
 
+        var_dump($this->getValorParmRequest("valor"));
+
+        var_dump($this->getRotaRequest());
+
+        exit;
+
         //Chamando view 
         Views::abrir("home.index", ['testeArgumentoView' => $testeArgumentoView]);
         
