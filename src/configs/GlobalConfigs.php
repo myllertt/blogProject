@@ -4,10 +4,12 @@
 //Configurações gerais
 class GBCFGS{
 
-    public static $nomeDirLibsSis = "systemLibs"; //Nome do diretório de bibliotecas do sistema.
-    public static $nomeDirRotas = "routes"; //Nome do diretório de rotas
-    public static $nomeDirControladores = "controllers"; //Nome do diretório de controladores
-    public static $nomeDirViews = "views"; //Nome do diretório de controladores
+    public static $nomeDirLibsSis =         "systemLibs"; //Nome do diretório de bibliotecas do sistema.
+    public static $nomeDirRotas =           "routes"; //Nome do diretório de rotas
+    public static $nomeDirControladores =   "controllers"; //Nome do diretório de controladores
+    public static $nomeDirViews =           "views"; //Nome do diretório de controladores
+    public static $nomeDirConfigs =         "configs"; //Nome do diretório das configurações
+    public static $nomeDirDataBase =        "database"; //Nome do diretório das configurações
 
 }
 
@@ -19,6 +21,9 @@ define("__DIR_RAIZ__", __DIR__."/.."); //Por padrão o "/../" volta o diretório
 
 define("__DIR_CONTROLADORES__", __DIR_RAIZ__."/".GBCFGS::$nomeDirControladores); 
 define("__DIR_VIEWS__", __DIR_RAIZ__."/".GBCFGS::$nomeDirViews);
+define("__DIR_CONFIGS__", __DIR_RAIZ__."/".GBCFGS::$nomeDirConfigs);
+
+define("__DIR_Exceptions__", __DIR_RAIZ__."/".GBCFGS::$nomeDirLibsSis."/Exceptions");
 
 //Configurando arquivo geral de definições e suas respectivas inclusões das views
 GBCFGS_Views::$srcArqDefinicoesViews = __DIR_VIEWS__."/_definicoesViewsInclusoes.php";

@@ -14,12 +14,12 @@ namespace Sistema\Views {
 
         //Padronização de erro.
         private static function throwErro(string $nomeMetodoAtual, string $msgErro, int $codErro = null) : void { //Throw VwException
-            throw new VwException($nomeMetodoAtual." ==> ".$msgErro, $codErro);
+            throw new Exceptions\VwException($nomeMetodoAtual." ==> ".$msgErro, $codErro);
         }
 
         //Métodos de definições ----------------------------------------
 
-        public static function definir(string $idView, string $strCaminhoInclusao) : void{ //Throw VwException
+        public static function definir(string $idView, string $strCaminhoInclusao) : void{ //Throw Sistema\Views\Exceptions\VwException
             
             //Verificando se a janela de modificações ainda esta aberta
             if(!self::$stsModifAtivas)            
@@ -57,7 +57,7 @@ namespace Sistema\Views {
 
         //Métodos de execuções -----------------------------------------
 
-        public static function abrir(string $idView, array $arrayArgs = null){
+        public static function abrir(string $idView, array $arrayArgs = null){ //Throw Sistema\Views\Exceptions\VwException
 
             //Conferindo a existencia do ID VIEW
             if(!isset(self::$arrayArqInclusoes[ $idView ])){
@@ -77,16 +77,6 @@ namespace Sistema\Views {
 
         }
 
-    }
-
-    //Necessário para diferenciar os erros específicos dos demais erros
-    class VwException extends \Exception{
-	
-        public function __construct(string $msgPublica=null, int $codigo=null, $previous = null) {	
-            
-            parent::__construct($msgPublica, $codigo, $previous);
-            
-        }
     }
 }
 

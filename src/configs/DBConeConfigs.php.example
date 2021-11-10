@@ -1,0 +1,13 @@
+<?php
+
+class DBConeConfigs {
+
+    public static $host =       "";
+    public static $port =       "";
+    public static $user =       "";
+    public static $password =   "";
+    public static $DBName =     "";
+
+}//Por mediada de segurança esta classe será inutilizada assim que a classe de conexão de banco de dados for processada
+
+?>

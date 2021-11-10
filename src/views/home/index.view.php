@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,3 +18,7 @@
 
 </body>
 </html>
+
+<script>
+    objDELETE_Request = new DELETE_Request();
+</script>

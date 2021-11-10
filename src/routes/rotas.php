@@ -5,8 +5,8 @@ require __DIR_RAIZ__ . "/".GBCFGS::$nomeDirLibsSis. "/ProcessamentoRotas.php";
 //------------------
 
 use Sistema\ProcessamentoRotas;
-use Sistema\ProcessamentoRotas\PcRException; 
-use Sistema\Views\VwException; 
+use Sistema\ProcessamentoRotas\Exceptions\PcRException; 
+use Sistema\Views\Exceptions\VwException; 
 
 # Instancia do processamento de rotas
 $objProcessamentoRotas = new ProcessamentoRotas();
@@ -34,15 +34,13 @@ try {
         __DIR_CONTROLADORES__."/PaginaInicialController.php"    # Endereço de inclusão do arquivo controlador respectivo
     ); 
 
-    
-
     # Acionando processamento rotas ---------------------------------------------------
 
     $objProcessamentoRotas->iniciarProcessamento();
 
 } catch(PcRException $e) { //Erro no processamento e definição de rotas.
 
-    echo "Erro";
+    echo "Erro Rota:<br>";
 
     echo $e->getMessage();
 

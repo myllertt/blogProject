@@ -17,7 +17,8 @@ namespace Sistema{
         }
 
         private function _encaminharErroDefinicoes(string $msg) : void{
-            throw new \Sistema\ProcessamentoRotas\PcRException( get_class($this).": Falha na definição das rotas: \n Inf(".$msg.")" );
+            # Sistema\ProcessamentoRotas\Exceptions\PcRException
+            throw new ProcessamentoRotas\Exceptions\PcRException( get_class($this).": Falha na definição das rotas: \n Inf(".$msg.")" );
         }
 
         private function _verificarEstrutuParamDinamicoRota(string $parametro) : bool{
@@ -368,18 +369,18 @@ namespace Sistema{
             return false;
         }
 
-        private function _acionarControlador(array $arrayInfsRota){ //throw PcRException
+        private function _acionarControlador(array $arrayInfsRota){
             
             //Muito improvável de ocorrer
             if(!isset($this->arrayRotasConfigs[ $arrayInfsRota['mtd'] ]) || !isset($this->arrayRotasConfigs[ $arrayInfsRota['mtd'] ] [$arrayInfsRota['key']]))
-                throw new \Sistema\ProcessamentoRotas\PcRException("Falha interna!", 1010);
+                throw new ProcessamentoRotas\Exceptions\PcRException("Falha interna!", 1010);
             
             $arrayRota = &$this->arrayRotasConfigs[ $arrayInfsRota['mtd'] ] [$arrayInfsRota['key']];
             
-            //Verificando se é necessário incluir algum arquivo de controlar.
+            //Verificando se é necessário incluir algum arquivo de controlador.
             if($arrayRota['linkInc']){
                 if(!@include_once($arrayRota['linkInc'])){
-                    throw new \Sistema\ProcessamentoRotas\PcRException("Falha interna! - Link de inclusão inválido", 2020);
+                    throw new ProcessamentoRotas\Exceptions\PcRException("Falha interna! - Link de inclusão inválido", 2020);
                 }
             }
             
@@ -387,7 +388,7 @@ namespace Sistema{
 
             //Verificando se classe configurada para respectivo controlador existe
             if(!class_exists($classNameContld)){
-                throw new \Sistema\ProcessamentoRotas\PcRException("Falha interna! - A classe ".$arrayRota['nmClsContr']." não foi encontrada", 5977);
+                throw new ProcessamentoRotas\Exceptions\PcRException("Falha interna! - A classe ".$arrayRota['nmClsContr']." não foi encontrada", 5977);
             }
             
             /**
@@ -441,7 +442,7 @@ namespace Sistema{
                     $objClasseContld->$nomeMetdoAtaque();
 
                 } else {
-                    throw new \Sistema\ProcessamentoRotas\PcRException("Falha interna! - A classe ".$arrayRota['nmClsContr']." não possui o método de ataque ".$arrayRota['mtdIniCall']."()", 25158);
+                    throw new ProcessamentoRotas\Exceptions\PcRException("Falha interna! - A classe ".$arrayRota['nmClsContr']." não possui o método de ataque ".$arrayRota['mtdIniCall']."()", 25158);
                 }
                     
             }
@@ -520,7 +521,7 @@ namespace Sistema{
                 //Acionando controlador responsável
                 $this->_acionarControlador($retArrInfLocRota);       
 
-            } catch (\Sistema\ProcessamentoRotas\PcRException $e) {
+            } catch (ProcessamentoRotas\Exceptions\PcRException $e) {
                 http_response_code(500);
                 exit;
             }
@@ -544,17 +545,6 @@ namespace Sistema\ProcessamentoRotas{
         public $argRotaRAW;     //Argumento passado de forma sem ser padrão a rota;
 
     }
-
-    //Necessário para diferenciar os erros específicos dos demais erros
-    class PcRException extends \Exception{
-	
-        public function __construct(string $msgPublica=null, int $codigo=null, $previous = null) {	
-            
-            parent::__construct($msgPublica, $codigo, $previous);
-            
-        }
-    }
-
     
 }
 
