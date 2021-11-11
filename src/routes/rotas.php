@@ -17,21 +17,48 @@ try {
     # Definições das rotas do sistema --------------------------------------------------
 
     #Rota raiz do sistema
-
     $objProcessamentoRotas->definirRota_TODOS(
-        "/",                   # Rota HTTP
-        "PaginaInicialController",                              # Nome Classe Controlador
-        "inicio",                                               # Nome método inicial de ataque
-        null,                                                   # Argumento passado 
-        __DIR_CONTROLADORES__."/PaginaInicialController.php"    # Endereço de inclusão do arquivo controlador respectivo
+        "/",                                                        # Rota HTTP
+        "PaginaInicialController",                                  # Nome Classe Controlador
+        "redirecionarHome",                                         # Nome método inicial de ataque
+        null,                                                       # Argumento passado 
+        __DIR_CONTROLADORES__."/site/PaginaInicialController.php"   # Endereço de inclusão do arquivo controlador respectivo
     ); 
 
-    $objProcessamentoRotas->definirRota_PUT(
-        "/",                        # Rota HTTP
-        "PaginaInicialController",                              # Nome Classe Controlador
-        "inicio",                                               # Nome método inicial de ataque
-        null,                                                   # Argumento passado 
-        __DIR_CONTROLADORES__."/PaginaInicialController.php"    # Endereço de inclusão do arquivo controlador respectivo
+    # Rotas da página home --------------------------------------------------
+    $objProcessamentoRotas->definirRota_TODOS(
+        "/home",                        # Rota HTTP
+        "PaginaInicialController",                                  # Nome Classe Controlador
+        "inicio",                                                   # Nome método inicial de ataque
+        null,                                                       # Argumento passado 
+        __DIR_CONTROLADORES__."/site/PaginaInicialController.php"   # Endereço de inclusão do arquivo controlador respectivo
+    ); 
+
+    $objProcessamentoRotas->definirRota_TODOS(
+        "/home/{pagina}",                                           # Rota HTTP
+        "PaginaInicialController",                                  # Nome Classe Controlador
+        "inicio",                                                   # Nome método inicial de ataque
+        null,                                                       # Argumento passado 
+        __DIR_CONTROLADORES__."/site/PaginaInicialController.php"   # Endereço de inclusão do arquivo controlador respectivo
+    ); 
+
+    # Posts do Blog -----------------------------------------------------------
+
+
+    $objProcessamentoRotas->definirRota_TODOS(
+        "/posts",                                                   # Rota HTTP
+        "PostsController",                                  # Nome Classe Controlador
+        "inicio",                                                   # Nome método inicial de ataque
+        null,                                                       # Argumento passado 
+        __DIR_CONTROLADORES__."/site/PostsController.php"           # Endereço de inclusão do arquivo controlador respectivo
+    ); 
+
+    $objProcessamentoRotas->definirRota_GET(
+        "/posts/{id}",                                              # Rota HTTP
+        "PostsController",                                          # Nome Classe Controlador
+        "getPost",                                                  # Nome método inicial de ataque
+        null,                                                       # Argumento passado 
+        __DIR_CONTROLADORES__."/site/PostsController.php"           # Endereço de inclusão do arquivo controlador respectivo
     ); 
 
   
@@ -44,7 +71,7 @@ try {
 
     echo "Erro Rota:<br>";
 
-    echo $e->getMessage();
+    echo "(".$e->getMessage().")";
 
 } catch(VwException $e) { //Erro em alguma chamada de view
     echo "Erro view.<br>";

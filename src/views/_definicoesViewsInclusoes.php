@@ -15,7 +15,19 @@ try {
 //CONFIGURAR AQUI----------------------------------------------------------------------------------------------
 
     #Pagina inicial
-    Views::definir("home.index", __DIR_VIEWS__."/home/index.view.php");    
+    Views::definir("site.index", __DIR_VIEWS__."/site/index.view.php");     
+        #Layouts home
+        Views::definir("site.layout.cabecalho", __DIR_VIEWS__."/site/layout/cabecalho.view.php");
+        Views::definir("site.layout.rodape", __DIR_VIEWS__."/site/layout/rodape.view.php");  
+        
+    #Definição Posts
+    #Visualizar um post
+    Views::definir("site.posts.post", __DIR_VIEWS__."/site/posts/post.view.php");     
+    
+    
+
+    #Definição de erros.
+    Views::definir("errosGerais.ErroDB", __DIR_VIEWS__."/errosGerais/erroDB.view.php"); 
 
 
 //-------------------------------------------------------------------------------------------------

@@ -24,6 +24,7 @@ define("__DIR_CONTROLADORES__", __DIR_RAIZ__."/".GBCFGS::$nomeDirControladores);
 define("__DIR_VIEWS__", __DIR_RAIZ__."/".GBCFGS::$nomeDirViews);
 define("__DIR_CONFIGS__", __DIR_RAIZ__."/".GBCFGS::$nomeDirConfigs);
 define("__DIR_MODELS__", __DIR_RAIZ__."/".GBCFGS::$nomeDirModels);
+define("__DIR_SYSLIBS__", __DIR_RAIZ__."/".GBCFGS::$nomeDirLibsSis);
 
 define("__DIR_Exceptions__", __DIR_RAIZ__."/".GBCFGS::$nomeDirLibsSis."/Exceptions");
 
