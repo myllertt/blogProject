@@ -11,7 +11,8 @@
             <?php echo $results->reg['conteudo'] ?>
         </div>
         <div class="userPost">
-            <?php echo $results->reg['nomeUSAbrev'] ?> Em: <?php echo $reg['dataCadBR'] ?>
+            <?php echo $results->reg['nomeUSAbrev'] ?> Em: <?php echo $results->reg['dataCadBR'] ?>
+            <?php if($results->reg['dataAtBR']) echo "(atualizado em: ".$results->reg['dataAtBR'].")" ?>
         </div>
     </div>
 <?php else: ?>

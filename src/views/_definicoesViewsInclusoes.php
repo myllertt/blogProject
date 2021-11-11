@@ -22,10 +22,18 @@ try {
         
     #Definição Posts
     #Visualizar um post
-    Views::definir("site.posts.post", __DIR_VIEWS__."/site/posts/post.view.php");     
+    Views::definir("site.posts.post", __DIR_VIEWS__."/site/posts/post.view.php");    
+    
+    
+    #Definição Usuario
+    #Tela de registro do usuário
+    Views::definir("site.us.registrar", __DIR_VIEWS__."/site/usuario/registrar.view.php");
     
     
 
+
+
+    
     #Definição de erros.
     Views::definir("errosGerais.ErroDB", __DIR_VIEWS__."/errosGerais/erroDB.view.php"); 
 

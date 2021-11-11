@@ -41,6 +41,27 @@ class TratamentoCaracteres {
     }
 
 
+    //Verifica os caracteres padrão de um usuário
+    public static function verifCaracteresPadraoUsuario(string $string) : bool{
+
+        if($string == "")
+            return false;
+
+        //Um usuário tem que começar com letra.
+        $codAsci = ord($string[0]);
+        if(!(($codAsci >= 65 && $codAsci <= 90) || ($codAsci >= 97 && $codAsci <= 122)))
+            return false;
+
+        //Aceita apenas letras(Maiu Minu), numeros, Caracteres (_)
+        if (preg_match('/^[a-z0-9_]+$/i', $string)) {
+            return true;
+        } else {
+            return false;
+        }
+    
+    }
+
+
 }
 
 

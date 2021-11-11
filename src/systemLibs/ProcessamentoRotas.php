@@ -8,6 +8,8 @@ namespace Sistema{
 
         private $CFGS;
 
+        private $assocNomeRotas; //Associação dos nomes das rotas.
+
         private function _setConfiguracoes(){
             $this->CFGS = [];
 
@@ -51,6 +53,15 @@ namespace Sistema{
             if(isset($this->arrayRotasConfigs[$metodo]) && isset($this->arrayRotasConfigs[ $metodo ][ $strRotaCMP ]))
                 return true;
 
+            return false;
+        }
+
+        #Retorna o nome da rota (string) se existir e (false) se não existir 
+        private function _verificarSeNomeRotaExiste(string $nome){
+            if(isset($this->assocNomeRotas[ $nome ])){
+                return $this->assocNomeRotas[ $nome ]['strRota'];
+            }
+                
             return false;
         }
 
@@ -206,7 +217,7 @@ namespace Sistema{
 
         }
 
-        private function _definirRotaMetodo(string $metodo, string $rota, string $nomeClasseControlador, string $nomeMetodoChamadoInicial, $argumento, string $linkInclusao = null) : void {
+        private function _definirRotaMetodo(string $metodo, string $rota, string $nomeClasseControlador, string $nomeMetodoChamadoInicial, $argumento, string $linkInclusao = null, string $nomeRota = null) : void {
             
             //A rota não pode ser em braco
             if($rota == "")
@@ -235,11 +246,29 @@ namespace Sistema{
             $retOperProcRota['linkInc'] =       $linkInclusao; //Endereço de inclusão script
             $retOperProcRota['arg'] =           $argumento; //Argumento passado
             
+            //Verificando se existe outra rota com o mesmo nome
+            if($nomeRota !== null){
 
+                $checkNomeRota = $this->_verificarSeNomeRotaExiste($nomeRota);
 
-            //Armazenando estrutura rrocessada no array principal de trabalho
-            $this->arrayRotasConfigs[ $metodo ][ $retOperProcRota['strRotaCMP'] ] = $retOperProcRota;
-            
+                if($checkNomeRota !== false){
+
+                    $this->_encaminharErroDefinicoes("Erro a definição do nome da rota (".$nomeRota.") já está definida para a rota: (".$checkNomeRota).")";
+                
+                } else {
+
+                    //Armazenando estrutura rrocessada no array principal de trabalho
+                    $this->arrayRotasConfigs[ $metodo ][ $retOperProcRota['strRotaCMP'] ] = $retOperProcRota;
+
+                    //Associando o nome da rota com o array da rota respectivo
+                    $this->assocNomeRotas[ $nomeRota ] = &$this->arrayRotasConfigs[ $metodo ][ $retOperProcRota['strRotaCMP'] ];
+                }
+                    
+            } else { //Não houve nome para a rota
+
+                $this->arrayRotasConfigs[ $metodo ][ $retOperProcRota['strRotaCMP'] ] = $retOperProcRota;
+
+            }
         }
 
         private function _obterMetodoDaRequisicao() : string{
@@ -483,46 +512,60 @@ namespace Sistema{
            
         }
 
+        //Método auxiliar de outra classe. Não devendo ser utilizada por outro usuário.
+        public function __getArrayObjsRotaPorNomeRota(string $nomeRota){
+
+            if(isset($this->assocNomeRotas[ $nomeRota ])){
+                return $this->assocNomeRotas[ $nomeRota ];
+            }
+            
+            return null;
+
+        }
+
         function __construct(){
             $this->_setConfiguracoes();
+
+            //Iniciando array.
+            $this->assocNomeRotas = [];
         }
 
         //----------Métodos Públicos -----------------------------------------------
 
         # Métodos para configurações de rotas.
-        public function definirRota_GET(string $rota, string $nomeClasseControlador, string $nomeMetodoChamadoInicial, $argumento, string $linkInclusao = null) : void {
+        public function definirRota_GET(string $rota, string $nomeClasseControlador, string $nomeMetodoChamadoInicial, $argumento, string $linkInclusao = null, string $nomeRota = null) : void {
 
-            $this->_definirRotaMetodo("GET", $rota, $nomeClasseControlador, $nomeMetodoChamadoInicial, $argumento, $linkInclusao);
-
-        }
-
-        public function definirRota_POST(string $rota, string $nomeClasseControlador, string $nomeMetodoChamadoInicial, $argumento, string $linkInclusao = null) : void {
-
-            $this->_definirRotaMetodo("POST", $rota, $nomeClasseControlador, $nomeMetodoChamadoInicial, $argumento, $linkInclusao);
+            $this->_definirRotaMetodo("GET", $rota, $nomeClasseControlador, $nomeMetodoChamadoInicial, $argumento, $linkInclusao, $nomeRota);
 
         }
 
-        public function definirRota_PUT(string $rota, string $nomeClasseControlador, string $nomeMetodoChamadoInicial, $argumento, string $linkInclusao = null) : void {
+        public function definirRota_POST(string $rota, string $nomeClasseControlador, string $nomeMetodoChamadoInicial, $argumento, string $linkInclusao = null, string $nomeRota = null) : void {
 
-            $this->_definirRotaMetodo("PUT", $rota, $nomeClasseControlador, $nomeMetodoChamadoInicial, $argumento,  $linkInclusao);
-
-        }
-
-        public function definirRota_DELETE(string $rota, string $nomeClasseControlador, string $nomeMetodoChamadoInicial = null, $argumento = null, string $linkInclusao = null) : void {
-
-            $this->_definirRotaMetodo("DELETE", $rota, $nomeClasseControlador, $nomeMetodoChamadoInicial, $argumento,  $linkInclusao);
+            $this->_definirRotaMetodo("POST", $rota, $nomeClasseControlador, $nomeMetodoChamadoInicial, $argumento, $linkInclusao, $nomeRota);
 
         }
 
-        public function definirRota_PATCH(string $rota, string $nomeClasseControlador, string $nomeMetodoChamadoInicial = null, $argumento = null, string $linkInclusao = null) : void {
+        public function definirRota_PUT(string $rota, string $nomeClasseControlador, string $nomeMetodoChamadoInicial, $argumento, string $linkInclusao = null, string $nomeRota = null) : void {
 
-            $this->_definirRotaMetodo("PATCH", $rota, $nomeClasseControlador, $nomeMetodoChamadoInicial, $argumento,  $linkInclusao);
+            $this->_definirRotaMetodo("PUT", $rota, $nomeClasseControlador, $nomeMetodoChamadoInicial, $argumento,  $linkInclusao, $nomeRota);
 
         }
 
-        public function definirRota_TODOS(string $rota, string $nomeClasseControlador, string $nomeMetodoChamadoInicial = null, $argumento = null, string $linkInclusao = null) : void {
+        public function definirRota_DELETE(string $rota, string $nomeClasseControlador, string $nomeMetodoChamadoInicial = null, $argumento = null, string $linkInclusao = null, string $nomeRota = null) : void {
 
-            $this->_definirRotaMetodo($this->CFGS['mtdsALL'], $rota, $nomeClasseControlador, $nomeMetodoChamadoInicial, $argumento,  $linkInclusao);
+            $this->_definirRotaMetodo("DELETE", $rota, $nomeClasseControlador, $nomeMetodoChamadoInicial, $argumento,  $linkInclusao, $nomeRota);
+
+        }
+
+        public function definirRota_PATCH(string $rota, string $nomeClasseControlador, string $nomeMetodoChamadoInicial = null, $argumento = null, string $linkInclusao = null, string $nomeRota = null) : void {
+
+            $this->_definirRotaMetodo("PATCH", $rota, $nomeClasseControlador, $nomeMetodoChamadoInicial, $argumento,  $linkInclusao, $nomeRota);
+
+        }
+
+        public function definirRota_TODOS(string $rota, string $nomeClasseControlador, string $nomeMetodoChamadoInicial = null, $argumento = null, string $linkInclusao = null, string $nomeRota = null) : void {
+
+            $this->_definirRotaMetodo($this->CFGS['mtdsALL'], $rota, $nomeClasseControlador, $nomeMetodoChamadoInicial, $argumento,  $linkInclusao, $nomeRota);
 
         }
         //------------------------------------
@@ -580,6 +623,70 @@ namespace Sistema\ProcessamentoRotas{
 
     }
     
+}
+
+namespace Sistema {
+
+    /* 
+        Classe facilitadora de acesso aos componentes das rotas.
+    */
+
+    class Rotas {
+
+        private static $objProcessamentoRotas;
+
+        public static function setObjetoTrabalho(\Sistema\ProcessamentoRotas $obj){       
+            if(!self::$objProcessamentoRotas)
+                self::$objProcessamentoRotas = $obj;               
+        }
+
+        //Gera um link a partir da rota.
+        public static function gerarLink(string $nomeRota, ...$args) : string{
+            
+            if($nomeRota == "")
+                return "/";
+
+            $resConsRota = self::$objProcessamentoRotas->__getArrayObjsRotaPorNomeRota($nomeRota);
+            
+            //Em caso de erro será direcionado para a raiz
+            if($resConsRota === null)
+                return "/"; 
+
+            //Contando args dinâmicos
+            $cntDinamArgs = count($resConsRota['arrPrmDinam']);
+
+            //Em caso de rota simples. Não se considera argumentos
+            if(empty($resConsRota['arrPrmDinam']))
+                return $resConsRota['strRota'];
+
+            //Em caso de rota dinâmica.
+            //No mínimo os elementos devem ter o mesmo número de args
+            if(count($args) != $cntDinamArgs)
+                return "/";
+
+            #GerandoLink
+            $strGerLink = "";
+            $cntDin = 0; //Contador parâmetros dinâmicos
+            foreach ($resConsRota['arrPrmOrdem'] as $parametro) {
+                if($parametro['t'] == 'd'){
+
+                    $strGerLink .= $args[ $cntDin ]."/";
+
+                    $cntDin++;
+
+                } else {
+                    $strGerLink .= $parametro['nm']."/";
+                }
+            }
+
+            //Eliminando barra final
+            $strGerLink = substr($strGerLink, 0, -1);
+
+            return "/".$strGerLink;
+        }
+
+    }
+
 }
 
 ?>

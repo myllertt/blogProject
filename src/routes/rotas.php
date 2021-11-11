@@ -5,12 +5,17 @@ require __DIR_RAIZ__ . "/".GBCFGS::$nomeDirLibsSis. "/ProcessamentoRotas.php";
 //------------------
 
 use Sistema\ProcessamentoRotas;
+use Sistema\Rotas;
 use Sistema\ProcessamentoRotas\Exceptions\PcRException; 
 use Sistema\Views\Exceptions\VwException; 
 
 # Instancia do processamento de rotas
 $objProcessamentoRotas = new ProcessamentoRotas();
 
+#Setando objeto de trabalho
+Rotas::setObjetoTrabalho($objProcessamentoRotas);
+
+Rotas::setObjetoTrabalho($objProcessamentoRotas);
 
 try {
 
@@ -22,7 +27,8 @@ try {
         "PaginaInicialController",                                  # Nome Classe Controlador
         "redirecionarHome",                                         # Nome método inicial de ataque
         null,                                                       # Argumento passado 
-        __DIR_CONTROLADORES__."/site/PaginaInicialController.php"   # Endereço de inclusão do arquivo controlador respectivo
+        __DIR_CONTROLADORES__."/site/PaginaInicialController.php",  # Endereço de inclusão do arquivo controlador respectivo,
+        'site.index'                                                # Nome da rota.
     ); 
 
     # Rotas da página home --------------------------------------------------
@@ -31,7 +37,8 @@ try {
         "PaginaInicialController",                                  # Nome Classe Controlador
         "inicio",                                                   # Nome método inicial de ataque
         null,                                                       # Argumento passado 
-        __DIR_CONTROLADORES__."/site/PaginaInicialController.php"   # Endereço de inclusão do arquivo controlador respectivo
+        __DIR_CONTROLADORES__."/site/PaginaInicialController.php",  # Endereço de inclusão do arquivo controlador respectivo
+        'site.home'                                                 # Nome da rota.
     ); 
 
     $objProcessamentoRotas->definirRota_TODOS(
@@ -47,7 +54,7 @@ try {
 
     $objProcessamentoRotas->definirRota_TODOS(
         "/posts",                                                   # Rota HTTP
-        "PostsController",                                  # Nome Classe Controlador
+        "PostsController",                                          # Nome Classe Controlador
         "inicio",                                                   # Nome método inicial de ataque
         null,                                                       # Argumento passado 
         __DIR_CONTROLADORES__."/site/PostsController.php"           # Endereço de inclusão do arquivo controlador respectivo
@@ -58,8 +65,31 @@ try {
         "PostsController",                                          # Nome Classe Controlador
         "getPost",                                                  # Nome método inicial de ataque
         null,                                                       # Argumento passado 
-        __DIR_CONTROLADORES__."/site/PostsController.php"           # Endereço de inclusão do arquivo controlador respectivo
-    ); 
+        __DIR_CONTROLADORES__."/site/PostsController.php",          # Endereço de inclusão do arquivo controlador respectivo
+        'site.posts.get.id'                                         # Nome da rota.
+    );
+
+    # Registro Site -----------------------------------------------------------
+
+    //obter tela inicial registro usuario
+    $objProcessamentoRotas->definirRota_GET(
+        "/registrar",                                               # Rota HTTP
+        "UsuariosSiteController",                                   # Nome Classe Controlador
+        "exibirTelaRegistro",                                       # Nome método inicial de ataque
+        null,                                                       # Argumento passado 
+        __DIR_CONTROLADORES__."/site/UsuariosSiteController.php",   # Endereço de inclusão do arquivo controlador respectivo
+        'site.us.telaRegs.get'                                  # Nome da rota.
+    );
+
+    //Processo de registrar usuário
+    $objProcessamentoRotas->definirRota_POST(
+        "/registrar",                                               # Rota HTTP
+        "UsuariosSiteController",                                   # Nome Classe Controlador
+        "processoRegistrarUsuario",                                 # Nome método inicial de ataque
+        null,                                                       # Argumento passado 
+        __DIR_CONTROLADORES__."/site/UsuariosSiteController.php",   # Endereço de inclusão do arquivo controlador respectivo
+        'site.us.ProcRegs.post'                                  # Nome da rota.
+    );
 
   
 

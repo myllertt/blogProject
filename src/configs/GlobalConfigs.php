@@ -35,8 +35,9 @@ GBCFGS_Views::$srcArqDefinicoesViews = __DIR_VIEWS__."/_definicoesViewsInclusoes
 # CONFIGURAÇẼOS DE BANCO DE DADOS --------------------------
 
 # Configurações de nomes das tabelas ----
-define("_TAB_Posts_", "Posts"); 
-define("_TAB_UsAdmin_", "UsuariosAdmin"); 
+define("_TAB_Posts_",       "Posts"); 
+define("_TAB_UsAdmin_",     "UsuariosAdmin"); 
+define("_TAB_UsSite_",      "UsuariosSite"); 
 
 
 ?>

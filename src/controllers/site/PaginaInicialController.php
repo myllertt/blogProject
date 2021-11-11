@@ -6,6 +6,7 @@ require(__DIR_MODELS__."/Posts.php");
 
 use Sistema\Views\Views;
 use Sistema\DB\Exceptions\DBException; 
+use Sistema\Rotas;
 
 class PaginaInicialController extends Controlador{
 
@@ -27,8 +28,8 @@ class PaginaInicialController extends Controlador{
     }
 
     public function redirecionarHome(){
-        
-        header("Location: /home");
+    
+        header("Location: ".Rotas::gerarLink("site.home"));
 
         exit;
     }
@@ -47,6 +48,8 @@ class PaginaInicialController extends Controlador{
         try {
 
             $arrayPosts = $this->objPost->obterResumoPostsAtivos( $paginaAtual );
+
+            //print_r($arrayPosts);exit;
 
             $results = (object) [
                 'haRegistros' => !empty($arrayPosts['regs']) ?? false,
