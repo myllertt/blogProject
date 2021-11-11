@@ -61,6 +61,23 @@ class TratamentoCaracteres {
     
     }
 
+    //Se encontrar caractéres não permitidos irá retornar true.
+    public static function verifSeTemCaracNaoPermitidosCampoSenha($string) : bool{
+        
+        $arrNp = [' ', "\\", "\n", "\r", "\t"];
+        if(str_replace($arrNp, "", $string) != $string)
+            return true;
+
+        return false;
+    }
+
+    //Remover carateres de passíveis tags html
+    public static function rmvCharTags($string) : string{
+        
+        $arrChr = ['<', '>', "\\"];
+        return str_replace($arrChr, "", $string);
+    }
+
 
 }
 

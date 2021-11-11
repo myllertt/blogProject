@@ -28,36 +28,82 @@ class UsuariosSiteController extends Controlador{
 
     public function exibirTelaRegistro(){
 
-        echo "Ação registrar usuário<br>";
+        //O formulário neste estado ficará em brando
+        $arrayParmsFormNulos = [
+            'usuario' => "",
+            'nome' => "",
+            'sobrenome' => "",
+            'genero' => "",
+            'email' => "",
+            'senha' => ""
+        ];
 
-
-        try {
-            
-            $this->objTrabalho->registrarUsuario("myller2", "Lucas", "Silva Costa", "M", "exemplo@exemplo.com", "1264894");
-
-            exit;
-            Views::abrir("site.us.registrar");
-
-        } catch (\Exception $e) { //Erro no procedimento.
-            
-           echo $e->getMessage();
-
-        } catch(DBException $e){ //Em caso de erro de banco de dados.
-            $e->debug();
-            //Views::abrir("errosGerais.ErroDB");
-
-            #Acionando view de erro geral do sistema.
-            
-        }
+        $results = [
+            'procAtv' => false, //Indica quando o processo esta sendo realizado
+            'sts' => null,
+            'msg' => "",
+            'parms'=> $arrayParmsFormNulos
+        ];
         
+        Views::abrir("site.us.registrar", $results);
 
     }
 
     public function processoRegistrarUsuario(){
 
-        echo "Processo registrar usuário";
+        //Obtendo e armazenando parâmetros da requisição.
+        $arrayReq = [
 
-        Views::abrir("site.us.registrar");
+            'usuario' => $this->getValorParmRequest("usu") ?? "",
+            'nome' => $this->getValorParmRequest("nme") ?? "",
+            'sobrenome' => $this->getValorParmRequest("sno") ?? "",
+            'genero' => $this->getValorParmRequest("gen") ?? "",
+            'email' => $this->getValorParmRequest("eml") ?? "",
+            'senha' => $this->getValorParmRequest("sen") ?? ""
+
+        ];
+
+        try {
+
+            //Tentando registrar usuário
+            $this->objTrabalho->registrarUsuario($arrayReq['usuario'], $arrayReq['nome'], $arrayReq['sobrenome'], $arrayReq['genero'], $arrayReq['email'], $arrayReq['senha']);
+
+            //Enviando mensagem de sucesso!
+            $results = [
+                'procAtv' => true, //Indica quando o processo esta sendo realizado
+                'sts' => true,
+                'msgE' => "Seu usuário foi cadastrado com sucesso!",
+                'parms'=> $arrayReq
+            ];
+
+            Views::abrir("site.us.registrar");
+        
+        } catch(DBException $e){ //Em caso de erro de banco de dados.
+            
+            //$e->debug();
+            //Views::abrir("errosGerais.ErroDB");
+
+            $results = [
+                'procAtv' => true, //Indica quando o processo esta sendo realizado
+                'sts' => false,
+                'msgE' => "Desculpe! Ocorre uma falha interna na operação! Tente mais tarde por gentileza. #DB0001",
+                'parms'=> $arrayReq
+            ];
+
+            Views::abrir("site.us.registrar", $results);
+            
+
+        } catch (\Exception $e) { //Erro no procedimento.
+
+            $results = [
+                'procAtv' => true, //Indica quando o processo esta sendo realizado
+                'sts' => false,
+                'msgE' => $e->getMessage(),
+                'parms'=> $arrayReq
+            ];
+
+            Views::abrir("site.us.registrar", $results);
+        }        
 
     }
 

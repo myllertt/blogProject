@@ -12,6 +12,8 @@ class UsuariosSite {
     private $arrayCFGSEsp; //Array de configurações específicas.
 
     private function _definirConfigsEspecificas(){
+        $this->arrayCFGSEsp['MIN_CARACS_SENHA'] = 8; //Mínimo de caracteres para o campo senha.
+        $this->arrayCFGSEsp['MAX_CARACS_SENHA'] = 64; //Máximo de caracteres para o campo senha.
     }
 
     private function _verificarObjDB(){
@@ -111,13 +113,85 @@ class UsuariosSite {
 
     }
 
+    private function _validarCampoSenha(string $string) : void { #throw \Exception
+        
+        $lenString = mb_strlen($string);
+
+        if($lenString  == 0){
+            throw new \Exception("Erro! Informe o campo senha.", 4444);
+        }
+
+        if($lenString < $this->arrayCFGSEsp['MIN_CARACS_SENHA']){
+            throw new \Exception("Erro! O campo senha tem que ter pelo menos ".$this->arrayCFGSEsp['MIN_CARACS_SENHA']." caracteres!", 2222);
+        }
+
+        if( $lenString > $this->arrayCFGSEsp['MAX_CARACS_SENHA']){
+            throw new \Exception("Erro! O campo senha é muito longo!", 2221);
+        }
+
+        if(TratamentoCaracteres::verifSeTemCaracNaoPermitidosCampoSenha($string)){
+            throw new \Exception("Erro! O campo senha possui caracteres inválidos", 2224);
+        }
+
+        
+    }
+
+    //Gera um hash da senha de acordo com o algoritmo predefinido
+    private function _gerarHashSenha(string $string) : string{
+        
+        //Gera a inversão de algoritmo sha512
+        return strrev(hash("sha512", $string));
+
+    }
+
+    //Cadastrar usuário no banco de dados.
+    private function _inserirNovoUsuarioBancoDados(array $arrayDados) : void{ #throw DBException
+
+        /*
+            'usuario'
+            'hashSenha'
+            'nome'
+            'sobrenome'
+            'email'
+            'genero'          
+        */
+
+        $this->_verificarObjDB();
+
+        $strSql = "
+
+            INSERT INTO 
+                "._TAB_UsSite_."
+                    (usuario,hashSenha,nome,sobrenome,email,genero)
+                VALUES
+                    (?,?,?,?,?,?)
+        ";
+
+        //Tentando preparar a consulta.
+        $objStmt = $this->objMysqli->prepare($strSql);
+
+        //Caso não consiga
+        if(!$objStmt){
+            throw new DBException("Ocorreu uma falha no DB.", $this->objMysqli->errno, $this->objMysqli->error, null);
+        }
+
+        //Setando parâmetros
+        $objStmt->bind_param('ssssss', $arrayDados['usuario'], $arrayDados['hashSenha'], $arrayDados['nome'], $arrayDados['sobrenome'], $arrayDados['email'], $arrayDados['genero']);
+        
+        //Caso não execute
+        if(!$objStmt->execute()){
+            throw new DBException("Ocorreu uma falha no DB", $objStmt->errno, $objStmt->error, null);
+        }
+    }
+
     function __construct(mysqli $objMysqli){
         $this->objMysqli = $objMysqli;
 
         $this->_definirConfigsEspecificas();
     }
     
-    public function registrarUsuario(string $usuario, string $nome, string $sobrenome, string $genero, string $email, string $senha){ #throw DBException, \Exception
+    //Processo de registro do usuário
+    public function registrarUsuario(string $usuario, string $nome, string $sobrenome, string $genero, string $email, string $senha) : void{ #throw DBException, \Exception
 
         #usuario----------
         if($usuario == "")
@@ -146,6 +220,20 @@ class UsuariosSite {
         $this->_validarDadosCadastraisUsuario($nome, $sobrenome, $genero, $email);
 
         //Validar senha
+        $this->_validarCampoSenha($senha);
+
+        //Gerando array com dados finais
+        $arrayDadosInsert = [
+            'usuario'       => $usuario,
+            'hashSenha'     => $this->_gerarHashSenha($senha),
+            'nome'          => trim( TratamentoCaracteres::rmvCharTags($nome)),
+            'sobrenome'     => trim( TratamentoCaracteres::rmvCharTags($sobrenome)),
+            'email'         => $email,
+            'genero'        => $genero          
+        ];
+
+        //Finalmente inserindo dados
+        $this->_inserirNovoUsuarioBancoDados($arrayDadosInsert);
             
     }
     
