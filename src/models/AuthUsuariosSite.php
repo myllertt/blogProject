@@ -327,6 +327,18 @@ class AuthUsuariosSite {
             
     }
 
+    //Destroi sessão apenas da memória do sistema, não entrando causando nenhum efeito do banco de dados
+    public function destruirSessaoApenasMemoriaSis() : bool{
+        if(!$this->checkSeExisteSessaoAtivaTipica())
+            return false;
+        
+        session_unset();
+	    session_destroy();
+
+        return true;
+        
+    }
+
     //Realiza logou da sessão ativa do usuário caso tenha
     public function realizarLogout() : bool{
 

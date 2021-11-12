@@ -33,7 +33,10 @@ try {
     
     #Tela área usuário - editar cadastro
     Views::definir("site.us.areaUsuario.editCad", __DIR_VIEWS__."/site/usuario/areaUsuario/editarCadastro.view.php");
-    
+    #Tela área usuário - Excluir minha conta.
+    Views::definir("site.us.areaUsuario.excMinConta", __DIR_VIEWS__."/site/usuario/areaUsuario/excluirMinhaConta.view.php");
+    #Tela área usuário - Alterar minha senha
+    Views::definir("site.us.areaUsuario.altSenha", __DIR_VIEWS__."/site/usuario/areaUsuario/alterarSenha.view.php");
     
 
 

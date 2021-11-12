@@ -80,7 +80,7 @@ class UsuariosSiteController extends Controlador{
         
         } catch(DBException $e){ //Em caso de erro de banco de dados.
             
-            $e->debug();
+            //$e->debug();
             //Views::abrir("errosGerais.ErroDB");
 
             $results = [

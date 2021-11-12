@@ -65,7 +65,7 @@ class AreaUsuarioLogadoController extends Controlador{
         $this->_verificarSessaoAtivaDB_AutoRedEExit();
     }
 
-    # Tela de Edição do Cadastro Usuário ------------------------
+    # Tela de Edição do Cadastro Usuário
     public function telaEditarCadastro(){
 
         //Obtendo dados do usuário logado
@@ -111,11 +111,231 @@ class AreaUsuarioLogadoController extends Controlador{
         Views::abrir("site.us.areaUsuario.editCad", ['auth'=> $arrInfsUsLogado, 'results' => $results]);
 
     }
-
-    //Processo de edição do cadastro
+    # Processo de edição do cadastro
     public function processoEditarCadastro(){
-        echo "aki";
+
+        //Obtendo dados do usuário logado
+        $arrInfsUsLogado = $this->objAuth->getArrayCacheDadosUsuarioLogado();
+
+        //Obtendo dados da requisição
+        $arrayReq = [
+            'nome' => $this->getValorParmRequest("nme") ?? "",
+            'sobrenome' => $this->getValorParmRequest("sno") ?? "",
+            'genero' => $this->getValorParmRequest("gen") ?? "",
+            'email' => $this->getValorParmRequest("eml") ?? "",
+        ];
+
+        try {
+
+            //Tentando realizar operação
+            $this->objUsuariosSite->editarDadosCadastrais($arrInfsUsLogado['id'], $arrayReq['nome'], $arrayReq['sobrenome'], $arrayReq['genero'], $arrayReq['email']);
+
+            //Enviando mensagem de sucesso!
+            $results = [
+                'procAtv' => true, //Indica quando o processo esta sendo realizado
+                'sts' => true,
+                'msg' => "Os dados foram atualizados com sucesso!",
+                'parms'=> $arrayReq
+            ];
+
+            Views::abrir("site.us.areaUsuario.editCad", ['auth'=> $arrInfsUsLogado, 'results' => $results]);
+        
+        } catch(DBException $e){ //Em caso de erro de banco de dados.
+            
+            $e->debug();
+            //Views::abrir("errosGerais.ErroDB");
+
+            $results = [
+                'procAtv' => true, //Indica quando o processo esta sendo realizado
+                'sts' => false,
+                'msg' => "Desculpe! Ocorre uma falha interna na operação! Tente mais tarde por gentileza. #DB0001",
+                'parms'=> $arrayReq
+            ];
+
+            Views::abrir("site.us.areaUsuario.editCad", ['auth'=> $arrInfsUsLogado, 'results' => $results]);
+            
+
+        } catch (\Exception $e) { //Erro no procedimento.
+
+            $results = [
+                'procAtv' => true, //Indica quando o processo esta sendo realizado
+                'sts' => false,
+                'msg' => $e->getMessage(),
+                'parms'=> $arrayReq
+            ];
+
+            Views::abrir("site.us.areaUsuario.editCad", ['auth'=> $arrInfsUsLogado, 'results' => $results]);
+        }        
+
     }
+    
+
+    # Tela de Exclusão de Conta
+    public function telaExcluirMinConta(){
+
+        //Obtendo dados do usuário logado
+        $arrInfsUsLogado = $this->objAuth->getArrayCacheDadosUsuarioLogado();
+     
+        //Passando dados em branco
+        $arrayReq = [
+        ];
+        
+        $results = [
+            'procAtv' => false, //Indica quando o processo esta sendo realizado
+            'sts' => null,
+            'msg' => "",
+            'parms'=> []
+        ];
+
+ 
+        Views::abrir("site.us.areaUsuario.excMinConta", ['auth'=> $arrInfsUsLogado, 'results' => $results]);
+
+    }
+    # Processo de Exclusão de Conta
+    public function processoExcluirMinConta(){
+
+        //Obtendo dados do usuário logado
+        $arrInfsUsLogado = $this->objAuth->getArrayCacheDadosUsuarioLogado();
+
+    
+        //Obter dados do usuário
+        try {
+            
+            //Removendo usuário
+            $this->objUsuariosSite->excluirUsuario($arrInfsUsLogado['id']);
+
+            //Destruindo apenas da memória, pois o usuário em sí já foi removido 
+            $this->objAuth->destruirSessaoApenasMemoriaSis();
+
+            $arrayReq = [
+            ];
+
+            $results = [
+                'procAtv' => true, //Indica quando o processo esta sendo realizado
+                'sts' => true,
+                'msg' => "Seu usuário foi excluído com sucesso!", //$e->getMessage(),
+                'parms'=> $arrayReq
+            ];
+
+            Views::abrir("site.us.areaUsuario.excMinConta", ['auth'=> $arrInfsUsLogado, 'results' => $results]);
+            
+        } catch(DBException $e){ //Em caso de erro de banco de dados.
+            
+            //$e->debug();
+
+            $arrayReq = [
+            ];
+
+            $results = [
+                'procAtv' => true, //Indica quando o processo esta sendo realizado
+                'sts' => false,
+                'msg' => "Desculpe! Ocorreu uma falha interna! Tente mais tarde por gentileza. #DB0001", //$e->getMessage(),
+                'parms'=> $arrayReq
+            ];
+
+            Views::abrir("site.us.areaUsuario.excMinConta", ['auth'=> $arrInfsUsLogado, 'results' => $results]);
+
+        } catch (\Exception $e) { //Erro no procedimento.
+
+            $arrayReq = [
+            ];
+
+            $results = [
+                'procAtv' => true, //Indica quando o processo esta sendo realizado
+                'sts' => false,
+                'msg' => $e->getMessage(),
+                'parms'=> $arrayReq
+            ];
+
+            Views::abrir("site.us.areaUsuario.excMinConta", ['auth'=> $arrInfsUsLogado, 'results' => $results]);
+
+        }  
+
+    }
+
+
+    # Tela Alterar Minha Senha
+    public function telaAlterarSenha(){
+
+        //Obtendo dados do usuário logado
+        $arrInfsUsLogado = $this->objAuth->getArrayCacheDadosUsuarioLogado();
+     
+        //Passando dados em branco
+        $arrayReq = [
+        ];
+        
+        $results = [
+            'procAtv' => false, //Indica quando o processo esta sendo realizado
+            'sts' => null,
+            'msg' => "",
+            'parms'=> []
+        ];
+
+ 
+        Views::abrir("site.us.areaUsuario.altSenha", ['auth'=> $arrInfsUsLogado, 'results' => $results]);
+
+    }
+    # Tela de Exclusão de Conta
+    public function processoAlterarSenha(){
+
+        //Obtendo dados do usuário logado
+        $arrInfsUsLogado = $this->objAuth->getArrayCacheDadosUsuarioLogado();
+
+        //Obtendo dados da requisição
+        $arrayReq = [
+            'hashSenhaAtual' => $this->getValorParmRequest("sea") ?? "",
+            'novaSenha' => $this->getValorParmRequest("nse") ?? "",
+        ];
+
+        try {
+            
+            //Alterando a senha
+            $this->objUsuariosSite->alterarSenha($arrInfsUsLogado['id'], $arrayReq['hashSenhaAtual'], $arrayReq['novaSenha']);
+
+            $results = [
+                'procAtv' => true, //Indica quando o processo esta sendo realizado
+                'sts' => true,
+                'msg' => "Sua senha foi alterada com sucesso!", //$e->getMessage(),
+                'parms'=> []
+            ];
+
+            Views::abrir("site.us.areaUsuario.altSenha", ['auth'=> $arrInfsUsLogado, 'results' => $results]);
+            
+        } catch(DBException $e){ //Em caso de erro de banco de dados.
+            
+            //$e->debug();
+
+            $arrayReq = [
+            ];
+
+            $results = [
+                'procAtv' => true, //Indica quando o processo esta sendo realizado
+                'sts' => false,
+                'msg' => "Desculpe! Ocorreu uma falha interna! Tente mais tarde por gentileza. #DB0001", //$e->getMessage(),
+                'parms'=> $arrayReq
+            ];
+
+            Views::abrir("site.us.areaUsuario.altSenha", ['auth'=> $arrInfsUsLogado, 'results' => $results]);
+
+        } catch (\Exception $e) { //Erro no procedimento.
+
+            $arrayReq = [
+            ];
+
+            $results = [
+                'procAtv' => true, //Indica quando o processo esta sendo realizado
+                'sts' => false,
+                'msg' => $e->getMessage(),
+                'parms'=> $arrayReq
+            ];
+
+            Views::abrir("site.us.areaUsuario.altSenha", ['auth'=> $arrInfsUsLogado, 'results' => $results]);
+
+        }
+
+    }
+
+    
 
     
 

@@ -15,8 +15,6 @@ $objProcessamentoRotas = new ProcessamentoRotas();
 #Setando objeto de trabalho
 Rotas::setObjetoTrabalho($objProcessamentoRotas);
 
-Rotas::setObjetoTrabalho($objProcessamentoRotas);
-
 try {
 
     # Definições das rotas do sistema --------------------------------------------------
@@ -145,6 +143,50 @@ try {
         __DIR_CONTROLADORES__."/site/AreaUsuarioLogadoController.php",  # Endereço de inclusão do arquivo controlador respectivo
     );
 
+    //Excluir minha conta.
+    $objProcessamentoRotas->definirRota_GET(
+        "/areaUsuario/excluirConta",                                    # Rota HTTP
+        "AreaUsuarioLogadoController",                                  # Nome Classe Controlador
+        "telaExcluirMinConta",                                          # Nome método inicial de ataque
+        null,                                                           # Argumento passado 
+        __DIR_CONTROLADORES__."/site/AreaUsuarioLogadoController.php",  # Endereço de inclusão do arquivo controlador respectivo
+        'rota.site.areaUs.excMinConta'                                      # Nome da rota.
+    );
+
+    //Processo de exclusão da conta.
+    $objProcessamentoRotas->definirRota_DELETE(
+        "/areaUsuario/excluirConta",                                    # Rota HTTP
+        "AreaUsuarioLogadoController",                                  # Nome Classe Controlador
+        "processoExcluirMinConta",                                      # Nome método inicial de ataque
+        null,                                                           # Argumento passado 
+        __DIR_CONTROLADORES__."/site/AreaUsuarioLogadoController.php",  # Endereço de inclusão do arquivo controlador respectivo
+    );
+
+
+
+
+
+
+
+
+    //Tela alterar minha senha
+    $objProcessamentoRotas->definirRota_GET(
+        "/areaUsuario/alterarSenha",                                    # Rota HTTP
+        "AreaUsuarioLogadoController",                                  # Nome Classe Controlador
+        "telaAlterarSenha",                                             # Nome método inicial de ataque
+        null,                                                           # Argumento passado 
+        __DIR_CONTROLADORES__."/site/AreaUsuarioLogadoController.php",  # Endereço de inclusão do arquivo controlador respectivo
+        'rota.site.areaUs.altSenha'                                     # Nome da rota.
+    );
+
+    //Processo alterar minha senha
+    $objProcessamentoRotas->definirRota_PUT(
+        "/areaUsuario/alterarSenha",                                    # Rota HTTP
+        "AreaUsuarioLogadoController",                                  # Nome Classe Controlador
+        "processoAlterarSenha",                                         # Nome método inicial de ataque
+        null,                                                           # Argumento passado 
+        __DIR_CONTROLADORES__."/site/AreaUsuarioLogadoController.php",  # Endereço de inclusão do arquivo controlador respectivo
+    );
 
     # Acionando processamento rotas ---------------------------------------------------
 

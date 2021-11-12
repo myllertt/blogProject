@@ -113,24 +113,28 @@ class UsuariosSite {
 
     }
 
-    private function _validarCampoSenha(string $string) : void { #throw \Exception
+    private function _validarCampoSenha(string $string, string $lab = null) : void { #throw \Exception
         
         $lenString = mb_strlen($string);
 
+        if($lab === NULL){
+            $lab = "campo senha";
+        }
+
         if($lenString  == 0){
-            throw new \Exception("Erro! Informe o campo senha.", 4444);
+            throw new \Exception("Erro! Informe o ".$lab."!", 4444);
         }
 
         if($lenString < $this->arrayCFGSEsp['MIN_CARACS_SENHA']){
-            throw new \Exception("Erro! O campo senha tem que ter pelo menos ".$this->arrayCFGSEsp['MIN_CARACS_SENHA']." caracteres!", 2222);
+            throw new \Exception("Erro! O ".$lab." tem que ter pelo menos ".$this->arrayCFGSEsp['MIN_CARACS_SENHA']." caracteres!", 2222);
         }
 
         if( $lenString > $this->arrayCFGSEsp['MAX_CARACS_SENHA']){
-            throw new \Exception("Erro! O campo senha é muito longo!", 2221);
+            throw new \Exception("Erro! O ".$lab." é muito longo!", 2221);
         }
 
         if(TratamentoCaracteres::verifSeTemCaracNaoPermitidosCampoSenha($string)){
-            throw new \Exception("Erro! O campo senha possui caracteres inválidos", 2224);
+            throw new \Exception("Erro! O ".$lab." possui caracteres inválidos", 2224);
         }
 
         
@@ -182,6 +186,133 @@ class UsuariosSite {
         if(!$objStmt->execute()){
             throw new DBException("Ocorreu uma falha no DB", $objStmt->errno, $objStmt->error, null);
         }
+    }
+
+    //Atualiza os dados cadastrais de um determinado usuário
+    private function _atualizarDadosCadastraisUsuarioBancoDados(int $idUsuario, array $arrayDados) : void{ #throw DBException
+
+        /*
+            'nome'
+            'sobrenome'
+            'email'
+            'genero'          
+        */
+
+        $this->_verificarObjDB();
+
+        $strSql = "
+
+            UPDATE 
+                "._TAB_UsSite_."
+            SET
+                nome = ?,
+                sobrenome = ?,
+                email = ?,
+                genero = ?
+            WHERE
+                id = ?
+        ";
+
+        //Tentando preparar a consulta.
+        $objStmt = $this->objMysqli->prepare($strSql);
+
+        //Caso não consiga
+        if(!$objStmt){
+            throw new DBException("Ocorreu uma falha no DB.", $this->objMysqli->errno, $this->objMysqli->error, null);
+        }
+
+        //Setando parâmetros
+        $objStmt->bind_param('ssssi', $arrayDados['nome'], $arrayDados['sobrenome'], $arrayDados['email'], $arrayDados['genero'],  $idUsuario);
+        
+        //Caso não execute
+        if(!$objStmt->execute()){
+            throw new DBException("Ocorreu uma falha no DB", $objStmt->errno, $objStmt->error, null);
+        }
+    }
+
+    //Atualiza a senha do usuário no banco de dados.
+    private function _atualizarSenhaUsuarioBancoDado(int $idUsuario, string $hashSenha) : bool{ #throw DBException
+
+        $this->_verificarObjDB();
+
+        $strSql = "
+            UPDATE 
+                "._TAB_UsSite_."
+            SET
+                hashSenha = ?
+            WHERE
+                id = ?
+            LIMIT 1
+        ";
+
+        //Tentando preparar a consulta.
+        $objStmt = $this->objMysqli->prepare($strSql);
+
+        //Caso não consiga
+        if(!$objStmt){
+            throw new DBException("Ocorreu uma falha no DB.", $this->objMysqli->errno, $this->objMysqli->error, null);
+        }
+
+        //Setando parâmetros
+        $objStmt->bind_param('si', $hashSenha, $idUsuario);
+        
+        //Caso não execute
+        if(!$objStmt->execute()){
+            throw new DBException("Ocorreu uma falha no DB", $objStmt->errno, $objStmt->error, null);
+        }
+
+        //Verificando se os registros foram afetados
+        if($this->objMysqli->affected_rows > 0){
+            
+            $objStmt->close();
+            return true;
+
+        } else {
+            $objStmt->close();
+            return false;
+        }
+    }
+
+    //Exlcuir do banco de dados um determinado usuário
+    private function _excluirUsuarioBancoDados(int $idUsuario) : bool { #throw DBException
+
+        $this->_verificarObjDB();
+
+        $strSql = "
+            DELETE
+            FROM
+                "._TAB_UsSite_."
+            WHERE
+                id = ?
+        ";
+
+        //Tentando preparar a consulta.
+        $objStmt = $this->objMysqli->prepare($strSql);
+
+        //Caso não consiga
+        if(!$objStmt){
+            throw new DBException("Ocorreu uma falha no DB.", $this->objMysqli->errno, $this->objMysqli->error, null);
+        }
+
+        //Setando parâmetros
+        $objStmt->bind_param('i', $idUsuario);
+        
+        //Caso não execute
+        if(!$objStmt->execute()){
+            throw new DBException("Ocorreu uma falha no DB", $objStmt->errno, $objStmt->error, null);
+        }
+
+        //Verificando se os registros foram afetados
+        if($this->objMysqli->affected_rows > 0){
+            
+            $objStmt->close();
+            return true;
+
+        } else {
+            $objStmt->close();
+            return false;
+        }
+
     }
 
     function __construct(mysqli $objMysqli){
@@ -237,20 +368,90 @@ class UsuariosSite {
             
     }
 
-    public function getDadosCadastrais(int $idUsuario) : array{ #throw DBException
+    //Processo de edição de dados cadastrais
+    public function editarDadosCadastrais(int $idUsuario,     string $nome, string $sobrenome, string $genero, string $email) : void{ #throw DBException, \Exception
+
+        if($idUsuario == 0)
+            throw new \Exception("Erro! Usuário não localizado!", 1001);
+
+        //Validando dados cadastrais comuns
+        $this->_validarDadosCadastraisUsuario($nome, $sobrenome, $genero, $email);
+
+        //Gerando array com dados finais
+        $arrayDadosUpdate = [
+            'nome'          => trim( TratamentoCaracteres::rmvCharTags($nome)),
+            'sobrenome'     => trim( TratamentoCaracteres::rmvCharTags($sobrenome)),
+            'email'         => $email,
+            'genero'        => $genero          
+        ];
+
+        //Finalmente atualizando os dados
+        $this->_atualizarDadosCadastraisUsuarioBancoDados($idUsuario, $arrayDadosUpdate);
+
+    }
+
+    //Aterar senha do usuário
+    public function alterarSenha(int $idUsuario, string $hashSenha_atual, string $novaSenha) : void{ #throw DBException, \Exception
+
+        if($idUsuario == 0)
+            throw new \Exception("Erro! Usuário não localizado!", 1001);
+
+        if($hashSenha_atual == "")
+            throw new \Exception("Erro! A senha atual informada é inválida!", 1001);
+
+
+        //Validando o campo (nova senha)
+        $this->_validarCampoSenha($novaSenha, "campo (nova senha)");
+
+        //Obter dados cadastrais para comparação da senha atual;
+        $resCons = $this->getDadosCadastrais($idUsuario, true);
+
+        //Verificando se a senha atual confere
+        if($resCons['hashSenha'] != $hashSenha_atual){
+            throw new \Exception("Erro! A senha atual não confere com a registrada no sistema!", 9999);
+        }
+
+        $this->_atualizarSenhaUsuarioBancoDado($idUsuario, $this->_gerarHashSenha($novaSenha));
+
+    }
+
+    //Processo de edição de dados cadastrais
+    public function excluirUsuario(int $idUsuario) : void{ #throw DBException, \Exception
+
+        //Finalmente inserindo dados
+        if(!$this->_excluirUsuarioBancoDados($idUsuario))
+            throw new \Exception("Desculpe! Não foi possível realizar esta operação! Tente mais tarde", 3444);
+
+    }
+
+    //Processo de obter dados cadastrais
+    public function getDadosCadastrais(int $idUsuario, bool $incluirHashSenha = false) : array{ #throw DBException
 
            
         $this->_verificarObjDB();
 
+        if(!$incluirHashSenha){
             $strSql = "
-            SELECT
-                id,usuario,nome,sobrenome,email,genero
-            FROM
-                "._TAB_UsSite_."
-            WHERE
-                id = ?
-            LIMIT 1
-        ";
+                SELECT
+                    id,usuario,nome,sobrenome,email,genero
+                FROM
+                    "._TAB_UsSite_."
+                WHERE
+                    id = ?
+                LIMIT 1
+            ";
+        } else {
+            $strSql = "
+                SELECT
+                    id,usuario,hashSenha,nome,sobrenome,email,genero
+                FROM
+                    "._TAB_UsSite_."
+                WHERE
+                    id = ?
+                LIMIT 1
+            ";
+        }
+        
 
         //Tentando preparar a consulta.
         $objStmt = $this->objMysqli->prepare($strSql);

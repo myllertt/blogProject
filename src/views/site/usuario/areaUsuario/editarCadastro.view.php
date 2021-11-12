@@ -4,12 +4,19 @@
 
     <h3>Editar Dados</h3>
 
-    <?php if(!$results['sts']): ?>        
-        <?php if($results['msg']): ?>   
+    <?php if($results['msg']): ?>   
+
+        <?php if($results['sts']): ?>        
+            <div style="color:blue; font-size:20px">
+                <?php echo $results['msg'] ?>
+            </div>        
+        <?php else: ?> 
             <div style="color:red; font-size:20px">
                 <?php echo $results['msg'] ?>
-            </div>
+            </div> 
         <?php endif ?> 
+
+    <?php endif ?> 
 
     <div>
 
@@ -49,19 +56,12 @@
         </form>
 
     </div>
-    <?php elseif($results['sts']): ?>
-        <h2>
-            <?php echo $results['msg'] ?>
-        </h2>
-        <a href="<?php echo \Sistema\Rotas::gerarLink('rota.site.login') ?>">Realizar Login</a>
-    <?php endif ?>
-
-    <script src="/js/site/areaUsuario/editarCad.js"></script>
-    <script>
-        this.objForm.setCampoGenero("<?php echo addslashes($results['parms']['genero']) ?>");
-    </script>
-    
 
 </body>
+
+<script src="/js/site/areaUsuario/editarCad.js"></script>
+<script>
+    this.objForm.setCampoGenero("<?php echo addslashes($results['parms']['genero']) ?>");
+</script>
 
 <?php Sistema\Views\Views::abrir("site.layout.rodape") ?>
