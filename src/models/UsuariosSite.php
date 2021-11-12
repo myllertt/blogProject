@@ -85,11 +85,11 @@ class UsuariosSite {
 
         $len = strlen($nome);
 
-        if($len < 5)
-            throw new \Exception("Erro! o usuário do é muito curto!", 1007);
+        if($len < 3)
+            throw new \Exception("Erro! o usuário é muito curto!", 1007);
 
         if($len > 32)
-            throw new \Exception("Erro! o usuário do é muito longo!", 1008);
+            throw new \Exception("Erro! o usuário é muito longo!", 1008);
 
             
         #sobrenome----------
@@ -97,7 +97,7 @@ class UsuariosSite {
         $len = strlen($sobrenome);
 
         if($len > 64)
-            throw new \Exception("Erro! o sobrenome do é muito longo!", 1009);
+            throw new \Exception("Erro! o sobrenome é muito longo!", 1009);
 
         #Genero------------
 
@@ -235,6 +235,58 @@ class UsuariosSite {
         //Finalmente inserindo dados
         $this->_inserirNovoUsuarioBancoDados($arrayDadosInsert);
             
+    }
+
+    public function getDadosCadastrais(int $idUsuario) : array{ #throw DBException
+
+           
+        $this->_verificarObjDB();
+
+            $strSql = "
+            SELECT
+                id,usuario,nome,sobrenome,email,genero
+            FROM
+                "._TAB_UsSite_."
+            WHERE
+                id = ?
+            LIMIT 1
+        ";
+
+        //Tentando preparar a consulta.
+        $objStmt = $this->objMysqli->prepare($strSql);
+
+        //Caso não consiga
+        if(!$objStmt){
+            throw new DBException("Ocorreu uma falha no DB.", $this->objMysqli->errno, $this->objMysqli->error, null);
+        }
+
+        //Setando parâmetros
+        $objStmt->bind_param('i', $idUsuario);
+
+        //Caso não execute
+        if(!$objStmt->execute()){
+            throw new DBException("Ocorreu uma falha no DB", $objStmt->errno, $objStmt->error, null);
+        }
+
+        //Somente operacional em queries que retornam valores.
+        $objResult = $objStmt->get_result();
+        if(!$objStmt){
+            throw new DBException("Ocorreu uma falha no DB", $this->objMysqli->errno, $this->objMysqli->error, null);
+        }
+
+        //Caso a consulta não possua resultados
+        if($objResult->num_rows == 0){
+            //Fechando statemment
+            $objStmt->close();
+            return [];
+        }
+        
+        $arrayRetorno = $objResult->fetch_assoc();
+        //Fechando statemment
+        $objStmt->close();
+
+        return $arrayRetorno;
+
     }
     
     #GETTERS

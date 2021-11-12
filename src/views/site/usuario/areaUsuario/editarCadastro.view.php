@@ -2,7 +2,7 @@
 
 <body>
 
-    <h3>Registro do Usuário</h3>
+    <h3>Editar Dados</h3>
 
     <?php if(!$results['sts']): ?>        
         <?php if($results['msg']): ?>   
@@ -16,6 +16,7 @@
         <?php /*Debug*/?>
         
         <form action="" id="form" method="post">
+            <input type="hidden" name="_method" value = "PUT">
 
             <div>
                 <label for="nme">Primeiro Nome:</label>
@@ -26,12 +27,7 @@
                 <label for="sno">sobrenome:</label>
                 <input type="text" name="sno" value="<?php echo htmlspecialchars($results['parms']['sobrenome']) ?>" id="sno">
             </div>
-
-            <div>
-                <label for="usu">Usuário:</label>
-                <input type="text" value="<?php echo htmlspecialchars($results['parms']['usuario']) ?>" name="usu" id="usu">
-            </div>
-            
+         
             <div>
                 <label for="gen">Genero:</label>
                 <select name="gen" id="gen">
@@ -45,19 +41,9 @@
                 <label for="eml">e-mail:</label>
                 <input type="text" name="eml" value="<?php echo htmlspecialchars($results['parms']['email']) ?>" id="eml">
             </div>
-            
+
             <div>
-                <label for="sen">senha:</label>
-                <input type="password" name="sen" id="sen">
-            </div>
-            
-            <div>
-                <label for="rse">repita senha:</label>
-                <input type="password" name="rse" id="rse">
-            </div> 
-            
-            <div>
-               <input type="submit" value="Cadastrar">
+               <input type="submit" value="Editar">
             </div>
 
         </form>
@@ -70,7 +56,7 @@
         <a href="<?php echo \Sistema\Rotas::gerarLink('rota.site.login') ?>">Realizar Login</a>
     <?php endif ?>
 
-    <script src="/js/site/registrar.js"></script>
+    <script src="/js/site/areaUsuario/editarCad.js"></script>
     <script>
         this.objForm.setCampoGenero("<?php echo addslashes($results['parms']['genero']) ?>");
     </script>

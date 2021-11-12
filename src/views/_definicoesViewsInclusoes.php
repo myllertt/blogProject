@@ -28,6 +28,11 @@ try {
     #Definição Usuario
     #Tela de registro do usuário
     Views::definir("site.us.registrar", __DIR_VIEWS__."/site/usuario/registrar.view.php");
+    #Tela de login do usuário
+    Views::definir("site.us.login", __DIR_VIEWS__."/site/usuario/login.view.php");
+    
+    #Tela área usuário - editar cadastro
+    Views::definir("site.us.areaUsuario.editCad", __DIR_VIEWS__."/site/usuario/areaUsuario/editarCadastro.view.php");
     
     
 
@@ -35,7 +40,10 @@ try {
 
     
     #Definição de erros.
-    Views::definir("errosGerais.ErroDB", __DIR_VIEWS__."/errosGerais/erroDB.view.php"); 
+    Views::definir("errosGerais.ErroDB", __DIR_VIEWS__."/errosGerais/erroDB.view.php");
+    #Erro inesperado
+    Views::definir("errosGerais.ErroInesperado", __DIR_VIEWS__."/errosGerais/erroInesperado.view.php");
+     
 
 
 //-------------------------------------------------------------------------------------------------

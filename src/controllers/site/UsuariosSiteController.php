@@ -26,6 +26,7 @@ class UsuariosSiteController extends Controlador{
         $this->_instanciaObjetos();
     }
 
+    # Área de registro ------------------------
     public function exibirTelaRegistro(){
 
         //O formulário neste estado ficará em brando
@@ -48,7 +49,6 @@ class UsuariosSiteController extends Controlador{
         Views::abrir("site.us.registrar", $results);
 
     }
-
     public function processoRegistrarUsuario(){
 
         //Obtendo e armazenando parâmetros da requisição.
@@ -72,25 +72,25 @@ class UsuariosSiteController extends Controlador{
             $results = [
                 'procAtv' => true, //Indica quando o processo esta sendo realizado
                 'sts' => true,
-                'msgE' => "Seu usuário foi cadastrado com sucesso!",
+                'msg' => "Seu usuário foi cadastrado com sucesso!",
                 'parms'=> $arrayReq
             ];
 
-            Views::abrir("site.us.registrar");
+            Views::abrir("site.us.registrar", ['results' => $results]);
         
         } catch(DBException $e){ //Em caso de erro de banco de dados.
             
-            //$e->debug();
+            $e->debug();
             //Views::abrir("errosGerais.ErroDB");
 
             $results = [
                 'procAtv' => true, //Indica quando o processo esta sendo realizado
                 'sts' => false,
-                'msgE' => "Desculpe! Ocorre uma falha interna na operação! Tente mais tarde por gentileza. #DB0001",
+                'msg' => "Desculpe! Ocorre uma falha interna na operação! Tente mais tarde por gentileza. #DB0001",
                 'parms'=> $arrayReq
             ];
 
-            Views::abrir("site.us.registrar", $results);
+            Views::abrir("site.us.registrar", ['results' => $results]);
             
 
         } catch (\Exception $e) { //Erro no procedimento.
@@ -98,49 +98,14 @@ class UsuariosSiteController extends Controlador{
             $results = [
                 'procAtv' => true, //Indica quando o processo esta sendo realizado
                 'sts' => false,
-                'msgE' => $e->getMessage(),
+                'msg' => $e->getMessage(),
                 'parms'=> $arrayReq
             ];
 
-            Views::abrir("site.us.registrar", $results);
+            Views::abrir("site.us.registrar", ['results' => $results]);
         }        
 
     }
-
-    /*
-    public function getPost(){
-
-        $id = $this->getValorParmViaRota(0);
-
-        if(isset($id)){
-            $id = (int) $id;
-        } else {            
-            $id = 0;
-        }            
-
-        try {
-            
-            $arrayDadosPost = $this->objPost->obterPostAtivo( $id );
-            
-            $results = (object) [
-                'haRegistro' => !empty($arrayDadosPost) ?? false,
-                'reg' => $arrayDadosPost, //Registros
-            ];
-            
-            //Chamando view  de post
-            Views::abrir("site.posts.post", ['results' => $results]);
-        
-
-        } catch(DBException $e){ //Em caso de erro de banco de dados.
-            //$e->debug();
-
-            #Acionando view de erro geral do sistema.
-            Views::abrir("errosGerais.ErroDB");
-        }
-        
-    }
-    */
-
 
 }
 

@@ -654,16 +654,16 @@ namespace Sistema {
 
             //Contando args dinâmicos
             $cntDinamArgs = count($resConsRota['arrPrmDinam']);
-
+            
             //Em caso de rota simples. Não se considera argumentos
             if(empty($resConsRota['arrPrmDinam']))
-                return $resConsRota['strRota'];
-
+                return "/".$resConsRota['strRota'];
+            
             //Em caso de rota dinâmica.
             //No mínimo os elementos devem ter o mesmo número de args
             if(count($args) != $cntDinamArgs)
                 return "/";
-
+            
             #GerandoLink
             $strGerLink = "";
             $cntDin = 0; //Contador parâmetros dinâmicos

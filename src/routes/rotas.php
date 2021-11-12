@@ -78,7 +78,7 @@ try {
         "exibirTelaRegistro",                                       # Nome método inicial de ataque
         null,                                                       # Argumento passado 
         __DIR_CONTROLADORES__."/site/UsuariosSiteController.php",   # Endereço de inclusão do arquivo controlador respectivo
-        'site.us.telaRegs.get'                                  # Nome da rota.
+        'site.us.telaRegs.get'                                      # Nome da rota.
     );
 
     //Processo de registrar usuário
@@ -88,10 +88,63 @@ try {
         "processoRegistrarUsuario",                                 # Nome método inicial de ataque
         null,                                                       # Argumento passado 
         __DIR_CONTROLADORES__."/site/UsuariosSiteController.php",   # Endereço de inclusão do arquivo controlador respectivo
-        'site.us.ProcRegs.post'                                  # Nome da rota.
+        'site.us.ProcRegs.post'                                     # Nome da rota.
     );
 
-  
+    # Login Sistema -----------------------------------------------------------
+
+     //obter tela inicial registro usuario
+     $objProcessamentoRotas->definirRota_GET(
+        "/login",                                                       # Rota HTTP
+        "AutenticacaoSiteController",                                   # Nome Classe Controlador
+        "telaLogin",                                                    # Nome método inicial de ataque
+        null,                                                           # Argumento passado 
+        __DIR_CONTROLADORES__."/site/AutenticacaoSiteController.php",   # Endereço de inclusão do arquivo controlador respectivo
+        'rota.site.login'                                               # Nome da rota.
+    );
+
+    //Processo de login usuário
+    $objProcessamentoRotas->definirRota_POST(
+        "/login",                                                       # Rota HTTP
+        "AutenticacaoSiteController",                                   # Nome Classe Controlador
+        "processoLogin",                                                # Nome método inicial de ataque
+        null,                                                           # Argumento passado 
+        __DIR_CONTROLADORES__."/site/AutenticacaoSiteController.php"    # Endereço de inclusão do arquivo controlador respectivo
+    );
+
+
+    # Logout do sistema -----------------------------------------------------------
+
+    //Processo de finalizar sessão
+    $objProcessamentoRotas->definirRota_GET(
+        "/logout",                                                      # Rota HTTP
+        "AutenticacaoSiteController",                                   # Nome Classe Controlador
+        "logout",                                                       # Nome método inicial de ataque
+        null,                                                           # Argumento passado 
+        __DIR_CONTROLADORES__."/site/AutenticacaoSiteController.php"    # Endereço de inclusão do arquivo controlador respectivo
+    );
+
+    # Area Usuário Site -----------------------------------------------------------
+
+    //obter tela inicial de edição de cadastro
+    $objProcessamentoRotas->definirRota_GET(
+        "/areaUsuario/editarCad",                                       # Rota HTTP
+        "AreaUsuarioLogadoController",                                  # Nome Classe Controlador
+        "telaEditarCadastro",                                            # Nome método inicial de ataque
+        null,                                                           # Argumento passado 
+        __DIR_CONTROLADORES__."/site/AreaUsuarioLogadoController.php",  # Endereço de inclusão do arquivo controlador respectivo
+        'rota.site.areaUs.editCad'                                      # Nome da rota.
+    );
+
+    //Ação editar cadastro
+    $objProcessamentoRotas->definirRota_PUT(
+        "/areaUsuario/editarCad",                                       # Rota HTTP
+        "AreaUsuarioLogadoController",                                  # Nome Classe Controlador
+        "processoEditarCadastro",                                       # Nome método inicial de ataque
+        null,                                                           # Argumento passado 
+        __DIR_CONTROLADORES__."/site/AreaUsuarioLogadoController.php",  # Endereço de inclusão do arquivo controlador respectivo
+    );
+
 
     # Acionando processamento rotas ---------------------------------------------------
 

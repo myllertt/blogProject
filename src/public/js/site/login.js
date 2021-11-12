@@ -6,18 +6,23 @@ function Form(){
         return document.getElementById(id);
     }
 
+    this._gerarHashSenha = function (string) {
+
+        let hash = SHA512(string);
+
+        hash = hash.split("").reverse().join("");
+
+        return hash;
+    }
+
     this._validar = function(){
         
+        if(this._objsU['usu'].value == ""){
+            return "Erro! informe o campo usuário!";
+        }
+
         if(this._objsU['sen'].value == ""){
-            return "Erro! complete o campo senha!";
-        }
-
-        if(this._objsU['rse'].value == ""){
-            return "Erro! complete o campo de repetição da senha!";
-        }
-
-        if(this._objsU['sen'].value != this._objsU['rse'].value){
-            return "Erro! Os campos senha e repetição da senha não conferem";
+            return "Erro! informe o campo senha!";
         }
 
         return true;
@@ -26,8 +31,6 @@ function Form(){
 
     this._configurarObjetos = function(){
         
-        this._objsU['gen'].value = "";
-
         this._objsU['form'].classPai = this;
 
         this._objsU['form'].onsubmit = function(){
@@ -39,9 +42,8 @@ function Form(){
 
     this._carregarObjetosUteis = function(){
         this._objsU['form'] = this._gE("form");
-        this._objsU['sen'] = this._gE("sen");
-        this._objsU['rse'] = this._gE("rse"); 
-        this._objsU['gen'] = this._gE("gen");       
+        this._objsU['usu'] = this._gE("usu");
+        this._objsU['sen'] = this._gE("sen");    
     }
 
     this._construct = function(){
@@ -55,6 +57,9 @@ function Form(){
         let ret = this._validar();
 
         if(ret === true){
+
+            //Criptografando senha.
+            this._objsU['sen'].value = this._gerarHashSenha( this._objsU['sen'].value );
 
             //Permitindo o submit
             this._objsU['form'].action = "";

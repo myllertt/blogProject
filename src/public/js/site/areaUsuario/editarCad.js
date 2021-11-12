@@ -8,18 +8,6 @@ function Form(){
 
     this._validar = function(){
         
-        if(this._objsU['sen'].value == ""){
-            return "Erro! complete o campo senha!";
-        }
-
-        if(this._objsU['rse'].value == ""){
-            return "Erro! complete o campo de repetição da senha!";
-        }
-
-        if(this._objsU['sen'].value != this._objsU['rse'].value){
-            return "Erro! Os campos senha e repetição da senha não conferem";
-        }
-
         return true;
             
     }
@@ -39,8 +27,6 @@ function Form(){
 
     this._carregarObjetosUteis = function(){
         this._objsU['form'] = this._gE("form");
-        this._objsU['sen'] = this._gE("sen");
-        this._objsU['rse'] = this._gE("rse"); 
         this._objsU['gen'] = this._gE("gen");       
     }
 
