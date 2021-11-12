@@ -1,0 +1,30 @@
+Documentação de Instalação do sistema.
+
+# Softwares testados.
+    Apache/2.4.41
+    PHP 7.4.3
+    MySQL 8.0.27
+
+* Será necessário habilitar o módulo de reescrita (rewrite) do apache
+	Neste caso adicionar um atalho do /etc/apache2/mods-available/rewrite.load no diretório /etc/apache2/mods-enabled/rewrite.load
+
+	Poderá ser feito utilizando o comando linux: ln -s /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled/rewrite.load
+
+* Obs: O projeto virá na seguinte disposição:  blogProject/src/public, portanto é importante que nas configurações do virtualhost em /etc/apache2/sites-enabled/ apenas o diretório (blogProject/src/public) seja público, de forma que os outros diretórios sejam privados 
+
+* No arquivo: /etc/apache2/apache2.conf é necessário habilitar o módulo de reescrita para o diretório de trabalho. No caso para o diretório (/var/www/blogProject/src/public) a configuração ficará da maneira abaixo:
+
+#Alteração de redirecionamento.
+<Directory /var/www/blogProject/src/public/>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+</Directory>
+
+*/
+
+* Configurando parâmetros do banco de dados.
+
+# Neste caso definidos no arquivo abaixo (DBConeConfigs.php)
+	
+blogProject/src/configs/DBConeConfigs.php

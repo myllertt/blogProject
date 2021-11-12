@@ -15,7 +15,11 @@ class AreaUsuarioLogadoController extends Controlador{
     private $objUsuariosSite; //Trabalho com usuarios
     #-----------------------------------------------------
 
-    //Verifica se o sessão do usuário esta essencialmente ativa e operacional
+    /**
+     * Verifica se o sessão do usuário esta essencialmente ativa e operacional
+     *
+     * @return void
+     */
     private function _verificarSessaoAtivaDB_AutoRedEExit() : void{
         
         try {
@@ -38,7 +42,12 @@ class AreaUsuarioLogadoController extends Controlador{
         
     }
 
-    private function _instanciaObjetos(){
+    /**
+     * Instancia de objetos pertinentes à classe
+     *
+     * @return void
+     */
+    private function _instanciaObjetos() : void{
 
         $this->objAuth = new AuthUsuariosSite( DriverConexaoDB::getObjDB() );
 
@@ -46,8 +55,12 @@ class AreaUsuarioLogadoController extends Controlador{
 
     }
 
-    //Emissão de erro inesperado
-    private function _emitirViewErroInesperado_EXIT(){
+    /**
+     * Emissão de erro inesperado
+     *
+     * @return void
+     */
+    private function _emitirViewErroInesperado_EXIT() : void{
         
         //Emitindo erro inesperado
         Views::abrir("errosGerais.ErroInesperado");
@@ -55,7 +68,11 @@ class AreaUsuarioLogadoController extends Controlador{
 
     }
 
-    
+    /**
+     * Construtor
+     *
+     * @param [\Sistema\ProcessamentoRotas\Request] $objRequest
+     */
     function __construct($objRequest){
         parent::__construct($objRequest);
 
@@ -65,8 +82,12 @@ class AreaUsuarioLogadoController extends Controlador{
         $this->_verificarSessaoAtivaDB_AutoRedEExit();
     }
 
-    //Acesso à área padrão do usuário.
-    public function index(){
+    /**
+     * Acesso à área padrão do usuário.
+     *
+     * @return void
+     */
+    public function index() : void {
 
         //Obtendo dados do usuário logado
         $arrInfsUsLogado = $this->objAuth->getArrayCacheDadosUsuarioLogado();
@@ -76,8 +97,12 @@ class AreaUsuarioLogadoController extends Controlador{
 
     }
 
-    # Tela de Edição do Cadastro Usuário
-    public function telaEditarCadastro(){
+    /**
+     * # Tela de Edição do Cadastro Usuário
+     *
+     * @return void
+     */
+    public function telaEditarCadastro() : void{
 
         //Obtendo dados do usuário logado
         $arrInfsUsLogado = $this->objAuth->getArrayCacheDadosUsuarioLogado();
@@ -122,8 +147,12 @@ class AreaUsuarioLogadoController extends Controlador{
         Views::abrir("site.us.areaUsuario.editCad", ['auth'=> $arrInfsUsLogado, 'results' => $results]);
 
     }
-    # Processo de edição do cadastro
-    public function processoEditarCadastro(){
+    /**
+     * Processo de edição do cadastro
+     *
+     * @return void
+     */
+    public function processoEditarCadastro() : void{
 
         //Obtendo dados do usuário logado
         $arrInfsUsLogado = $this->objAuth->getArrayCacheDadosUsuarioLogado();
@@ -181,8 +210,12 @@ class AreaUsuarioLogadoController extends Controlador{
     }
     
 
-    # Tela de Exclusão de Conta
-    public function telaExcluirMinConta(){
+    /**
+     * # Tela de Exclusão de Conta
+     *
+     * @return void
+     */
+    public function telaExcluirMinConta(): void{
 
         //Obtendo dados do usuário logado
         $arrInfsUsLogado = $this->objAuth->getArrayCacheDadosUsuarioLogado();
@@ -202,8 +235,12 @@ class AreaUsuarioLogadoController extends Controlador{
         Views::abrir("site.us.areaUsuario.excMinConta", ['auth'=> $arrInfsUsLogado, 'results' => $results]);
 
     }
-    # Processo de Exclusão de Conta
-    public function processoExcluirMinConta(){
+    /**
+     * Processo de Exclusão de Conta
+     *
+     * @return void
+     */
+    public function processoExcluirMinConta() : void{
 
         //Obtendo dados do usuário logado
         $arrInfsUsLogado = $this->objAuth->getArrayCacheDadosUsuarioLogado();
@@ -265,8 +302,12 @@ class AreaUsuarioLogadoController extends Controlador{
     }
 
 
-    # Tela Alterar Minha Senha
-    public function telaAlterarSenha(){
+    /**
+     * # Tela Alterar Minha Senha
+     *
+     * @return void
+     */
+    public function telaAlterarSenha() : void{
 
         //Obtendo dados do usuário logado
         $arrInfsUsLogado = $this->objAuth->getArrayCacheDadosUsuarioLogado();
@@ -286,7 +327,11 @@ class AreaUsuarioLogadoController extends Controlador{
         Views::abrir("site.us.areaUsuario.altSenha", ['auth'=> $arrInfsUsLogado, 'results' => $results]);
 
     }
-    # Tela de Exclusão de Conta
+    /**
+     * # Tela de Exclusão de Conta
+     *
+     * @return void
+     */
     public function processoAlterarSenha(){
 
         //Obtendo dados do usuário logado
