@@ -31,6 +31,8 @@ try {
     #Tela de login do usuário
     Views::definir("site.us.login", __DIR_VIEWS__."/site/usuario/login.view.php");
     
+    #Tela área usuário index
+    Views::definir("site.us.areaUsuario", __DIR_VIEWS__."/site/usuario/areaUsuario/index.view.php");
     #Tela área usuário - editar cadastro
     Views::definir("site.us.areaUsuario.editCad", __DIR_VIEWS__."/site/usuario/areaUsuario/editarCadastro.view.php");
     #Tela área usuário - Excluir minha conta.

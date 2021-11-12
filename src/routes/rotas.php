@@ -9,7 +9,7 @@ use Sistema\Rotas;
 use Sistema\ProcessamentoRotas\Exceptions\PcRException; 
 use Sistema\Views\Exceptions\VwException; 
 
-# Instancia do processamento de rotas
+# Instância do processamento de rotas
 $objProcessamentoRotas = new ProcessamentoRotas();
 
 #Setando objeto de trabalho
@@ -44,7 +44,8 @@ try {
         "PaginaInicialController",                                  # Nome Classe Controlador
         "inicio",                                                   # Nome método inicial de ataque
         null,                                                       # Argumento passado 
-        __DIR_CONTROLADORES__."/site/PaginaInicialController.php"   # Endereço de inclusão do arquivo controlador respectivo
+        __DIR_CONTROLADORES__."/site/PaginaInicialController.php",   # Endereço de inclusão do arquivo controlador respectivo,
+        "site.home.pagina"
     ); 
 
     # Posts do Blog -----------------------------------------------------------
@@ -119,10 +120,24 @@ try {
         "AutenticacaoSiteController",                                   # Nome Classe Controlador
         "logout",                                                       # Nome método inicial de ataque
         null,                                                           # Argumento passado 
-        __DIR_CONTROLADORES__."/site/AutenticacaoSiteController.php"    # Endereço de inclusão do arquivo controlador respectivo
+        __DIR_CONTROLADORES__."/site/AutenticacaoSiteController.php",   # Endereço de inclusão do arquivo controlador respectivo
+        'rota.site.logout'                                               # Nome da rota.
     );
 
+
+
+
     # Area Usuário Site -----------------------------------------------------------
+
+    //Área Padrão do usuário.
+    $objProcessamentoRotas->definirRota_TODOS(
+        "/areaUsuario",                                                 # Rota HTTP
+        "AreaUsuarioLogadoController",                                  # Nome Classe Controlador
+        "index",                                                        # Nome método inicial de ataque
+        null,                                                           # Argumento passado 
+        __DIR_CONTROLADORES__."/site/AreaUsuarioLogadoController.php",  # Endereço de inclusão do arquivo controlador respectivo
+        'rota.site.areaUs'                                      # Nome da rota.
+    );
 
     //obter tela inicial de edição de cadastro
     $objProcessamentoRotas->definirRota_GET(
@@ -162,13 +177,6 @@ try {
         __DIR_CONTROLADORES__."/site/AreaUsuarioLogadoController.php",  # Endereço de inclusão do arquivo controlador respectivo
     );
 
-
-
-
-
-
-
-
     //Tela alterar minha senha
     $objProcessamentoRotas->definirRota_GET(
         "/areaUsuario/alterarSenha",                                    # Rota HTTP
@@ -189,7 +197,6 @@ try {
     );
 
     # Acionando processamento rotas ---------------------------------------------------
-
     $objProcessamentoRotas->iniciarProcessamento();
 
 } catch(PcRException $e) { //Erro no processamento e definição de rotas.

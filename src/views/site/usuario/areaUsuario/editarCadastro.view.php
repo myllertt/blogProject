@@ -50,7 +50,7 @@
             </div>
 
             <div>
-               <input type="submit" value="Editar">
+               <input type="submit" value="Editar"> <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink('rota.site.areaUs') ?>'" value="voltar">
             </div>
 
         </form>

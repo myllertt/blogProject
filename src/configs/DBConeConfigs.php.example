@@ -2,11 +2,11 @@
 
 class DBConeConfigs {
 
-    public static $host =       "";
-    public static $port =       "";
-    public static $user =       "";
-    public static $password =   "";
-    public static $DBName =     "";
+    public static $host =       "127.0.0.1";
+    public static $port =       "3306";
+    public static $user =       "user";
+    public static $password =   "senha";
+    public static $DBName =     "db";
 
 }//Por mediada de segurança esta classe será inutilizada assim que a classe de conexão de banco de dados for processada
 

@@ -7,8 +7,16 @@
     <title>
         <?php echo $tituloPagina ?? "Pagina" ?>
     </title>
+    <link rel="stylesheet" href="/css/site/site.css">
 </head>
 <div>
     <H1>Blog Project</H1>
+    <ul>
+        <li><a href="<?php echo \Sistema\Rotas::gerarLink("site.home") ?>">Home</a></li>
+        <li><a href="<?php echo \Sistema\Rotas::gerarLink('rota.site.login') ?>">Login</a></li>
+        <li><a href="<?php echo \Sistema\Rotas::gerarLink("site.us.telaRegs.get") ?>">Registrar</a></li>
+    </ul>
+
     <hr>
 </div>
+

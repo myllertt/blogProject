@@ -65,6 +65,17 @@ class AreaUsuarioLogadoController extends Controlador{
         $this->_verificarSessaoAtivaDB_AutoRedEExit();
     }
 
+    //Acesso à área padrão do usuário.
+    public function index(){
+
+        //Obtendo dados do usuário logado
+        $arrInfsUsLogado = $this->objAuth->getArrayCacheDadosUsuarioLogado();
+
+
+        Views::abrir("site.us.areaUsuario", ['auth'=> $arrInfsUsLogado]);
+
+    }
+
     # Tela de Edição do Cadastro Usuário
     public function telaEditarCadastro(){
 

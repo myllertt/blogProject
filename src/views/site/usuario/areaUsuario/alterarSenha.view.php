@@ -38,7 +38,7 @@
             </div> 
 
             <div>
-               <input type="submit" value="Alterar">
+               <input type="submit" value="Alterar"> <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink('rota.site.areaUs') ?>'" value="voltar">
             </div>            
 
         </form>

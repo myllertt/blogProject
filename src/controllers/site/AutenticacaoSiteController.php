@@ -18,7 +18,7 @@ class AutenticacaoSiteController extends Controlador{
 
         //Realizando direc. caso encontre sessão ativa.
         if($this->objTrabalho->checkSeExisteSessaoAtivaTipica()){
-            header("Location: ".\Sistema\Rotas::gerarLink('site.home'));
+            header("Location: ".\Sistema\Rotas::gerarLink('rota.site.areaUs'));
             exit;
         }
         
@@ -82,7 +82,7 @@ class AutenticacaoSiteController extends Controlador{
             ];
 
             //Login bem sussedido. Redirecionando para a próxima pagina.
-            header("Location: ".\Sistema\Rotas::gerarLink('site.home'));
+            header("Location: ".\Sistema\Rotas::gerarLink('rota.site.areaUs'));
 
             exit;
         
