@@ -271,7 +271,7 @@ class AuthUsuariosSite {
         return true;
     }
 
-    function __construct(mysqli $objMysqli){
+    function __construct($objMysqli){
 
         //Iniciando processo de sessão caso não tenha sido iniciada.
         if(session_status() == 1){

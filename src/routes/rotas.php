@@ -196,6 +196,19 @@ try {
         __DIR_CONTROLADORES__."/site/AreaUsuarioLogadoController.php",  # Endereço de inclusão do arquivo controlador respectivo
     );
 
+
+
+
+    #Apenas para um indicador de funcionalidade para o processamento de rotas.
+    $objProcessamentoRotas->definirRota_TODOS(
+        "/teste_sistema",                                           # Rota HTTP
+        "PaginaInicialController",                                  # Nome Classe Controlador
+        "informativoTesteSistema",                                  # Nome método inicial de ataque
+        null,                                                       # Argumento passado 
+        __DIR_CONTROLADORES__."/site/PaginaInicialController.php",  # Endereço de inclusão do arquivo controlador respectivo
+    );
+
+
     # Acionando processamento rotas ---------------------------------------------------
     $objProcessamentoRotas->iniciarProcessamento();
 

@@ -69,6 +69,24 @@ class PaginaInicialController extends Controlador{
 
     }
 
+    /**
+     * Este método tem o objetivo de apenas informar se o sistema esta operando normalmente. Mas especificadamento o processamento de rotas.
+     *
+     * @return void
+     */
+    public function informativoTesteSistema() : void{
+
+        echo "O sistema está funcinando normalmente!<br>";
+        echo "Teste de conexão com o banco de dados: ";
+
+        $objMysqli = DriverConexaoDB::getObjDB();
+        if($objMysqli !== false){
+            echo "[OK]";
+        } else {
+            echo "[FALHA]";
+        }
+
+    }
 
 }
 

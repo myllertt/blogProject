@@ -23,7 +23,7 @@ class Posts {
         }
     }
 
-    function __construct(mysqli $objMysqli){
+    function __construct($objMysqli){
         $this->objMysqli = $objMysqli;
 
         $this->_definirConfigsEspecificas();
