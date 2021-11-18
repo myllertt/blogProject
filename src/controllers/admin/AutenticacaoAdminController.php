@@ -7,7 +7,7 @@ require(__DIR_MODELS__."/AuthUsuariosSite.php");
 use Sistema\Views\Views;
 use Sistema\DB\Exceptions\DBException; 
 
-class AutenticacaoSiteController extends Controlador{
+class AutenticacaoAdminController extends Controlador{
 
     # --Objetos de models quando necessário instanciar ---
     private $objTrabalho;
@@ -40,7 +40,6 @@ class AutenticacaoSiteController extends Controlador{
     # Área de Login ------------------------
     public function telaLogin(){
 
-
         //Verificando se já não existe sessão ativa
         $this->_autoRedSessaoAtiva_AutoExit();
 
@@ -48,22 +47,15 @@ class AutenticacaoSiteController extends Controlador{
         $arrayReq = [
             'usuario' => "",
         ];
-
-        //Argumentos padrões do sistema.
-        $arrayArgs = [
-
-            'tituloPagina' => _NOME_SIS_." - Login",
-
-        ];
         
-        $arrayArgs['results'] = [
+        $results = [
             'procAtv' => false, //Indica quando o processo esta sendo realizado
             'sts' => null,
             'msg' => "",
             'parms'=> $arrayReq
         ];
 
-        Views::abrir("site.us.login", $arrayArgs);
+        Views::abrir("site.us.login", ['results' => $results]);
 
     }
     public function processoLogin(){
@@ -79,22 +71,15 @@ class AutenticacaoSiteController extends Controlador{
             //Efetuando login
             $this->objTrabalho->efetuarLogin($arrayReq['usuario'], $arrayReq['senha']);
 
-            //Argumentos padrões do sistema.
-            /*
-            $arrayArgs = [
-
-                'tituloPagina' => _NOME_SIS_." - Login",
-
-            ];
-
+           
             //Enviando mensagem de sucesso!
-            $arrayArgs['results'] = [
+            $results = [
                 'procAtv' => true, //Indica quando o processo esta sendo realizado
                 'sts' => true,
                 'msg' => "Seu usuário foi cadastrado com sucesso!",
                 'parms'=> $arrayReq
             ];
-            */
+
             //Login bem sussedido. Redirecionando para a próxima pagina.
             header("Location: ".\Sistema\Rotas::gerarLink('rota.site.areaUs'));
 
@@ -108,21 +93,14 @@ class AutenticacaoSiteController extends Controlador{
             //Elimiando esta informação
             unset($arrayReq['senha']);
 
-            //Argumentos padrões do sistema.            
-            $arrayArgs = [
-
-                'tituloPagina' => _NOME_SIS_." - Login",
-
-            ];
-
-            $arrayArgs['results'] = [
+            $results = [
                 'procAtv' => true, //Indica quando o processo esta sendo realizado
                 'sts' => false,
                 'msg' => "Desculpe! Ocorre uma falha interna na operação! Tente mais tarde por gentileza. #DB0001",
                 'parms'=> $arrayReq
             ];
             
-            Views::abrir("site.us.login", $arrayArgs);
+            Views::abrir("site.us.login", ['results' => $results]);
             
 
         } catch (\Exception $e) { //Erro no procedimento.
@@ -130,21 +108,14 @@ class AutenticacaoSiteController extends Controlador{
             //Elimiando esta informação
             unset($arrayReq['senha']);
 
-            //Argumentos padrões do sistema.            
-            $arrayArgs = [
-
-                'tituloPagina' => _NOME_SIS_." - Login",
-
-            ];
-
-            $arrayArgs['results'] = [
+            $results = [
                 'procAtv' => true, //Indica quando o processo esta sendo realizado
                 'sts' => false,
                 'msg' => $e->getMessage(),
                 'parms'=> $arrayReq
             ];
 
-            Views::abrir("site.us.login", $arrayArgs);
+            Views::abrir("site.us.login", ['results' => $results]);
         }        
 
     }

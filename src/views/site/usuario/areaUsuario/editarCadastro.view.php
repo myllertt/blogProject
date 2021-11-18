@@ -1,4 +1,4 @@
-<?php Sistema\Views\Views::abrir("site.layout.cabecalho") ?>
+<?php Sistema\Views\Views::abrir("site.layout.cabecalho", $_refArgsView) ?>
 
 <body>
 
@@ -64,4 +64,4 @@
     this.objForm.setCampoGenero("<?php echo addslashes($results['parms']['genero']) ?>");
 </script>
 
-<?php Sistema\Views\Views::abrir("site.layout.rodape") ?>
+<?php Sistema\Views\Views::abrir("site.layout.rodape", $_refArgsView) ?>

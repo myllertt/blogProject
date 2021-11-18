@@ -67,8 +67,11 @@ namespace Sistema\Views {
                 extract($arrayArgs, EXTR_SKIP); //Neste caso se colidir com alguma variável a mesma não será passada a diante
             }
 
+            //Neste caso um array de referência para todos argumento passados para esta view. Servindo para que estes mesmos argumentos possam também alimentar outras views subordinadas.
+            $_refArgsView = &$arrayArgs;
+
             //Tentando incluir o arquivo de view        
-            if(!@include_once(self::$arrayArqInclusoes[ $idView ]['linkInc'])){
+            if(!@include(self::$arrayArqInclusoes[ $idView ]['linkInc'])){
                 self::throwErro(__METHOD__, "Erro! na idView (".$idView.") não foi localizado o caminho de inclusão (".self::$arrayArqInclusoes[ $idView ]['linkInc'].")", 5597);
             }
           

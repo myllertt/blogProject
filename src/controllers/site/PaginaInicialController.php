@@ -44,21 +44,24 @@ class PaginaInicialController extends Controlador{
             $paginaAtual = (int) $paginaAtual;
         }            
 
-
         try {
 
             $arrayPosts = $this->objPost->obterResumoPostsAtivos( $paginaAtual );
 
-            //print_r($arrayPosts);exit;
+            //Argumentos padrões do sistema.
+            $arrayArgs = [
 
-            $results = (object) [
+                'tituloPagina' => _NOME_SIS_." - Bem-vindo(a)"
+            ];
+
+            $arrayArgs['results'] = (object) [
                 'haRegistros' => !empty($arrayPosts['regs']) ?? false,
                 'regs' => $arrayPosts['regs'], //Registros
                 'pagina' => $arrayPosts['pagina'] //Registros
             ];
             
             //Chamando view 
-            Views::abrir("site.index", ['results' => $results]);
+            Views::abrir("site.index", $arrayArgs);
 
         } catch(DBException $e){ //Em caso de erro de banco de dados.
             //$e->debug();

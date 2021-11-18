@@ -39,14 +39,21 @@ class UsuariosSiteController extends Controlador{
             'senha' => ""
         ];
 
-        $results = [
+        //Argumentos padrões do sistema.            
+        $arrayArgs = [
+
+            'tituloPagina' => _NOME_SIS_." - Registro Novo Usuário",
+
+        ];
+
+        $arrayArgs['results'] = [
             'procAtv' => false, //Indica quando o processo esta sendo realizado
             'sts' => null,
             'msg' => "",
             'parms'=> $arrayParmsFormNulos
         ];
         
-        Views::abrir("site.us.registrar", $results);
+        Views::abrir("site.us.registrar", $arrayArgs);
 
     }
     public function processoRegistrarUsuario(){
@@ -68,41 +75,62 @@ class UsuariosSiteController extends Controlador{
             //Tentando registrar usuário
             $this->objTrabalho->registrarUsuario($arrayReq['usuario'], $arrayReq['nome'], $arrayReq['sobrenome'], $arrayReq['genero'], $arrayReq['email'], $arrayReq['senha']);
 
+            //Argumentos padrões do sistema.            
+            $arrayArgs = [
+
+                'tituloPagina' => _NOME_SIS_." - Registro Novo Usuário",
+
+            ];
+
             //Enviando mensagem de sucesso!
-            $results = [
+            $arrayArgs['results'] = [
                 'procAtv' => true, //Indica quando o processo esta sendo realizado
                 'sts' => true,
                 'msg' => "Seu usuário foi cadastrado com sucesso!",
                 'parms'=> $arrayReq
             ];
 
-            Views::abrir("site.us.registrar", ['results' => $results]);
+            Views::abrir("site.us.registrar", $arrayArgs);
         
         } catch(DBException $e){ //Em caso de erro de banco de dados.
             
             //$e->debug();
             //Views::abrir("errosGerais.ErroDB");
 
-            $results = [
+            //Argumentos padrões do sistema.            
+            $arrayArgs = [
+
+                'tituloPagina' => _NOME_SIS_." - Registro Novo Usuário",
+
+            ];
+
+            $arrayArgs['results'] = [
                 'procAtv' => true, //Indica quando o processo esta sendo realizado
                 'sts' => false,
                 'msg' => "Desculpe! Ocorre uma falha interna na operação! Tente mais tarde por gentileza. #DB0001",
                 'parms'=> $arrayReq
             ];
 
-            Views::abrir("site.us.registrar", ['results' => $results]);
+            Views::abrir("site.us.registrar", $arrayArgs);
             
 
         } catch (\Exception $e) { //Erro no procedimento.
 
-            $results = [
+            //Argumentos padrões do sistema.            
+            $arrayArgs = [
+
+                'tituloPagina' => _NOME_SIS_." - Registro Novo Usuário",
+
+            ];
+
+            $arrayArgs['results'] = [
                 'procAtv' => true, //Indica quando o processo esta sendo realizado
                 'sts' => false,
                 'msg' => $e->getMessage(),
                 'parms'=> $arrayReq
             ];
 
-            Views::abrir("site.us.registrar", ['results' => $results]);
+            Views::abrir("site.us.registrar", $arrayArgs);
         }        
 
     }

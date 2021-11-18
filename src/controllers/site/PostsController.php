@@ -43,18 +43,25 @@ class PostsController extends Controlador{
         } else {            
             $id = 0;
         }            
-
+        
         try {
             
             $arrayDadosPost = $this->objPost->obterPostAtivo( $id );
+
+            //Argumentos padrões do sistema.            
+            $arrayArgs = [
+
+                'tituloPagina' => _NOME_SIS_." - ".$arrayDadosPost['titulo'],
+
+            ];
             
-            $results = (object) [
+            $arrayArgs['results'] = (object) [
                 'haRegistro' => !empty($arrayDadosPost) ?? false,
                 'reg' => $arrayDadosPost, //Registros
             ];
             
             //Chamando view  de post
-            Views::abrir("site.posts.post", ['results' => $results]);
+            Views::abrir("site.posts.post", $arrayArgs);
         
 
         } catch(DBException $e){ //Em caso de erro de banco de dados.

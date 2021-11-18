@@ -39,5 +39,8 @@ define("_TAB_Posts_",       "Posts");
 define("_TAB_UsAdmin_",     "UsuariosAdmin"); 
 define("_TAB_UsSite_",      "UsuariosSite"); 
 
+# CONFIGURAÇÕES DO SISTEMA EM SI ---------------------------
+
+define("_NOME_SIS_",      "Blog Project"); 
 
 ?>

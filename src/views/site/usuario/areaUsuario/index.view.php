@@ -1,4 +1,4 @@
-<?php Sistema\Views\Views::abrir("site.layout.cabecalho") ?>
+<?php Sistema\Views\Views::abrir("site.layout.cabecalho", $_refArgsView) ?>
 
 <link rel="stylesheet" href="/css/site/areaUsuario/areaUsuario.css">
                              
@@ -25,4 +25,4 @@
     
 </body>
 
-<?php Sistema\Views\Views::abrir("site.layout.rodape") ?>
+<?php Sistema\Views\Views::abrir("site.layout.rodape", $_refArgsView) ?>

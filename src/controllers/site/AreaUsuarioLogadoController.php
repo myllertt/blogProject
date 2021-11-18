@@ -92,8 +92,17 @@ class AreaUsuarioLogadoController extends Controlador{
         //Obtendo dados do usuário logado
         $arrInfsUsLogado = $this->objAuth->getArrayCacheDadosUsuarioLogado();
 
+        
+        //Argumentos padrões do sistema.
+        $arrayArgs = [
 
-        Views::abrir("site.us.areaUsuario", ['auth'=> $arrInfsUsLogado]);
+            'tituloPagina' => _NOME_SIS_." - Área do usuário",
+            'auth' =>          $arrInfsUsLogado
+
+        ];
+
+    
+        Views::abrir("site.us.areaUsuario", $arrayArgs);
 
     }
 
@@ -128,6 +137,14 @@ class AreaUsuarioLogadoController extends Controlador{
             exit;
         }
 
+        //Argumentos padrões do sistema.
+        $arrayArgs = [
+
+            'tituloPagina' => _NOME_SIS_." - Editar Cadastro",
+            'auth' =>          $arrInfsUsLogado
+
+        ];
+
         //Passando dados em branco
         $arrayReq = [
             'nome' =>       $arrDadosUs['nome'],
@@ -136,7 +153,7 @@ class AreaUsuarioLogadoController extends Controlador{
             'email' =>      $arrDadosUs['email'],
         ];
         
-        $results = [
+        $arrayArgs['results'] = [
             'procAtv' => false, //Indica quando o processo esta sendo realizado
             'sts' => null,
             'msg' => "",
@@ -144,7 +161,7 @@ class AreaUsuarioLogadoController extends Controlador{
         ];
 
  
-        Views::abrir("site.us.areaUsuario.editCad", ['auth'=> $arrInfsUsLogado, 'results' => $results]);
+        Views::abrir("site.us.areaUsuario.editCad", $arrayArgs);
 
     }
     /**
@@ -170,41 +187,65 @@ class AreaUsuarioLogadoController extends Controlador{
             //Tentando realizar operação
             $this->objUsuariosSite->editarDadosCadastrais($arrInfsUsLogado['id'], $arrayReq['nome'], $arrayReq['sobrenome'], $arrayReq['genero'], $arrayReq['email']);
 
+            //Argumentos padrões do sistema.
+            $arrayArgs = [
+
+                'tituloPagina' => _NOME_SIS_." - Editar Cadastro",
+                'auth' =>          $arrInfsUsLogado
+
+            ];
+
             //Enviando mensagem de sucesso!
-            $results = [
+            $arrayArgs['results'] = [
                 'procAtv' => true, //Indica quando o processo esta sendo realizado
                 'sts' => true,
                 'msg' => "Os dados foram atualizados com sucesso!",
                 'parms'=> $arrayReq
             ];
 
-            Views::abrir("site.us.areaUsuario.editCad", ['auth'=> $arrInfsUsLogado, 'results' => $results]);
+            Views::abrir("site.us.areaUsuario.editCad", $arrayArgs);
         
         } catch(DBException $e){ //Em caso de erro de banco de dados.
             
-            $e->debug();
+            //$e->debug();
             //Views::abrir("errosGerais.ErroDB");
 
-            $results = [
+            //Argumentos padrões do sistema.
+            $arrayArgs = [
+
+                'tituloPagina' => _NOME_SIS_." - Editar Cadastro",
+                'auth' =>          $arrInfsUsLogado
+
+            ];
+
+            $arrayArgs['results'] = [
                 'procAtv' => true, //Indica quando o processo esta sendo realizado
                 'sts' => false,
                 'msg' => "Desculpe! Ocorre uma falha interna na operação! Tente mais tarde por gentileza. #DB0001",
                 'parms'=> $arrayReq
             ];
 
-            Views::abrir("site.us.areaUsuario.editCad", ['auth'=> $arrInfsUsLogado, 'results' => $results]);
+            Views::abrir("site.us.areaUsuario.editCad", $arrayArgs);
             
 
         } catch (\Exception $e) { //Erro no procedimento.
 
-            $results = [
+            //Argumentos padrões do sistema.
+            $arrayArgs = [
+
+                'tituloPagina' => _NOME_SIS_." - Editar Cadastro",
+                'auth' =>          $arrInfsUsLogado
+
+            ];
+
+            $arrayArgs['results'] = [
                 'procAtv' => true, //Indica quando o processo esta sendo realizado
                 'sts' => false,
                 'msg' => $e->getMessage(),
                 'parms'=> $arrayReq
             ];
 
-            Views::abrir("site.us.areaUsuario.editCad", ['auth'=> $arrInfsUsLogado, 'results' => $results]);
+            Views::abrir("site.us.areaUsuario.editCad", $arrayArgs);
         }        
 
     }
@@ -223,8 +264,16 @@ class AreaUsuarioLogadoController extends Controlador{
         //Passando dados em branco
         $arrayReq = [
         ];
+
+        //Argumentos padrões do sistema.
+        $arrayArgs = [
+
+            'tituloPagina' => _NOME_SIS_." - Excluir Minha Conta",
+            'auth' =>          $arrInfsUsLogado
+
+        ];
         
-        $results = [
+        $arrayArgs['results'] = [
             'procAtv' => false, //Indica quando o processo esta sendo realizado
             'sts' => null,
             'msg' => "",
@@ -232,7 +281,7 @@ class AreaUsuarioLogadoController extends Controlador{
         ];
 
  
-        Views::abrir("site.us.areaUsuario.excMinConta", ['auth'=> $arrInfsUsLogado, 'results' => $results]);
+        Views::abrir("site.us.areaUsuario.excMinConta", $arrayArgs);
 
     }
     /**
@@ -258,14 +307,22 @@ class AreaUsuarioLogadoController extends Controlador{
             $arrayReq = [
             ];
 
-            $results = [
+            //Argumentos padrões do sistema.
+            $arrayArgs = [
+
+                'tituloPagina' => _NOME_SIS_." - Excluir Minha Conta",
+                'auth' =>          $arrInfsUsLogado #Informações do usuário logado
+
+            ];
+
+            $arrayArgs['results'] = [
                 'procAtv' => true, //Indica quando o processo esta sendo realizado
                 'sts' => true,
                 'msg' => "Seu usuário foi excluído com sucesso!", //$e->getMessage(),
                 'parms'=> $arrayReq
             ];
 
-            Views::abrir("site.us.areaUsuario.excMinConta", ['auth'=> $arrInfsUsLogado, 'results' => $results]);
+            Views::abrir("site.us.areaUsuario.excMinConta", $arrayArgs);
             
         } catch(DBException $e){ //Em caso de erro de banco de dados.
             
@@ -274,28 +331,44 @@ class AreaUsuarioLogadoController extends Controlador{
             $arrayReq = [
             ];
 
-            $results = [
+            //Argumentos padrões do sistema.
+            $arrayArgs = [
+
+                'tituloPagina' => _NOME_SIS_." - Excluir Minha Conta",
+                'auth' =>          $arrInfsUsLogado #Informações do usuário logado
+
+            ];
+
+            $arrayArgs['results'] = [
                 'procAtv' => true, //Indica quando o processo esta sendo realizado
                 'sts' => false,
                 'msg' => "Desculpe! Ocorreu uma falha interna! Tente mais tarde por gentileza. #DB0001", //$e->getMessage(),
                 'parms'=> $arrayReq
             ];
 
-            Views::abrir("site.us.areaUsuario.excMinConta", ['auth'=> $arrInfsUsLogado, 'results' => $results]);
+            Views::abrir("site.us.areaUsuario.excMinConta", $arrayArgs);
 
         } catch (\Exception $e) { //Erro no procedimento.
 
             $arrayReq = [
             ];
 
-            $results = [
+            //Argumentos padrões do sistema.
+            $arrayArgs = [
+
+                'tituloPagina' => _NOME_SIS_." - Excluir Minha Conta",
+                'auth' =>          $arrInfsUsLogado #Informações do usuário logado
+
+            ];
+
+            $arrayArgs['results'] = [
                 'procAtv' => true, //Indica quando o processo esta sendo realizado
                 'sts' => false,
                 'msg' => $e->getMessage(),
                 'parms'=> $arrayReq
             ];
 
-            Views::abrir("site.us.areaUsuario.excMinConta", ['auth'=> $arrInfsUsLogado, 'results' => $results]);
+            Views::abrir("site.us.areaUsuario.excMinConta", $arrayArgs);
 
         }  
 
@@ -315,8 +388,16 @@ class AreaUsuarioLogadoController extends Controlador{
         //Passando dados em branco
         $arrayReq = [
         ];
+
+        //Argumentos padrões do sistema.
+        $arrayArgs = [
+
+            'tituloPagina' => _NOME_SIS_." - Alterar Minha Senha",
+            'auth' =>          $arrInfsUsLogado #Informações do usuário logado
+
+        ];
         
-        $results = [
+        $arrayArgs['results'] = [
             'procAtv' => false, //Indica quando o processo esta sendo realizado
             'sts' => null,
             'msg' => "",
@@ -324,7 +405,7 @@ class AreaUsuarioLogadoController extends Controlador{
         ];
 
  
-        Views::abrir("site.us.areaUsuario.altSenha", ['auth'=> $arrInfsUsLogado, 'results' => $results]);
+        Views::abrir("site.us.areaUsuario.altSenha", $arrayArgs);
 
     }
     /**
@@ -348,14 +429,22 @@ class AreaUsuarioLogadoController extends Controlador{
             //Alterando a senha
             $this->objUsuariosSite->alterarSenha($arrInfsUsLogado['id'], $arrayReq['hashSenhaAtual'], $arrayReq['novaSenha']);
 
-            $results = [
+            //Argumentos padrões do sistema.
+            $arrayArgs = [
+
+                'tituloPagina' => _NOME_SIS_." - Alterar Minha Senha",
+                'auth' =>          $arrInfsUsLogado #Informações do usuário logado
+
+            ];
+
+            $arrayArgs['results'] = [
                 'procAtv' => true, //Indica quando o processo esta sendo realizado
                 'sts' => true,
                 'msg' => "Sua senha foi alterada com sucesso!", //$e->getMessage(),
                 'parms'=> []
             ];
 
-            Views::abrir("site.us.areaUsuario.altSenha", ['auth'=> $arrInfsUsLogado, 'results' => $results]);
+            Views::abrir("site.us.areaUsuario.altSenha", $arrayArgs);
             
         } catch(DBException $e){ //Em caso de erro de banco de dados.
             
@@ -364,28 +453,44 @@ class AreaUsuarioLogadoController extends Controlador{
             $arrayReq = [
             ];
 
-            $results = [
+            //Argumentos padrões do sistema.
+            $arrayArgs = [
+
+                'tituloPagina' => _NOME_SIS_." - Alterar Minha Senha",
+                'auth' =>          $arrInfsUsLogado #Informações do usuário logado
+
+            ];
+
+            $arrayArgs['results'] = [
                 'procAtv' => true, //Indica quando o processo esta sendo realizado
                 'sts' => false,
                 'msg' => "Desculpe! Ocorreu uma falha interna! Tente mais tarde por gentileza. #DB0001", //$e->getMessage(),
                 'parms'=> $arrayReq
             ];
 
-            Views::abrir("site.us.areaUsuario.altSenha", ['auth'=> $arrInfsUsLogado, 'results' => $results]);
+            Views::abrir("site.us.areaUsuario.altSenha", $arrayArgs);
 
         } catch (\Exception $e) { //Erro no procedimento.
 
             $arrayReq = [
             ];
 
-            $results = [
+            //Argumentos padrões do sistema.
+            $arrayArgs = [
+
+                'tituloPagina' => _NOME_SIS_." - Alterar Minha Senha",
+                'auth' =>          $arrInfsUsLogado #Informações do usuário logado
+
+            ];
+
+            $arrayArgs['results'] = [
                 'procAtv' => true, //Indica quando o processo esta sendo realizado
                 'sts' => false,
                 'msg' => $e->getMessage(),
                 'parms'=> $arrayReq
             ];
 
-            Views::abrir("site.us.areaUsuario.altSenha", ['auth'=> $arrInfsUsLogado, 'results' => $results]);
+            Views::abrir("site.us.areaUsuario.altSenha", $arrayArgs);
 
         }
 

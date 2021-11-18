@@ -1,4 +1,4 @@
-<?php Sistema\Views\Views::abrir("site.layout.cabecalho") ?>
+<?php Sistema\Views\Views::abrir("site.layout.cabecalho", $_refArgsView) ?>
 
 <body>
 
@@ -37,4 +37,4 @@
 <script src="/js/global/sha512.js"></script>
 <script src="/js/site/login.js"></script>
 
-<?php Sistema\Views\Views::abrir("site.layout.rodape") ?>
+<?php Sistema\Views\Views::abrir("site.layout.rodape", $_refArgsView) ?>

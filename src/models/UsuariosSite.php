@@ -202,7 +202,7 @@ class UsuariosSite {
 
         $strSql = "
 
-            UPDATE 
+            UPDATE
                 "._TAB_UsSite_."
             SET
                 nome = ?,

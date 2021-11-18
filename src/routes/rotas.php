@@ -127,7 +127,7 @@ try {
 
 
 
-    # Area Usuário Site -----------------------------------------------------------
+    # Area Usuário Site ====================================================================
 
     //Área Padrão do usuário.
     $objProcessamentoRotas->definirRota_TODOS(
@@ -199,6 +199,32 @@ try {
 
 
 
+    #Área administrativa ====================================================================
+
+    //Raiz admin
+    $objProcessamentoRotas->definirRota_PUT(
+        "/admin",                                                       # Rota HTTP
+        "AreaUsuarioLogadoController",                                  # Nome Classe Controlador
+        "processoAlterarSenha",                                         # Nome método inicial de ataque
+        null,                                                           # Argumento passado 
+        __DIR_CONTROLADORES__."/site/AreaUsuarioLogadoController.php",  # Endereço de inclusão do arquivo controlador respectivo,
+        'rota.admin.home'                                               # Nome da rota.
+    );
+
+    //Login Admin
+    $objProcessamentoRotas->definirRota_PUT(
+        "/admin/login",                                                 # Rota HTTP
+        "AreaUsuarioLogadoController",                                  # Nome Classe Controlador
+        "processoAlterarSenha",                                         # Nome método inicial de ataque
+        null,                                                           # Argumento passado 
+        __DIR_CONTROLADORES__."/site/AreaUsuarioLogadoController.php",  # Endereço de inclusão do arquivo controlador respectivo,
+        'rota.admin.login'                                               # Nome da rota.
+    );
+
+
+    #========================================================================================
+
+
     #Apenas para um indicador de funcionalidade para o processamento de rotas.
     $objProcessamentoRotas->definirRota_TODOS(
         "/teste_sistema",                                           # Rota HTTP
@@ -207,7 +233,6 @@ try {
         null,                                                       # Argumento passado 
         __DIR_CONTROLADORES__."/site/PaginaInicialController.php",  # Endereço de inclusão do arquivo controlador respectivo
     );
-
 
     # Acionando processamento rotas ---------------------------------------------------
     $objProcessamentoRotas->iniciarProcessamento();
