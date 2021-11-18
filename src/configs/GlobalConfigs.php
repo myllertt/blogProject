@@ -41,6 +41,24 @@ define("_TAB_UsSite_",      "UsuariosSite");
 
 # CONFIGURAÇÕES DO SISTEMA EM SI ---------------------------
 
-define("_NOME_SIS_",      "Blog Project"); 
+define("_NOME_SIS_",                        "Blog Project"); 
+
+# IDs gerais de views ..........................................
+//Erro geral padrão de banco de dados
+define("_ID_VIEW_GERAL_ERRODB_",            "errosGerais.ErroDB"); 
+//Erro geral padrão de erro inesperado
+define("_ID_VIEW_GERAL_ERROINESPERADO_",    "errosGerais.ErroInesperado"); 
+
+# Rotas gerais sistema ..........................................
+//Site Login
+define("_ROTA_SITE_LOGIN_",                 "rota.site.login"); 
+//Site área usuarío
+define("_ROTA_SITE_AREAUS_",                "rota.site.areaUs");
+
+//Admin Login
+define("_ROTA_ADMIN_LOGIN_",                "rota.admin.login"); 
+
+//Admin área
+define("_ROTA_ADMIN_HOME_",                 "rota.admin.home");
 
 ?>

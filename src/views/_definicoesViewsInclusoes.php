@@ -41,9 +41,19 @@ try {
     Views::definir("site.us.areaUsuario.altSenha", __DIR_VIEWS__."/site/usuario/areaUsuario/alterarSenha.view.php");
     
 
-
-
+    # [ÁREA ADMINISTRATIVA] -----------------------
     
+    # Login admin - cabeçalho
+    Views::definir("admin.layout.cabecalhoLogin", __DIR_VIEWS__."/admin/layout/cabecalhoLogin.view.php");
+    # Login admin - rodape
+    Views::definir("admin.layout.rodapeLogin", __DIR_VIEWS__."/admin/layout/rodapeLogin.view.php");
+    # Login admin - Login corpo
+    Views::definir("admin.login", __DIR_VIEWS__."/admin/login.view.php");
+
+
+    # ----------------------------------------------
+
+
     #Definição de erros.
     Views::definir("errosGerais.ErroDB", __DIR_VIEWS__."/errosGerais/erroDB.view.php");
     #Erro inesperado

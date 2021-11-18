@@ -14,6 +14,9 @@ class PaginaInicialController extends Controlador{
     private $objPost;
     #-----------------------------------------------------
 
+    # Atributos específicos
+    private $CFG_idViewPadraoTrabalho = "site.index"; //id da view padrão de trabalho deste controlador
+
     private function _instanciaObjetos(){
 
         $this->objPost = new Posts( DriverConexaoDB::getObjDB() );
@@ -35,6 +38,9 @@ class PaginaInicialController extends Controlador{
     }
 
     public function inicio(){
+
+        #Id view específica deste método
+        $strIdViewEspecMetodo = $this->CFG_idViewPadraoTrabalho;
 
         $paginaAtual = $this->getValorParmViaRota(0);
 
@@ -61,13 +67,13 @@ class PaginaInicialController extends Controlador{
             ];
             
             //Chamando view 
-            Views::abrir("site.index", $arrayArgs);
+            Views::abrir($strIdViewEspecMetodo, $arrayArgs);
 
         } catch(DBException $e){ //Em caso de erro de banco de dados.
             //$e->debug();
 
             #Acionando view de erro geral do sistema.
-            Views::abrir("errosGerais.ErroDB");
+            Views::abrir(_ID_VIEW_GERAL_ERRODB_);
         }
 
     }

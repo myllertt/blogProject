@@ -13,6 +13,9 @@ class PostsController extends Controlador{
     private $objPost;
     #-----------------------------------------------------
 
+    # Atributos específicos
+    private $CFG_idViewPadraoTrabalho = ""; //id da view padrão de trabalho deste controlador
+
     private function _instanciaObjetos(){
 
         $this->objPost = new Posts( DriverConexaoDB::getObjDB() );
@@ -35,6 +38,9 @@ class PostsController extends Controlador{
     }
 
     public function getPost(){
+
+        #Id view específica deste método
+        $strIdViewEspecMetodo = "site.posts.post";
 
         $id = $this->getValorParmViaRota(0);
 
@@ -61,14 +67,14 @@ class PostsController extends Controlador{
             ];
             
             //Chamando view  de post
-            Views::abrir("site.posts.post", $arrayArgs);
+            Views::abrir($strIdViewEspecMetodo, $arrayArgs);
         
 
         } catch(DBException $e){ //Em caso de erro de banco de dados.
             //$e->debug();
 
             #Acionando view de erro geral do sistema.
-            Views::abrir("errosGerais.ErroDB");
+            Views::abrir(_ID_VIEW_GERAL_ERRODB_);
         }
         
     }

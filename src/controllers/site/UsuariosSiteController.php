@@ -13,6 +13,9 @@ class UsuariosSiteController extends Controlador{
     private $objTrabalho;
     #-----------------------------------------------------
 
+    # Atributos específicos
+    private $CFG_idViewPadraoTrabalho = ""; //id da view padrão de trabalho deste controlador
+
     private function _instanciaObjetos(){
 
         $this->objTrabalho = new UsuariosSite( DriverConexaoDB::getObjDB() );
@@ -28,6 +31,9 @@ class UsuariosSiteController extends Controlador{
 
     # Área de registro ------------------------
     public function exibirTelaRegistro(){
+
+        #Id view específica deste método
+        $strIdViewEspecMetodo = "site.us.registrar";
 
         //O formulário neste estado ficará em brando
         $arrayParmsFormNulos = [
@@ -53,10 +59,13 @@ class UsuariosSiteController extends Controlador{
             'parms'=> $arrayParmsFormNulos
         ];
         
-        Views::abrir("site.us.registrar", $arrayArgs);
+        Views::abrir($strIdViewEspecMetodo, $arrayArgs);
 
     }
     public function processoRegistrarUsuario(){
+
+        #Id view específica deste método
+        $strIdViewEspecMetodo = "site.us.registrar";
 
         //Obtendo e armazenando parâmetros da requisição.
         $arrayReq = [
@@ -90,12 +99,12 @@ class UsuariosSiteController extends Controlador{
                 'parms'=> $arrayReq
             ];
 
-            Views::abrir("site.us.registrar", $arrayArgs);
+            Views::abrir($strIdViewEspecMetodo, $arrayArgs);
         
         } catch(DBException $e){ //Em caso de erro de banco de dados.
             
             //$e->debug();
-            //Views::abrir("errosGerais.ErroDB");
+            //Views::abrir(_ID_VIEW_GERAL_ERRODB_);
 
             //Argumentos padrões do sistema.            
             $arrayArgs = [
@@ -111,7 +120,7 @@ class UsuariosSiteController extends Controlador{
                 'parms'=> $arrayReq
             ];
 
-            Views::abrir("site.us.registrar", $arrayArgs);
+            Views::abrir($strIdViewEspecMetodo, $arrayArgs);
             
 
         } catch (\Exception $e) { //Erro no procedimento.
@@ -130,7 +139,7 @@ class UsuariosSiteController extends Controlador{
                 'parms'=> $arrayReq
             ];
 
-            Views::abrir("site.us.registrar", $arrayArgs);
+            Views::abrir($strIdViewEspecMetodo, $arrayArgs);
         }        
 
     }

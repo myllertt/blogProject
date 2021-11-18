@@ -13,12 +13,15 @@ class AutenticacaoAdminController extends Controlador{
     private $objTrabalho;
     #-----------------------------------------------------
 
+    # Atributos específicos
+    private $CFG_idViewPadraoTrabalho = "admin.login"; //id da view padrão de trabalho deste controlador
+
     //Caso perceba alguma sessão ativa do tipo, a página será redirecionada
     private function _autoRedSessaoAtiva_AutoExit() : void{
 
         //Realizando direc. caso encontre sessão ativa.
         if($this->objTrabalho->checkSeExisteSessaoAtivaTipica()){
-            header("Location: ".\Sistema\Rotas::gerarLink('rota.site.areaUs'));
+            header("Location: ".\Sistema\Rotas::gerarLink(_ROTA_ADMIN_HOME_));
             exit;
         }
         
@@ -40,6 +43,9 @@ class AutenticacaoAdminController extends Controlador{
     # Área de Login ------------------------
     public function telaLogin(){
 
+        #Id view específica deste método
+        $strIdViewEspecMetodo = $this->CFG_idViewPadraoTrabalho;
+
         //Verificando se já não existe sessão ativa
         $this->_autoRedSessaoAtiva_AutoExit();
 
@@ -55,10 +61,13 @@ class AutenticacaoAdminController extends Controlador{
             'parms'=> $arrayReq
         ];
 
-        Views::abrir("site.us.login", ['results' => $results]);
+        Views::abrir($strIdViewEspecMetodo, ['results' => $results]);
 
     }
     public function processoLogin(){
+
+        #Id view específica deste método
+        $strIdViewEspecMetodo = $this->CFG_idViewPadraoTrabalho;
 
         //Obtendo e armazenando parâmetros da requisição.
         $arrayReq = [
@@ -81,14 +90,14 @@ class AutenticacaoAdminController extends Controlador{
             ];
 
             //Login bem sussedido. Redirecionando para a próxima pagina.
-            header("Location: ".\Sistema\Rotas::gerarLink('rota.site.areaUs'));
+            header("Location: ".\Sistema\Rotas::gerarLink(_ROTA_ADMIN_HOME_));
 
             exit;
         
         } catch(DBException $e){ //Em caso de erro de banco de dados.
             
             //$e->debug();
-            //Views::abrir("errosGerais.ErroDB");
+            //Views::abrir(_ID_VIEW_GERAL_ERRODB_);
 
             //Elimiando esta informação
             unset($arrayReq['senha']);
@@ -100,7 +109,7 @@ class AutenticacaoAdminController extends Controlador{
                 'parms'=> $arrayReq
             ];
             
-            Views::abrir("site.us.login", ['results' => $results]);
+            Views::abrir($strIdViewEspecMetodo, ['results' => $results]);
             
 
         } catch (\Exception $e) { //Erro no procedimento.
@@ -115,7 +124,7 @@ class AutenticacaoAdminController extends Controlador{
                 'parms'=> $arrayReq
             ];
 
-            Views::abrir("site.us.login", ['results' => $results]);
+            Views::abrir($strIdViewEspecMetodo, ['results' => $results]);
         }        
 
     }
@@ -123,14 +132,16 @@ class AutenticacaoAdminController extends Controlador{
     #Logout de usuário --------------------
     public function logout(){
 
-         
+        #Id view específica deste método
+        $strIdViewEspecMetodo = $this->CFG_idViewPadraoTrabalho;
+
         try {
             
             //Finalizando sessão
             $this->objTrabalho->realizarLogout();
 
             //Redirecionando para página de login
-            header("Location: ".\Sistema\Rotas::gerarLink('rota.site.login'));
+            header("Location: ".\Sistema\Rotas::gerarLink(_ROTA_ADMIN_LOGIN_));
           
 
         } catch(DBException $e){ //Em caso de erro de banco de dados.
@@ -138,7 +149,7 @@ class AutenticacaoAdminController extends Controlador{
             $e->debug();
 
             # Lançando erro geral de banco de dados
-            Views::abrir("errosGerais.ErroDB");    
+            Views::abrir(_ID_VIEW_GERAL_ERRODB_);    
 
             exit;
         }

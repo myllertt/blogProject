@@ -15,6 +15,9 @@ class AreaUsuarioLogadoController extends Controlador{
     private $objUsuariosSite; //Trabalho com usuarios
     #-----------------------------------------------------
 
+    # Atributos específicos
+    private $CFG_idViewPadraoTrabalho = ""; //id da view padrão de trabalho deste controlador
+
     /**
      * Verifica se o sessão do usuário esta essencialmente ativa e operacional
      *
@@ -26,7 +29,7 @@ class AreaUsuarioLogadoController extends Controlador{
             
             //Verificando sessão do usuário.
             if(!$this->objAuth->checkSeUsuarioEstaAutenticadoDB()){
-                header("Location: ".\Sistema\Rotas::gerarLink('rota.site.login'));
+                header("Location: ".\Sistema\Rotas::gerarLink(_ROTA_SITE_LOGIN_));
                 exit;
             }  
 
@@ -35,7 +38,7 @@ class AreaUsuarioLogadoController extends Controlador{
             //$e->debug();
 
             # Lançando erro geral de banco de dados
-            Views::abrir("errosGerais.ErroDB");    
+            Views::abrir(_ID_VIEW_GERAL_ERRODB_);    
 
             exit;
         }
@@ -63,7 +66,7 @@ class AreaUsuarioLogadoController extends Controlador{
     private function _emitirViewErroInesperado_EXIT() : void{
         
         //Emitindo erro inesperado
-        Views::abrir("errosGerais.ErroInesperado");
+        Views::abrir(_ID_VIEW_GERAL_ERROINESPERADO_);
         exit;
 
     }
@@ -89,6 +92,10 @@ class AreaUsuarioLogadoController extends Controlador{
      */
     public function index() : void {
 
+        #Id view específica deste método
+        $strIdViewEspecMetodo = "site.us.areaUsuario";
+
+
         //Obtendo dados do usuário logado
         $arrInfsUsLogado = $this->objAuth->getArrayCacheDadosUsuarioLogado();
 
@@ -102,7 +109,7 @@ class AreaUsuarioLogadoController extends Controlador{
         ];
 
     
-        Views::abrir("site.us.areaUsuario", $arrayArgs);
+        Views::abrir($strIdViewEspecMetodo, $arrayArgs);
 
     }
 
@@ -112,6 +119,9 @@ class AreaUsuarioLogadoController extends Controlador{
      * @return void
      */
     public function telaEditarCadastro() : void{
+
+        #Id view específica deste método
+        $strIdViewEspecMetodo = "site.us.areaUsuario.editCad";
 
         //Obtendo dados do usuário logado
         $arrInfsUsLogado = $this->objAuth->getArrayCacheDadosUsuarioLogado();
@@ -132,7 +142,7 @@ class AreaUsuarioLogadoController extends Controlador{
             //$e->debug();
 
             # Lançando erro geral de banco de dados
-            Views::abrir("errosGerais.ErroDB");    
+            Views::abrir(_ID_VIEW_GERAL_ERRODB_);    
 
             exit;
         }
@@ -161,7 +171,7 @@ class AreaUsuarioLogadoController extends Controlador{
         ];
 
  
-        Views::abrir("site.us.areaUsuario.editCad", $arrayArgs);
+        Views::abrir($strIdViewEspecMetodo, $arrayArgs);
 
     }
     /**
@@ -170,6 +180,9 @@ class AreaUsuarioLogadoController extends Controlador{
      * @return void
      */
     public function processoEditarCadastro() : void{
+
+        #Id view específica deste método
+        $strIdViewEspecMetodo = "site.us.areaUsuario.editCad";
 
         //Obtendo dados do usuário logado
         $arrInfsUsLogado = $this->objAuth->getArrayCacheDadosUsuarioLogado();
@@ -203,12 +216,12 @@ class AreaUsuarioLogadoController extends Controlador{
                 'parms'=> $arrayReq
             ];
 
-            Views::abrir("site.us.areaUsuario.editCad", $arrayArgs);
+            Views::abrir($strIdViewEspecMetodo, $arrayArgs);
         
         } catch(DBException $e){ //Em caso de erro de banco de dados.
             
             //$e->debug();
-            //Views::abrir("errosGerais.ErroDB");
+            //Views::abrir(_ID_VIEW_GERAL_ERRODB_);
 
             //Argumentos padrões do sistema.
             $arrayArgs = [
@@ -225,7 +238,7 @@ class AreaUsuarioLogadoController extends Controlador{
                 'parms'=> $arrayReq
             ];
 
-            Views::abrir("site.us.areaUsuario.editCad", $arrayArgs);
+            Views::abrir($strIdViewEspecMetodo, $arrayArgs);
             
 
         } catch (\Exception $e) { //Erro no procedimento.
@@ -245,7 +258,7 @@ class AreaUsuarioLogadoController extends Controlador{
                 'parms'=> $arrayReq
             ];
 
-            Views::abrir("site.us.areaUsuario.editCad", $arrayArgs);
+            Views::abrir($strIdViewEspecMetodo, $arrayArgs);
         }        
 
     }
@@ -257,6 +270,9 @@ class AreaUsuarioLogadoController extends Controlador{
      * @return void
      */
     public function telaExcluirMinConta(): void{
+
+        #Id view específica deste método
+        $strIdViewEspecMetodo = "site.us.areaUsuario.excMinConta";
 
         //Obtendo dados do usuário logado
         $arrInfsUsLogado = $this->objAuth->getArrayCacheDadosUsuarioLogado();
@@ -281,7 +297,7 @@ class AreaUsuarioLogadoController extends Controlador{
         ];
 
  
-        Views::abrir("site.us.areaUsuario.excMinConta", $arrayArgs);
+        Views::abrir($strIdViewEspecMetodo, $arrayArgs);
 
     }
     /**
@@ -290,6 +306,9 @@ class AreaUsuarioLogadoController extends Controlador{
      * @return void
      */
     public function processoExcluirMinConta() : void{
+
+        #Id view específica deste método
+        $strIdViewEspecMetodo = "site.us.areaUsuario.excMinConta";
 
         //Obtendo dados do usuário logado
         $arrInfsUsLogado = $this->objAuth->getArrayCacheDadosUsuarioLogado();
@@ -322,7 +341,7 @@ class AreaUsuarioLogadoController extends Controlador{
                 'parms'=> $arrayReq
             ];
 
-            Views::abrir("site.us.areaUsuario.excMinConta", $arrayArgs);
+            Views::abrir($strIdViewEspecMetodo, $arrayArgs);
             
         } catch(DBException $e){ //Em caso de erro de banco de dados.
             
@@ -346,7 +365,7 @@ class AreaUsuarioLogadoController extends Controlador{
                 'parms'=> $arrayReq
             ];
 
-            Views::abrir("site.us.areaUsuario.excMinConta", $arrayArgs);
+            Views::abrir($strIdViewEspecMetodo, $arrayArgs);
 
         } catch (\Exception $e) { //Erro no procedimento.
 
@@ -368,7 +387,7 @@ class AreaUsuarioLogadoController extends Controlador{
                 'parms'=> $arrayReq
             ];
 
-            Views::abrir("site.us.areaUsuario.excMinConta", $arrayArgs);
+            Views::abrir($strIdViewEspecMetodo, $arrayArgs);
 
         }  
 
@@ -381,6 +400,9 @@ class AreaUsuarioLogadoController extends Controlador{
      * @return void
      */
     public function telaAlterarSenha() : void{
+
+        #Id view específica deste método
+        $strIdViewEspecMetodo = "site.us.areaUsuario.altSenha";
 
         //Obtendo dados do usuário logado
         $arrInfsUsLogado = $this->objAuth->getArrayCacheDadosUsuarioLogado();
@@ -405,7 +427,7 @@ class AreaUsuarioLogadoController extends Controlador{
         ];
 
  
-        Views::abrir("site.us.areaUsuario.altSenha", $arrayArgs);
+        Views::abrir($strIdViewEspecMetodo, $arrayArgs);
 
     }
     /**
@@ -414,6 +436,9 @@ class AreaUsuarioLogadoController extends Controlador{
      * @return void
      */
     public function processoAlterarSenha(){
+
+        #Id view específica deste método
+        $strIdViewEspecMetodo = "site.us.areaUsuario.altSenha";
 
         //Obtendo dados do usuário logado
         $arrInfsUsLogado = $this->objAuth->getArrayCacheDadosUsuarioLogado();
@@ -444,7 +469,7 @@ class AreaUsuarioLogadoController extends Controlador{
                 'parms'=> []
             ];
 
-            Views::abrir("site.us.areaUsuario.altSenha", $arrayArgs);
+            Views::abrir($strIdViewEspecMetodo, $arrayArgs);
             
         } catch(DBException $e){ //Em caso de erro de banco de dados.
             
@@ -468,7 +493,7 @@ class AreaUsuarioLogadoController extends Controlador{
                 'parms'=> $arrayReq
             ];
 
-            Views::abrir("site.us.areaUsuario.altSenha", $arrayArgs);
+            Views::abrir($strIdViewEspecMetodo, $arrayArgs);
 
         } catch (\Exception $e) { //Erro no procedimento.
 
@@ -490,7 +515,7 @@ class AreaUsuarioLogadoController extends Controlador{
                 'parms'=> $arrayReq
             ];
 
-            Views::abrir("site.us.areaUsuario.altSenha", $arrayArgs);
+            Views::abrir($strIdViewEspecMetodo, $arrayArgs);
 
         }
 

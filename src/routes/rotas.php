@@ -202,7 +202,7 @@ try {
     #Área administrativa ====================================================================
 
     //Raiz admin
-    $objProcessamentoRotas->definirRota_PUT(
+    $objProcessamentoRotas->definirRota_TODOS(
         "/admin",                                                       # Rota HTTP
         "AreaUsuarioLogadoController",                                  # Nome Classe Controlador
         "processoAlterarSenha",                                         # Nome método inicial de ataque
@@ -212,17 +212,42 @@ try {
     );
 
     //Login Admin
-    $objProcessamentoRotas->definirRota_PUT(
+    $objProcessamentoRotas->definirRota_GET(
         "/admin/login",                                                 # Rota HTTP
-        "AreaUsuarioLogadoController",                                  # Nome Classe Controlador
-        "processoAlterarSenha",                                         # Nome método inicial de ataque
+        "AutenticacaoAdminController",                                  # Nome Classe Controlador
+        "telaLogin",                                                    # Nome método inicial de ataque
         null,                                                           # Argumento passado 
-        __DIR_CONTROLADORES__."/site/AreaUsuarioLogadoController.php",  # Endereço de inclusão do arquivo controlador respectivo,
-        'rota.admin.login'                                               # Nome da rota.
+        __DIR_CONTROLADORES__."/admin/AutenticacaoAdminController.php", # Endereço de inclusão do arquivo controlador respectivo,
+        'rota.admin.login'                                              # Nome da rota.
+    );
+
+    //Login Admin - processo 
+    $objProcessamentoRotas->definirRota_POST(
+        "/admin/login",                                                 # Rota HTTP
+        "AutenticacaoAdminController",                                  # Nome Classe Controlador
+        "processoLogin",                                                # Nome método inicial de ataque
+        null,                                                           # Argumento passado 
+        __DIR_CONTROLADORES__."/admin/AutenticacaoAdminController.php"  # Endereço de inclusão do arquivo controlador respectivo
     );
 
 
     #========================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     #Apenas para um indicador de funcionalidade para o processamento de rotas.
