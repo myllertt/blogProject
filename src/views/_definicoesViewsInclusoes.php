@@ -50,7 +50,18 @@ try {
     # Login admin - Login corpo
     Views::definir("admin.login", __DIR_VIEWS__."/admin/login.view.php");
 
+    # Index admin - home
+    Views::definir("admin.index", __DIR_VIEWS__."/admin/index.view.php");
 
+        #Layouts home
+        Views::definir("admin.layout.cabecalho", __DIR_VIEWS__."/admin/layout/cabecalho.view.php");
+        Views::definir("admin.layout.rodape", __DIR_VIEWS__."/admin/layout/rodape.view.php");  
+
+
+    # MINHA CONTA
+        Views::definir("admin.minhaConta.editarCadastro",   __DIR_VIEWS__."/admin/minhaConta/editarCadastro.view.php");
+        Views::definir("admin.minhaConta.alterarSenha",     __DIR_VIEWS__."/admin/minhaConta/alterarSenha.view.php");
+        Views::definir("admin.minhaConta.excluirConta",     __DIR_VIEWS__."/admin/minhaConta/excluirConta.view.php");
     # ----------------------------------------------
 
 

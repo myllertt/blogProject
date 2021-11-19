@@ -204,10 +204,10 @@ try {
     //Raiz admin
     $objProcessamentoRotas->definirRota_TODOS(
         "/admin",                                                       # Rota HTTP
-        "AreaUsuarioLogadoController",                                  # Nome Classe Controlador
-        "processoAlterarSenha",                                         # Nome método inicial de ataque
+        "HomeAdminController",                                          # Nome Classe Controlador
+        "index",                                                        # Nome método inicial de ataque
         null,                                                           # Argumento passado 
-        __DIR_CONTROLADORES__."/site/AreaUsuarioLogadoController.php",  # Endereço de inclusão do arquivo controlador respectivo,
+        __DIR_CONTROLADORES__."/admin/HomeAdminController.php",         # Endereço de inclusão do arquivo controlador respectivo,
         'rota.admin.home'                                               # Nome da rota.
     );
 
@@ -230,6 +230,80 @@ try {
         __DIR_CONTROLADORES__."/admin/AutenticacaoAdminController.php"  # Endereço de inclusão do arquivo controlador respectivo
     );
 
+    //Processo de finalizar sessão usuário admin
+    $objProcessamentoRotas->definirRota_GET(
+        "/admin/logout",                                                    # Rota HTTP
+        "AutenticacaoAdminController",                                      # Nome Classe Controlador
+        "logout",                                                           # Nome método inicial de ataque
+        null,                                                               # Argumento passado 
+        __DIR_CONTROLADORES__."/admin/AutenticacaoAdminController.php",     # Endereço de inclusão do arquivo controlador respectivo
+        'rota.admin.logout'                                                 # Nome da rota.
+    );
+
+    
+    //Ações Minha Conta ---------------------------------------------
+
+    //Tela alterar minha senha
+    $objProcessamentoRotas->definirRota_GET(
+        "/admin/minhaConta/alterarSenha",                                   # Rota HTTP
+        "AcoesMinhaContaUsAdmController",                                   # Nome Classe Controlador
+        "telaAlterarSenha",                                                 # Nome método inicial de ataque
+        null,                                                               # Argumento passado 
+        __DIR_CONTROLADORES__."/admin/AcoesMinhaContaUsAdmController.php",  # Endereço de inclusão do arquivo controlador respectivo
+        'rota.admin.minhaConta.altSenha'                                         # Nome da rota.
+    );
+
+    //Processo alterar minha senha
+    $objProcessamentoRotas->definirRota_PUT(
+        "/admin/minhaConta/alterarSenha",                                   # Rota HTTP
+        "AcoesMinhaContaUsAdmController",                                   # Nome Classe Controlador
+        "processoAlterarSenha",                                             # Nome método inicial de ataque
+        null,                                                               # Argumento passado 
+        __DIR_CONTROLADORES__."/admin/AcoesMinhaContaUsAdmController.php",  # Endereço de inclusão do arquivo controlador respectivo
+    );
+
+
+    //Tela Excluir Conta
+    $objProcessamentoRotas->definirRota_GET(
+        "/admin/minhaConta/excluirConta",                                   # Rota HTTP
+        "AcoesMinhaContaUsAdmController",                                   # Nome Classe Controlador
+        "telaExcluirConta",                                                 # Nome método inicial de ataque
+        null,                                                               # Argumento passado 
+        __DIR_CONTROLADORES__."/admin/AcoesMinhaContaUsAdmController.php",  # Endereço de inclusão do arquivo controlador respectivo
+        'rota.admin.minhaConta.excConta'                                    # Nome da rota.
+    );
+    //Processo Excluir conta
+    $objProcessamentoRotas->definirRota_DELETE(
+        "/admin/minhaConta/excluirConta",                                   # Rota HTTP
+        "AcoesMinhaContaUsAdmController",                                   # Nome Classe Controlador
+        "processoExcluirConta",                                             # Nome método inicial de ataque
+        null,                                                               # Argumento passado 
+        __DIR_CONTROLADORES__."/admin/AcoesMinhaContaUsAdmController.php",  # Endereço de inclusão do arquivo controlador respectivo
+    );
+
+
+    //Tela Editar Cadastro
+    $objProcessamentoRotas->definirRota_GET(
+        "/admin/minhaConta/editarCad",                                       # Rota HTTP
+        "AcoesMinhaContaUsAdmController",                                  # Nome Classe Controlador
+        "telaEditarCadastro",                                            # Nome método inicial de ataque
+        null,                                                           # Argumento passado 
+        __DIR_CONTROLADORES__."/admin/AcoesMinhaContaUsAdmController.php",  # Endereço de inclusão do arquivo controlador respectivo
+        'rota.admin.minhaConta.editCad'                                      # Nome da rota.
+    );
+
+    //Processo Editar Cadastro
+    $objProcessamentoRotas->definirRota_PUT(
+        "/admin/minhaConta/editarCad",                                       # Rota HTTP
+        "AcoesMinhaContaUsAdmController",                                  # Nome Classe Controlador
+        "processoEditarCadastro",                                       # Nome método inicial de ataque
+        null,                                                           # Argumento passado 
+        __DIR_CONTROLADORES__."/admin/AcoesMinhaContaUsAdmController.php",  # Endereço de inclusão do arquivo controlador respectivo
+    );
+
+
+
+    
 
     #========================================================================================
 

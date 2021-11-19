@@ -36,6 +36,6 @@
 </body>
 
 <script src="/js/global/sha512.js"></script>
-<script src="/js/site/login.js"></script>
+<script src="/js/admin/login.js"></script>
 
 <?php Sistema\Views\Views::abrir("admin.layout.rodapeLogin", $_refArgsView) ?>

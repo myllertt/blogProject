@@ -5,7 +5,7 @@ use Sistema\DB\Exceptions\DBException;
 //Esta classe necessita de métodos da classe TratamentoCaracteres
 require_once(__DIR_SYSLIBS__."/"."TratamentoCaracteres.php");
 
-class AuthUsuariosSite {
+class AuthUsuariosAdmin {
 
     private $objMysqli;
 
@@ -14,7 +14,7 @@ class AuthUsuariosSite {
     private $arrCacheDadosUsLogado; //Cache de informações do usuário logado
 
     private function _definirConfigsEspecificas(){
-        $this->arrayCFGSEsp['TIPO_SESSAO'] = 'site'; //Tipo site.
+        $this->arrayCFGSEsp['TIPO_SESSAO'] = 'admin'; //Tipo site.
         $this->arrayCFGSEsp['SLEEP_TIME_ERROSENHA'] = 1; //Em caso de erro na validação do usuário ou senha o servidor irá gerar um delay intencional
     }
 
@@ -30,9 +30,9 @@ class AuthUsuariosSite {
 
             $strSql = "
             SELECT
-                id,nome,sobrenome,usuario,hashSenha
+                id,nome,status,sobrenome,usuario,hashSenha
             FROM
-                "._TAB_UsSite_."
+                "._TAB_UsAdmin_."
             WHERE
                 usuario = ?
             LIMIT 1
@@ -82,7 +82,7 @@ class AuthUsuariosSite {
 
             $strSql = "
             UPDATE
-                "._TAB_UsSite_."
+                "._TAB_UsAdmin_."
             SET
                 sesAtivaDtUp = now()
             WHERE
@@ -115,7 +115,7 @@ class AuthUsuariosSite {
 
             $strSql = "
             UPDATE
-                "._TAB_UsSite_."
+                "._TAB_UsAdmin_."
             SET
                 sesAtivaCod = null
             WHERE
@@ -148,9 +148,9 @@ class AuthUsuariosSite {
 
             $strSql = "
             SELECT
-                id,nome,sobrenome,usuario
+                id,nome,status,sobrenome,usuario
             FROM
-                "._TAB_UsSite_."
+                "._TAB_UsAdmin_."
             WHERE
                 id = ?
                 AND sesAtivaCod LIKE BINARY ?
@@ -222,7 +222,7 @@ class AuthUsuariosSite {
         $strSql = "
 
             UPDATE 
-                "._TAB_UsSite_."
+                "._TAB_UsAdmin_."
             SET
                 sesAtivaCod = ?,
                 sesAtivaDtIni = now(),
@@ -295,7 +295,7 @@ class AuthUsuariosSite {
         
     //Realiza o processo de login
     public function efetuarLogin(string $usuario, string $hashSenha) : void{ #throw DBException, \Exception
-
+       
         if($usuario == "")
             throw new \Exception("Informe o usuário!", 1001);
 
@@ -304,7 +304,6 @@ class AuthUsuariosSite {
 
         $resConsUs = $this->_consultarUsuario($usuario);
 
-        
         #Usuário não encontrado no DB
         if(empty($resConsUs)){
 
@@ -332,6 +331,11 @@ class AuthUsuariosSite {
             throw new \Exception("Erro! Usuário ou senha inválidos!", 1007);
         }
 
+        //Certificando que o usuário esteja habilitado.
+        if($resConsUs['status'] != "1"){
+            throw new \Exception("Desculpe! Seu usuário se encontra desativado! Para mais informações, por gentileza entre em contato com a administração.", 1010);
+        }
+            
 
         //Tentando registrar sessão no banco de dados
         $codSessao = $this->_registrarNovaSessaoUsuarioDB($resConsUs['id']);
@@ -397,8 +401,8 @@ class AuthUsuariosSite {
         //Consultando sessão usuário no DB
         $resCons = $this->_consultarSessaoDB((int)$_SESSION['idUser'], $_SESSION['codSes']);
 
-        //Sessão inexistente no banco.
-        if(empty($resCons)){
+        //Sessão inexistente no banco ou se caso tenha sessão porém o usuário esteja desativado
+        if(empty($resCons) || $resCons['status'] != "1"){
             
             //Quebrar sessão
             session_unset();
@@ -406,7 +410,7 @@ class AuthUsuariosSite {
 
             return false;
         }
-
+            
         //Obtendo abreviação nome do DB
         $nomeUserDb = TratamentoCaracteres::gerarAbreviacaoNome($resCons['nome'], $resCons['sobrenome']);
         

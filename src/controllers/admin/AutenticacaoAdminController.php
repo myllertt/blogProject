@@ -1,7 +1,7 @@
 <?php
 
 # Inclusão models úteis para este controlador ------------------
-require(__DIR_MODELS__."/AuthUsuariosSite.php");
+require(__DIR_MODELS__."/AuthUsuariosAdmin.php");
 //--------------------------------------------------------------
 
 use Sistema\Views\Views;
@@ -29,7 +29,7 @@ class AutenticacaoAdminController extends Controlador{
 
     private function _instanciaObjetos(){
 
-        $this->objTrabalho = new AuthUsuariosSite( DriverConexaoDB::getObjDB() );
+        $this->objTrabalho = new AuthUsuariosAdmin( DriverConexaoDB::getObjDB() );
 
     }
 
@@ -49,19 +49,26 @@ class AutenticacaoAdminController extends Controlador{
         //Verificando se já não existe sessão ativa
         $this->_autoRedSessaoAtiva_AutoExit();
 
-        //Passando dados em branco
-        $arrayReq = [
+         //Passando dados em branco
+         $arrayReq = [
             'usuario' => "",
         ];
+
+        //Argumentos padrões do sistema.
+        $arrayArgs = [
+
+            'tituloPagina' => _NOME_SIS_." - Login Admin",
+
+        ];
         
-        $results = [
+        $arrayArgs['results'] = [
             'procAtv' => false, //Indica quando o processo esta sendo realizado
             'sts' => null,
             'msg' => "",
             'parms'=> $arrayReq
         ];
 
-        Views::abrir($strIdViewEspecMetodo, ['results' => $results]);
+        Views::abrir($strIdViewEspecMetodo, $arrayArgs);
 
     }
     public function processoLogin(){
@@ -80,14 +87,22 @@ class AutenticacaoAdminController extends Controlador{
             //Efetuando login
             $this->objTrabalho->efetuarLogin($arrayReq['usuario'], $arrayReq['senha']);
 
-           
+            //Argumentos padrões do sistema.
+            /*
+            $arrayArgs = [
+
+                'tituloPagina' => _NOME_SIS_." - Login Admin",
+
+            ];
+
             //Enviando mensagem de sucesso!
-            $results = [
+            $arrayArgs['results'] = [
                 'procAtv' => true, //Indica quando o processo esta sendo realizado
                 'sts' => true,
-                'msg' => "Seu usuário foi cadastrado com sucesso!",
+                'msg' => "",
                 'parms'=> $arrayReq
             ];
+            */
 
             //Login bem sussedido. Redirecionando para a próxima pagina.
             header("Location: ".\Sistema\Rotas::gerarLink(_ROTA_ADMIN_HOME_));
@@ -102,14 +117,22 @@ class AutenticacaoAdminController extends Controlador{
             //Elimiando esta informação
             unset($arrayReq['senha']);
 
-            $results = [
+
+            //Argumentos padrões do sistema.            
+            $arrayArgs = [
+
+                'tituloPagina' => _NOME_SIS_." - Login Admin",
+
+            ];
+
+            $arrayArgs['results'] = [
                 'procAtv' => true, //Indica quando o processo esta sendo realizado
                 'sts' => false,
                 'msg' => "Desculpe! Ocorre uma falha interna na operação! Tente mais tarde por gentileza. #DB0001",
                 'parms'=> $arrayReq
             ];
             
-            Views::abrir($strIdViewEspecMetodo, ['results' => $results]);
+            Views::abrir($strIdViewEspecMetodo, $arrayArgs);
             
 
         } catch (\Exception $e) { //Erro no procedimento.
@@ -117,14 +140,21 @@ class AutenticacaoAdminController extends Controlador{
             //Elimiando esta informação
             unset($arrayReq['senha']);
 
-            $results = [
+            //Argumentos padrões do sistema.            
+            $arrayArgs = [
+
+                'tituloPagina' => _NOME_SIS_." - Login Admin",
+
+            ];
+
+            $arrayArgs['results'] = [
                 'procAtv' => true, //Indica quando o processo esta sendo realizado
                 'sts' => false,
                 'msg' => $e->getMessage(),
                 'parms'=> $arrayReq
             ];
 
-            Views::abrir($strIdViewEspecMetodo, ['results' => $results]);
+            Views::abrir($strIdViewEspecMetodo, $arrayArgs);
         }        
 
     }
@@ -146,7 +176,7 @@ class AutenticacaoAdminController extends Controlador{
 
         } catch(DBException $e){ //Em caso de erro de banco de dados.
             
-            $e->debug();
+            //$e->debug();
 
             # Lançando erro geral de banco de dados
             Views::abrir(_ID_VIEW_GERAL_ERRODB_);    

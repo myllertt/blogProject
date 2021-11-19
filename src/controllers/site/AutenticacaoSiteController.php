@@ -100,7 +100,7 @@ class AutenticacaoSiteController extends Controlador{
             $arrayArgs['results'] = [
                 'procAtv' => true, //Indica quando o processo esta sendo realizado
                 'sts' => true,
-                'msg' => "Seu usuário foi cadastrado com sucesso!",
+                'msg' => "",
                 'parms'=> $arrayReq
             ];
             */
