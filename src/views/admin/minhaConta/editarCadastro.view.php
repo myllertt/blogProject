@@ -2,7 +2,7 @@
 
 <body>
 
-    <h3>Editar Dados</h3>
+    <h3>Editar Meus Dados</h3>
 
     <?php if($results['msg']): ?>   
 
@@ -58,7 +58,7 @@
             </div>
 
             <div>
-               <input type="submit" value="Editar"> <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink(_ROTA_ADMIN_HOME_) ?>'" value="voltar">
+            <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink(_ROTA_ADMIN_HOME_) ?>'" value="cancelar"> <input type="submit" value="Editar">
             </div>
 
         </form>

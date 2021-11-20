@@ -402,9 +402,14 @@ class UsuariosSite {
 
         //Validando o campo (nova senha)
         $this->_validarCampoSenha($novaSenha, "campo (nova senha)");
-
+        
         //Obter dados cadastrais para comparação da senha atual;
         $resCons = $this->getDadosCadastrais($idUsuario, true);
+
+        //Verificando se o usuário foi encontrado
+        if(empty($resCons)){
+            throw new \Exception("Erro! Usuário não localizado! #1002", 1002);
+        }
 
         //Verificando se a senha atual confere
         if($resCons['hashSenha'] != $hashSenha_atual){

@@ -78,16 +78,38 @@ try {
         //Excluir usuário
         Views::definir("admin.usuarios.excluir",          __DIR_VIEWS__."/admin/usuarios/excluirUsuario.view.php");
 
-    # EMISSÕES DE ERRO.
+        //Redefinir senha do usuário
+        Views::definir("admin.usuarios.redefSenha",          __DIR_VIEWS__."/admin/usuarios/redefinirSenhaUsuario.view.php");
+
+
+        # EMISSÃO ERRO USUÁRIO NÃO ECONTRADO
         Views::definir("admin.usuarios.erroUsNaoEnc",          __DIR_VIEWS__."/admin/usuarios/emitirErroUsNaoEncontrado.view.php");
+
+    # POSTS
+        //Listar postagens
+        Views::definir("admin.posts.listar",          __DIR_VIEWS__."/admin/posts/listarPosts.view.php");
+
+        //Realizar postagem
+        Views::definir("admin.posts.postar",          __DIR_VIEWS__."/admin/posts/postar.view.php");
+
+        //Editar postagem
+        Views::definir("admin.posts.editar",          __DIR_VIEWS__."/admin/posts/editarPostagem.view.php");
+        
+
+
+        # EMISSÃO ERRO REGISTRO NÃO ENCONTRADO
+        Views::definir("admin.posts.erroRegsNaoEnc",          __DIR_VIEWS__."/admin/posts/emitirErroRegsNaoEncontrado.view.php");
+
+
 
     # ----------------------------------------------
 
 
-    #Definição de erros.
-    Views::definir("errosGerais.ErroDB", __DIR_VIEWS__."/errosGerais/erroDB.view.php");
-    #Erro inesperado
-    Views::definir("errosGerais.ErroInesperado", __DIR_VIEWS__."/errosGerais/erroInesperado.view.php");
+    #Definição de erros gerais.
+        #Erro geral de banco de dados
+        Views::definir("errosGerais.ErroDB", __DIR_VIEWS__."/errosGerais/erroDB.view.php");
+        #Erro inesperado
+        Views::definir("errosGerais.ErroInesperado", __DIR_VIEWS__."/errosGerais/erroInesperado.view.php");
      
 
 

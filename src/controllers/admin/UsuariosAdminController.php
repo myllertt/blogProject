@@ -575,6 +575,207 @@ class UsuariosAdminController extends Controlador{
 
     }
 
+
+
+    # Redefinição de senha do usuário ------------------
+     /**
+     * # Tela de Redefinição de senha do usuário
+     *
+     * @return void
+     */
+    public function telaRedefinirSenhaUs() : void{
+
+        #Id view específica deste método
+        $strIdViewEspecMetodo = "admin.usuarios.redefSenha";
+
+        //Obtendo dados do usuário logado
+        $arrInfsUsLogado = $this->objAuth->getArrayCacheDadosUsuarioLogado();
+
+
+        //Obtendo e tratando parâmetro da rota.
+        $id = $this->getValorParmViaRota(0);
+        if(isset($id)){
+            $id = (int) $id;
+        } else {            
+            $id = 0;
+        }
+     
+        //Obter dados do usuário-----
+        try {
+            
+            $arrDadosUs = $this->objTrabalho->getDadosCadastrais($id);
+
+            #Em caso de erro
+            if(empty($arrDadosUs)){
+                #Finalizando
+                $this->_emitirErroUsNaoEncontrado_EXIT();
+            }
+
+        } catch(DBException $e){ //Em caso de erro de banco de dados.
+            
+            //$e->debug();
+
+            # Lançando erro geral de banco de dados
+            Views::abrir(_ID_VIEW_GERAL_ERRODB_);    
+
+            exit;
+        }
+        //------------------------------
+
+        //Impedindo que o usuário tente alterar a própria senha por esta via. Este é uma questão de segurança.
+        if($arrInfsUsLogado['id'] == $arrDadosUs['id']){
+            header("Location: ".\Sistema\Rotas::gerarLink('rota.admin.minhaConta.altSenha'));
+            exit;
+        }
+
+        //Argumentos padrões do sistema.
+        $arrayArgs = [
+
+            'tituloPagina' => _NOME_SIS_." - Admin / Redefinir Senha Usuário",
+            'auth' =>          $arrInfsUsLogado
+
+        ];
+
+        //Passando dados em branco
+        $arrayReq = [
+            'usuario' =>    $arrDadosUs['usuario']
+        ];
+        
+        $arrayArgs['results'] = [
+            'procAtv' => false, //Indica quando o processo esta sendo realizado
+            'sts' => null,
+            'msg' => "",
+            'parms'=> $arrayReq
+        ];
+
+ 
+        Views::abrir($strIdViewEspecMetodo, $arrayArgs);
+
+    }
+    /**
+     * Processo de Redefinição de senha do usuário
+     *
+     * @return void
+     */
+    public function processoRedefinirSenhaUs() : void{
+
+        #Id view específica deste método
+        $strIdViewEspecMetodo = "admin.usuarios.redefSenha";
+
+        //Obtendo dados do usuário logado
+        $arrInfsUsLogado = $this->objAuth->getArrayCacheDadosUsuarioLogado();
+
+        //Obtendo e tratando parâmetro da rota.
+        $id = $this->getValorParmViaRota(0);
+        if(isset($id)){
+            $id = (int) $id;
+        } else {            
+            $id = 0;
+        }
+
+        //Tentando obter os dados cadastrais do usuário ---
+        try {
+
+            //Consultando dados do usuário a ser alterado.
+            $arrDadosUs = $this->objTrabalho->getDadosCadastrais($id);
+
+            #Em caso de erro
+            if(empty($arrDadosUs)){
+                #Finalizando
+                $this->_emitirErroUsNaoEncontrado_EXIT();
+            }
+        
+        } catch(DBException $e){ //Err
+
+            # Lançando erro geral de banco de dados
+            Views::abrir(_ID_VIEW_GERAL_ERRODB_);    
+
+            exit;
+        }
+        //---------------
+
+        //Impedindo que o usuário tente alterar a própria senha por esta via. Este é uma questão de segurança.
+        if($arrInfsUsLogado['id'] == $arrDadosUs['id']){
+            header("Location: ".\Sistema\Rotas::gerarLink('rota.admin.minhaConta.altSenha'));
+            exit;
+        }
+
+        //Obtendo a nova senha direto do parâmetro da requisição
+        $novaSenha = $this->getValorParmRequest("nse") ?? "";
+
+        //Gerando dados para o encaminhamento para a view
+        $arrayReq = [
+            'usuario' => $arrDadosUs['usuario']
+        ];
+
+        try {
+            
+            //Tentando realizar operação
+            $this->objTrabalho->redefinirSenha($arrDadosUs['id'], $novaSenha);
+
+            //Argumentos padrões do sistema.
+            $arrayArgs = [
+
+                'tituloPagina' => _NOME_SIS_." - Admin / Redefinir Senha Usuário",
+                'auth' =>          $arrInfsUsLogado
+
+            ];
+
+            //Enviando mensagem de sucesso!
+            $arrayArgs['results'] = [
+                'procAtv' => true, //Indica quando o processo esta sendo realizado
+                'sts' => true,
+                'msg' => "A senha do usuário foi redefinida com sucesso!",
+                'parms'=> $arrayReq
+            ];
+
+            Views::abrir($strIdViewEspecMetodo, $arrayArgs);
+        
+        } catch(DBException $e){ //Em caso de erro de banco de dados.
+            
+            //$e->debug();
+            //Views::abrir(_ID_VIEW_GERAL_ERRODB_);
+
+            //Argumentos padrões do sistema.
+            $arrayArgs = [
+
+                'tituloPagina' => _NOME_SIS_." - Admin / Redefinir Senha Usuário",
+                'auth' =>          $arrInfsUsLogado
+
+            ];
+
+            $arrayArgs['results'] = [
+                'procAtv' => true, //Indica quando o processo esta sendo realizado
+                'sts' => false,
+                'msg' => "Desculpe! Ocorre uma falha interna na operação! Tente mais tarde por gentileza. #DB0001",
+                'parms'=> $arrayReq
+            ];
+
+            Views::abrir($strIdViewEspecMetodo, $arrayArgs);
+            
+
+        } catch (\Exception $e) { //Erro no procedimento.
+
+            //Argumentos padrões do sistema.
+            $arrayArgs = [
+
+                'tituloPagina' => _NOME_SIS_." - Admin / Redefinir Senha Usuário",
+                'auth' =>          $arrInfsUsLogado
+
+            ];
+
+            $arrayArgs['results'] = [
+                'procAtv' => true, //Indica quando o processo esta sendo realizado
+                'sts' => false,
+                'msg' => $e->getMessage(),
+                'parms'=> $arrayReq
+            ];
+
+            Views::abrir($strIdViewEspecMetodo, $arrayArgs);
+        }        
+
+    }
+
 }
 
 ?>

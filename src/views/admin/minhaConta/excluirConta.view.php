@@ -2,7 +2,7 @@
 
 <body>
 
-    <h3>Excluir conta</h3>
+    <h3>Excluir Minha Conta</h3>
 
     <?php if(!$results['sts']): ?>        
         <?php if($results['msg']): ?>   
@@ -22,7 +22,7 @@
             </h2>
             
             <div>
-                <input type="submit" value="Excluir"> <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink(_ROTA_ADMIN_HOME_) ?>'" value="voltar">
+                <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink(_ROTA_ADMIN_HOME_) ?>'" value="cancelar"> <input type="submit" value="Confirmar Exclusão">
             </div>
 
         </form>

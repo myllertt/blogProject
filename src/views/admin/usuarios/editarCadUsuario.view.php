@@ -63,7 +63,7 @@
             </div>
 
             <div>
-               <input type="submit" value="Editar"> <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink('rota.admin.usuarios.listar') ?>'" value="voltar">
+                <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink('rota.admin.usuarios.listar') ?>'" value="cancelar"> <input type="submit" value="Editar">
             </div>
 
         </form>

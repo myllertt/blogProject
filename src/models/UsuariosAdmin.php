@@ -247,10 +247,11 @@ class UsuariosAdmin {
         $this->_verificarObjDB();
 
         $strSql = "
-            UPDATE 
+            UPDATE
                 "._TAB_UsAdmin_."
             SET
-                hashSenha = ?
+                hashSenha = ?,
+                dataAt = now()
             WHERE
                 id = ?
             LIMIT 1
@@ -480,15 +481,42 @@ class UsuariosAdmin {
 
         //Validando o campo (nova senha)
         $this->_validarCampoSenha($novaSenha, "campo (nova senha)");
-
+        
         //Obter dados cadastrais para comparação da senha atual;
         $resCons = $this->getDadosCadastrais($idUsuario, true);
+
+        //Verificando se o usuário foi encontrado
+        if(empty($resCons)){
+            throw new \Exception("Erro! Usuário não localizado! #1002", 1002);
+        }
 
         //Verificando se a senha atual confere
         if($resCons['hashSenha'] != $hashSenha_atual){
             throw new \Exception("Erro! A senha atual não confere com a registrada no sistema!", 9999);
         }
 
+        $this->_atualizarSenhaUsuarioBancoDado($idUsuario, $this->_gerarHashSenha($novaSenha));
+
+    }
+
+    //Redefinição de senha (Neste caso não é requisitado a confirmação da senha antiga)
+    public function redefinirSenha(int $idUsuario, string $novaSenha) : void{ #throw DBException, \Exception
+
+        if($idUsuario == 0)
+            throw new \Exception("Erro! Usuário não localizado!", 1001);
+
+        //Validando o campo (nova senha)
+        $this->_validarCampoSenha($novaSenha, "campo (nova senha)");
+        
+        //Obter dados cadastrais para comparação da senha atual;
+        $resCons = $this->getDadosCadastrais($idUsuario, true);
+
+        //Verificando se o usuário foi encontrado
+        if(empty($resCons)){
+            throw new \Exception("Erro! Usuário não localizado! #1002", 1002);
+        }
+
+        //Realizando alteração no banco de dados.
         $this->_atualizarSenhaUsuarioBancoDado($idUsuario, $this->_gerarHashSenha($novaSenha));
 
     }

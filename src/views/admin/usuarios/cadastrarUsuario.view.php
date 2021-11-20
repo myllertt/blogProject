@@ -65,7 +65,7 @@
             </div> 
             
             <div>
-               <input type="submit" value="Cadastrar">
+                <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink('rota.admin.usuarios.listar') ?>'" value="cancelar"> <input type="submit" value="cadastrar">
             </div>
 
         </form>

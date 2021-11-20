@@ -54,10 +54,16 @@ class PostsController extends Controlador{
             
             $arrayDadosPost = $this->objPost->obterPostAtivo( $id );
 
+            if(!empty($arrayDadosPost)){
+                $tituloPagina = _NOME_SIS_." - ".$arrayDadosPost['titulo'];
+            } else {
+                $tituloPagina = _NOME_SIS_." - Postagem não encontrada";
+            }
+
             //Argumentos padrões do sistema.            
             $arrayArgs = [
 
-                'tituloPagina' => _NOME_SIS_." - ".$arrayDadosPost['titulo'],
+                'tituloPagina' => $tituloPagina,
 
             ];
             

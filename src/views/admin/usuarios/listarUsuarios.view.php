@@ -50,7 +50,7 @@
                     </td>
                     <td>
                         <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink('rota.admin.usuarios.editCadUs', $reg['id']) ?>'" value="editar">
-                        <input type="button" onclick="alert('Configurar')" value="redefinir senha">
+                        <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink('rota.admin.usuarios.redefSenha', $reg['id']) ?>'" value="redefinir senha">
                         <input type="button" onclick="confirmarExclusao('<?php echo \Sistema\Rotas::gerarLink('rota.admin.usuarios.excluir', $reg['id']) ?>')" value="excluir">
                     </td>
                 </tr>

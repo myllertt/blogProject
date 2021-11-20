@@ -324,7 +324,6 @@ try {
         __DIR_CONTROLADORES__."/admin/UsuariosAdminController.php",  # Endereço de inclusão do arquivo controlador respectivo
         'rota.admin.usuarios.cadastro'                                      # Nome da rota.
     );
-
     //Processo Cadastrar Usuário
     $objProcessamentoRotas->definirRota_POST(
         "/admin/usuarios/cadastrar",                                        # Rota HTTP
@@ -343,7 +342,6 @@ try {
         __DIR_CONTROLADORES__."/admin/UsuariosAdminController.php",  # Endereço de inclusão do arquivo controlador respectivo
         'rota.admin.usuarios.editCadUs'                                      # Nome da rota.
     );
-
     //Processo Editar cadastro de usuário específico
     $objProcessamentoRotas->definirRota_PUT(
         "/admin/usuarios/editarCad/{id}",                                        # Rota HTTP
@@ -352,6 +350,7 @@ try {
         null,                                                               # Argumento passado 
         __DIR_CONTROLADORES__."/admin/UsuariosAdminController.php",  # Endereço de inclusão do arquivo controlador respectivo
     );
+
 
     //Processo de exclusão de usuário
     $objProcessamentoRotas->definirRota_DELETE(
@@ -364,6 +363,83 @@ try {
     );
 
 
+    //Tela Redefinir senha usuário
+    $objProcessamentoRotas->definirRota_GET(
+        "/admin/usuarios/redefSenha/{id}",                               # Rota HTTP
+        "UsuariosAdminController",                                          # Nome Classe Controlador
+        "telaRedefinirSenhaUs",                                                 # Nome método inicial de ataque
+        null,                                                           # Argumento passado 
+        __DIR_CONTROLADORES__."/admin/UsuariosAdminController.php",  # Endereço de inclusão do arquivo controlador respectivo
+        'rota.admin.usuarios.redefSenha'                                      # Nome da rota.
+    );
+    //Processo Redefinir senha usuário
+    $objProcessamentoRotas->definirRota_PUT(
+        "/admin/usuarios/redefSenha/{id}",                                        # Rota HTTP
+        "UsuariosAdminController",                                   # Nome Classe Controlador
+        "processoRedefinirSenhaUs",                                           # Nome método inicial de ataque
+        null,                                                               # Argumento passado 
+        __DIR_CONTROLADORES__."/admin/UsuariosAdminController.php",  # Endereço de inclusão do arquivo controlador respectivo
+    );
+
+
+    //Posts ---------------------------------------------
+
+    //Tela Listar usuários
+    $objProcessamentoRotas->definirRota_GET(
+        "/admin/posts/listar",                                       # Rota HTTP
+        "AdminPostsController",                                          # Nome Classe Controlador
+        "telaListagem",                                                 # Nome método inicial de ataque
+        null,                                                           # Argumento passado 
+        __DIR_CONTROLADORES__."/admin/AdminPostsController.php",  # Endereço de inclusão do arquivo controlador respectivo
+        'rota.admin.posts.listar'                                      # Nome da rota.
+    );
+    //Tela Listar paginação
+    $objProcessamentoRotas->definirRota_GET(
+        "/admin/posts/listar/pag/{pagina}",                                       # Rota HTTP
+        "AdminPostsController",                                          # Nome Classe Controlador
+        "telaListagem",                                                 # Nome método inicial de ataque
+        null,                                                           # Argumento passado 
+        __DIR_CONTROLADORES__."/admin/AdminPostsController.php",  # Endereço de inclusão do arquivo controlador respectivo
+        'rota.admin.posts.listar.pagina'                                      # Nome da rota.
+    );
+
+
+    // Tela de Criação de Postagem
+    $objProcessamentoRotas->definirRota_GET(
+        "/admin/posts/postar",                                       # Rota HTTP
+        "AdminPostsController",                                          # Nome Classe Controlador
+        "telaCriarPostagem",                                                 # Nome método inicial de ataque
+        null,                                                           # Argumento passado 
+        __DIR_CONTROLADORES__."/admin/AdminPostsController.php",  # Endereço de inclusão do arquivo controlador respectivo
+        'rota.admin.posts.postar'                                      # Nome da rota.
+    );
+    // Processo de Criação de Postagem
+    $objProcessamentoRotas->definirRota_POST(
+        "/admin/posts/postar",                                        # Rota HTTP
+        "AdminPostsController",                                   # Nome Classe Controlador
+        "processoCriarPostagem",                                           # Nome método inicial de ataque
+        null,                                                               # Argumento passado 
+        __DIR_CONTROLADORES__."/admin/AdminPostsController.php",  # Endereço de inclusão do arquivo controlador respectivo
+    );
+
+
+    //Tela editar postagem
+    $objProcessamentoRotas->definirRota_GET(
+        "/admin/posts/editar/{id}",                                       # Rota HTTP
+        "AdminPostsController",                                  # Nome Classe Controlador
+        "telaEditarPostagem",                                            # Nome método inicial de ataque
+        null,                                                           # Argumento passado 
+        __DIR_CONTROLADORES__."/admin/AdminPostsController.php",  # Endereço de inclusão do arquivo controlador respectivo
+        'rota.admin.posts.edit.id'                                      # Nome da rota.
+    );
+    //Processo editar postagem
+    $objProcessamentoRotas->definirRota_PUT(
+        "/admin/posts/editar/{id}",                                       # Rota HTTP
+        "AdminPostsController",                                  # Nome Classe Controlador
+        "processoEditarPostagem",                                       # Nome método inicial de ataque
+        null,                                                           # Argumento passado 
+        __DIR_CONTROLADORES__."/admin/AdminPostsController.php",  # Endereço de inclusão do arquivo controlador respectivo
+    );
     
 
     #========================================================================================
