@@ -87,7 +87,7 @@ class UsuariosAdmin {
 
         #nome----------
         if($nome == "")
-            throw new \Exception("Informe o nome do usuário", 1006);
+            throw new \Exception("Informe o primeiro nome do usuário", 1006);
 
         $len = strlen($nome);
 
@@ -158,6 +158,7 @@ class UsuariosAdmin {
     private function _inserirNovoUsuarioBancoDados(array $arrayDados) : void{ #throw DBException
 
         /*
+            'status'
             'usuario'
             'hashSenha'
             'nome'
@@ -170,11 +171,11 @@ class UsuariosAdmin {
 
         $strSql = "
 
-            INSERT INTO 
+            INSERT INTO
                 "._TAB_UsAdmin_."
-                    (usuario,hashSenha,nome,sobrenome,email,genero)
+                    (status,usuario,hashSenha,nome,sobrenome,email,genero)
                 VALUES
-                    (?,?,?,?,?,?)
+                    (?,?,?,?,?,?,?)
         ";
 
         //Tentando preparar a consulta.
@@ -186,7 +187,7 @@ class UsuariosAdmin {
         }
 
         //Setando parâmetros
-        $objStmt->bind_param('ssssss', $arrayDados['usuario'], $arrayDados['hashSenha'], $arrayDados['nome'], $arrayDados['sobrenome'], $arrayDados['email'], $arrayDados['genero']);
+        $objStmt->bind_param('sssssss', $arrayDados['status'], $arrayDados['usuario'], $arrayDados['hashSenha'], $arrayDados['nome'], $arrayDados['sobrenome'], $arrayDados['email'], $arrayDados['genero']);
         
         //Caso não execute
         if(!$objStmt->execute()){
@@ -216,7 +217,8 @@ class UsuariosAdmin {
                 nome = ?,
                 sobrenome = ?,
                 email = ?,
-                genero = ?
+                genero = ?,
+                dataAt = now()
             WHERE
                 id = ?
         ";
@@ -236,6 +238,7 @@ class UsuariosAdmin {
         if(!$objStmt->execute()){
             throw new DBException("Ocorreu uma falha no DB", $objStmt->errno, $objStmt->error, null);
         }
+
     }
 
     //Atualiza a senha do usuário no banco de dados.
@@ -323,6 +326,71 @@ class UsuariosAdmin {
 
     }
 
+    private function _getListaUsuarios(array $arrayCampos, int $limite = null) : array{ #throw DBException
+           
+        $this->_verificarObjDB();
+
+        //Verificando array campos
+        if(count($arrayCampos) <= 0)
+            throw new DBException("Ocorreu uma falha no DB.", 0, get_class($this).": Não foram informados os parâmetros corretos", null);
+        
+        //Gerando string de colunas
+        $strCampos = implode(",", $arrayCampos);
+
+        //Tratando limite
+        if($limite === null){
+            $strSQLLimite = "";
+        } else {
+            $strSQLLimite = "LIMIT ".abs($limite); //Mantendo o número sempre positivo
+        }
+
+        //Consulta.
+        $strSql = "
+            SELECT
+                ".$strCampos."
+            FROM
+                "._TAB_UsAdmin_."
+            ".$strSQLLimite."
+        ";
+        
+        //Tentando preparar a consulta.
+        $objStmt = $this->objMysqli->prepare($strSql);
+
+        //Caso não consiga
+        if(!$objStmt){
+            throw new DBException("Ocorreu uma falha no DB.", $this->objMysqli->errno, $this->objMysqli->error, null);
+        }
+
+        //Setando parâmetros
+        //$objStmt->bind_param('i', $);
+
+        //Caso não execute
+        if(!$objStmt->execute()){
+            throw new DBException("Ocorreu uma falha no DB", $objStmt->errno, $objStmt->error, null);
+        }
+
+        //Somente operacional em queries que retornam valores.
+        $objResult = $objStmt->get_result();
+        if(!$objStmt){
+            throw new DBException("Ocorreu uma falha no DB", $this->objMysqli->errno, $this->objMysqli->error, null);
+        }
+
+        //Caso a consulta não possua resultados
+        if($objResult->num_rows == 0){
+            //Fechando statemment
+            $objStmt->close();
+            return [];
+        }
+        
+        //Capturando todo o resultado para ser retornado
+        $arrayRetorno = $objResult->fetch_all(MYSQLI_ASSOC);
+        //Fechando statemment
+        $objStmt->close();
+
+        return $arrayRetorno;
+
+    }
+
     function __construct($objMysqli){
         $this->objMysqli = $objMysqli;
 
@@ -330,7 +398,7 @@ class UsuariosAdmin {
     }
     
     //Processo de registro do usuário
-    public function registrarUsuario(string $usuario, string $nome, string $sobrenome, string $genero, string $email, string $senha) : void{ #throw DBException, \Exception
+    public function cadastrarUsuario(string $status = "1", string $usuario, string $nome, string $sobrenome, string $genero, string $email, string $senha) : void{ #throw DBException, \Exception
 
         #usuario----------
         if($usuario == "")
@@ -356,13 +424,14 @@ class UsuariosAdmin {
             throw new \Exception("Erro! o usuário (".$usuario.") já está registrado no sistema! Por gentileza escolha outro!", 1005);
 
         //Validando dados cadastrais comuns
-        $this->_validarDadosCadastraisUsuario($nome, $sobrenome, $genero, $email);
+        $this->_validarDadosCadastraisUsuario($status, $nome, $sobrenome, $genero, $email);
 
         //Validar senha
         $this->_validarCampoSenha($senha);
 
         //Gerando array com dados finais
         $arrayDadosInsert = [
+            'status'        => $status,
             'usuario'       => $usuario,
             'hashSenha'     => $this->_gerarHashSenha($senha),
             'nome'          => trim( TratamentoCaracteres::rmvCharTags($nome)),
@@ -497,6 +566,62 @@ class UsuariosAdmin {
 
         return $arrayRetorno;
 
+    }
+
+    /**
+     * Função responsável por retornar uma lista de usuários
+     *
+     * @param integer|null $limiteRegs 
+     * @return array
+     */
+    public function getUsuarios(int $limiteRegs = null) : array{ #throw DBException
+
+        //Verificando a disposição do limite
+        if($limiteRegs === null || $limiteRegs <= 0)
+            $limiteRegs = null;
+
+        $arrayCampos = [
+            'id',
+            'status',
+            'usuario',
+            'nome',
+            'sobrenome',
+            'dataCad',
+            'dataAt'
+        ];
+
+        //Consultando informações
+        $arrRet = $this->_getListaUsuarios($arrayCampos, $limiteRegs);
+
+        if(empty($arrRet))
+            return []; //Não houve resultados
+
+        //Tratando o array antes de ser enviado
+        foreach ($arrRet as $key => $arrUs) {
+
+            //Gerando nome completo
+            $arrRet[$key]['nomeComp'] = $arrUs['nome']." ".$arrUs['sobrenome'];
+
+            //Adicionado conversão Brasileira de data. (dataCad)
+            $arrRet[$key]['dataHoraCadBR'] = TratamentoCaracteres::dateTimeUSA_DataHoraBR($arrUs['dataCad']);
+
+            //Adicionado conversão Brasileira de dat. (dataAt)
+            if($arrRet[$key]['dataAt'] !== NULL){
+                $arrRet[$key]['dataHoraAtBR'] = TratamentoCaracteres::dateTimeUSA_DataHoraBR($arrUs['dataAt']);
+            } else {
+                $arrRet[$key]['dataHoraAtBR'] = null;
+            }
+
+            //Gerando nomenclatura do status
+            if($arrUs['status'] == "1"){
+                $arrRet[$key]['nomeStatus'] = "ativado";
+            } else {
+                $arrRet[$key]['nomeStatus'] = "desativado";
+            }
+        }
+
+        //Retornando resultado final
+        return $arrRet;
     }
     
     #GETTERS

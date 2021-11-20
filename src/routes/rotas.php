@@ -302,6 +302,67 @@ try {
     );
 
 
+    //Ações Usuários Em Geral ---------------------------------------------
+
+    //Tela Listar usuários
+    $objProcessamentoRotas->definirRota_GET(
+        "/admin/usuarios/listar",                                       # Rota HTTP
+        "UsuariosAdminController",                                          # Nome Classe Controlador
+        "telaListagem",                                                 # Nome método inicial de ataque
+        null,                                                           # Argumento passado 
+        __DIR_CONTROLADORES__."/admin/UsuariosAdminController.php",  # Endereço de inclusão do arquivo controlador respectivo
+        'rota.admin.usuarios.listar'                                      # Nome da rota.
+    );
+
+    
+    //Tela Cadastrar Usuário
+    $objProcessamentoRotas->definirRota_GET(
+        "/admin/usuarios/cadastrar",                                       # Rota HTTP
+        "UsuariosAdminController",                                          # Nome Classe Controlador
+        "telaCadastro",                                                 # Nome método inicial de ataque
+        null,                                                           # Argumento passado 
+        __DIR_CONTROLADORES__."/admin/UsuariosAdminController.php",  # Endereço de inclusão do arquivo controlador respectivo
+        'rota.admin.usuarios.cadastro'                                      # Nome da rota.
+    );
+
+    //Processo Cadastrar Usuário
+    $objProcessamentoRotas->definirRota_POST(
+        "/admin/usuarios/cadastrar",                                        # Rota HTTP
+        "UsuariosAdminController",                                   # Nome Classe Controlador
+        "processoCadastro",                                           # Nome método inicial de ataque
+        null,                                                               # Argumento passado 
+        __DIR_CONTROLADORES__."/admin/UsuariosAdminController.php",  # Endereço de inclusão do arquivo controlador respectivo
+    );
+
+    //Tela Editar cadastro de usuário específico
+    $objProcessamentoRotas->definirRota_GET(
+        "/admin/usuarios/editarCad/{id}",                               # Rota HTTP
+        "UsuariosAdminController",                                          # Nome Classe Controlador
+        "telaEditarCadUs",                                                 # Nome método inicial de ataque
+        null,                                                           # Argumento passado 
+        __DIR_CONTROLADORES__."/admin/UsuariosAdminController.php",  # Endereço de inclusão do arquivo controlador respectivo
+        'rota.admin.usuarios.editCadUs'                                      # Nome da rota.
+    );
+
+    //Processo Editar cadastro de usuário específico
+    $objProcessamentoRotas->definirRota_PUT(
+        "/admin/usuarios/editarCad/{id}",                                        # Rota HTTP
+        "UsuariosAdminController",                                   # Nome Classe Controlador
+        "processoEditarCadUs",                                           # Nome método inicial de ataque
+        null,                                                               # Argumento passado 
+        __DIR_CONTROLADORES__."/admin/UsuariosAdminController.php",  # Endereço de inclusão do arquivo controlador respectivo
+    );
+
+    //Processo de exclusão de usuário
+    $objProcessamentoRotas->definirRota_DELETE(
+        "/admin/usuarios/excluir/{id}",                                        # Rota HTTP
+        "UsuariosAdminController",                                   # Nome Classe Controlador
+        "processoExcluirUs",                                           # Nome método inicial de ataque
+        null,                                                               # Argumento passado 
+        __DIR_CONTROLADORES__."/admin/UsuariosAdminController.php",  # Endereço de inclusão do arquivo controlador respectivo
+        'rota.admin.usuarios.excluir'                                      # Nome da rota.
+    );
+
 
     
 

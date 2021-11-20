@@ -59,9 +59,28 @@ try {
 
 
     # MINHA CONTA
+        //Editar cadastro do usuário
         Views::definir("admin.minhaConta.editarCadastro",   __DIR_VIEWS__."/admin/minhaConta/editarCadastro.view.php");
+        //Alterar senha do usuário
         Views::definir("admin.minhaConta.alterarSenha",     __DIR_VIEWS__."/admin/minhaConta/alterarSenha.view.php");
+        //Excluir conta do usuário
         Views::definir("admin.minhaConta.excluirConta",     __DIR_VIEWS__."/admin/minhaConta/excluirConta.view.php");
+
+    # USUÁRIOS EM GERAL
+        //Listar Usuários
+        Views::definir("admin.usuarios.listar",          __DIR_VIEWS__."/admin/usuarios/listarUsuarios.view.php");
+        //Cadastrar novo usuário
+        Views::definir("admin.usuarios.cadastrar",          __DIR_VIEWS__."/admin/usuarios/cadastrarUsuario.view.php");
+        
+        //Editar cadastro do usuário.
+        Views::definir("admin.usuarios.editCadUs",          __DIR_VIEWS__."/admin/usuarios/editarCadUsuario.view.php");
+
+        //Excluir usuário
+        Views::definir("admin.usuarios.excluir",          __DIR_VIEWS__."/admin/usuarios/excluirUsuario.view.php");
+
+    # EMISSÕES DE ERRO.
+        Views::definir("admin.usuarios.erroUsNaoEnc",          __DIR_VIEWS__."/admin/usuarios/emitirErroUsNaoEncontrado.view.php");
+
     # ----------------------------------------------
 
 

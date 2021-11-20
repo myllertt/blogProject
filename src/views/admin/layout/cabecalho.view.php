@@ -12,6 +12,10 @@
 <div>
     <H1>Blog Project - Área Administrativa</H1>
     <ul>
+        <li><a href="<?php echo \Sistema\Rotas::gerarLink('rota.admin.usuarios.listar') ?>">Listar Usuários</a></li>
+        <li><a href="<?php echo \Sistema\Rotas::gerarLink('rota.admin.usuarios.cadastro') ?>">Cadastrar Usuário</a></li>
+    </ul>
+    <ul>
         <li><a href="<?php echo \Sistema\Rotas::gerarLink('rota.admin.minhaConta.editCad') ?>">Alterar Cadastro</a></li>
         <li><a href="<?php echo \Sistema\Rotas::gerarLink('rota.admin.minhaConta.altSenha') ?>">Alterar Senha</a></li>
         <li><a href="<?php echo \Sistema\Rotas::gerarLink('rota.admin.minhaConta.excConta') ?>">Excluir Conta</a></li>
