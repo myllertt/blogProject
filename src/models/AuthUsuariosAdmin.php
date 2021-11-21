@@ -2,6 +2,9 @@
 
 use Sistema\DB\Exceptions\DBException;
 
+use Sistema\PermissoesACL;
+use Sistema\PermissoesACL\ACL_PERM;
+
 //Esta classe necessita de métodos da classe TratamentoCaracteres
 require_once(__DIR_SYSLIBS__."/"."TratamentoCaracteres.php");
 
@@ -148,7 +151,7 @@ class AuthUsuariosAdmin {
 
             $strSql = "
             SELECT
-                id,nome,status,sobrenome,usuario
+                id,nome,status,sobrenome,usuario,basePermsACL
             FROM
                 "._TAB_UsAdmin_."
             WHERE
@@ -187,6 +190,58 @@ class AuthUsuariosAdmin {
         }
         
         $arrayRetorno = $objResult->fetch_assoc();
+        //Fechando statemment
+        $objStmt->close();
+
+        return $arrayRetorno;
+
+    }
+
+    //Obtém um array de permissões registradas para o usuário.
+    private function _obterPermissoesUsuarioBancoDados(int $idUsuario): array { #throw DBException
+
+        $this->_verificarObjDB();
+
+        $strSql = "
+            SELECT
+                codigo
+            FROM
+                "._TAB_PermsUsAdm_."
+            WHERE
+                idUsuario = ?
+        ";
+        
+
+        //Tentando preparar a consulta.
+        $objStmt = $this->objMysqli->prepare($strSql);
+
+        //Caso não consiga
+        if(!$objStmt){
+            throw new DBException("Ocorreu uma falha no DB.", $this->objMysqli->errno, $this->objMysqli->error, null);
+        }
+
+        //Setando parâmetros
+        $objStmt->bind_param('i', $idUsuario);
+
+        //Caso não execute
+        if(!$objStmt->execute()){
+            throw new DBException("Ocorreu uma falha no DB", $objStmt->errno, $objStmt->error, null);
+        }
+
+        //Somente operacional em queries que retornam valores.
+        $objResult = $objStmt->get_result();
+        if(!$objStmt){
+            throw new DBException("Ocorreu uma falha no DB", $this->objMysqli->errno, $this->objMysqli->error, null);
+        }
+
+        //Caso a consulta não possua resultados
+        if($objResult->num_rows == 0){
+            //Fechando statemment
+            $objStmt->close();
+            return [];
+        }
+        
+        $arrayRetorno = $objResult->fetch_all(MYSQLI_ASSOC);
         //Fechando statemment
         $objStmt->close();
 
@@ -430,6 +485,7 @@ class AuthUsuariosAdmin {
             'usuario' => $resCons['usuario'],
             'nome' => $resCons['nome'],
             'sobrenome' => $resCons['sobrenome'],
+            'basePermsACL' => $resCons['basePermsACL'] //Útil para o gerenciamento permissões do usuário logado
         ];
 
         //Atualizando tempo de sessão no banco de dados do usuário.
@@ -451,6 +507,43 @@ class AuthUsuariosAdmin {
         unset($arrayRet['sts']);
 
         return $arrayRet;
+    }
+
+    //Obtem um objeto do tipo: PermissoesACL já configurado com as permissões do usuário.
+    public function getObjPermissoesACL_DeUsuarioLogado() { #throw DBException
+        
+        //obtendo dados do usuário logado.
+        $arrDadosUsLogado = $this->getArrayCacheDadosUsuarioLogado();
+
+        //Verificando o estado da sessão atual
+        if(empty($arrDadosUsLogado))
+            return false; //Falha no processo.
+
+        //Obtendo permissões diretamente do banco de dados.
+        $arrayPermsDB = $this->_obterPermissoesUsuarioBancoDados($arrDadosUsLogado['id']);
+        
+        //Instanciando objeto de permissões.
+        $objPermissoesACL = new PermissoesACL();
+
+        //Configurando objeto de acordo com as definições o usuário
+        if($arrDadosUsLogado['basePermsACL'] == 'negar'){
+            $objPermissoesACL->definirRegraPadComo_negar(); //Regra base padrão = negar
+        } else {
+            $objPermissoesACL->definirRegraPadComo_permtir(); //Regra base padrão = permitir   
+        }
+
+        //Alimentando o objeto com as permissões do usuário
+        foreach ($arrayPermsDB as $ele) {
+            
+            //Inserindo objetos - Em caso de erro a permissão será ignorada
+            $objPermissoesACL->addObj_ACL_PERM( new ACL_PERM( $ele['codigo'] ));
+        }
+
+        //Finalizando configurações do objeto
+        $objPermissoesACL->finalizarConfigs();
+
+        //Finalmente retornando o objeto de permissões
+        return $objPermissoesACL;
     }
     
     #GETTERS

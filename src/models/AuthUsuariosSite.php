@@ -425,7 +425,7 @@ class AuthUsuariosSite {
             'id' => $resCons['id'],
             'usuario' => $resCons['usuario'],
             'nome' => $resCons['nome'],
-            'sobrenome' => $resCons['sobrenome'],
+            'sobrenome' => $resCons['sobrenome']
         ];
 
         //Atualizando tempo de sessão no banco de dados do usuário.

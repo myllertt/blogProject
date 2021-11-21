@@ -45,6 +45,35 @@ class AdminPostsController extends Controlador{
         
     }
 
+    //Realiza o processo de verificar as permissões ACL para este conteúdo.
+    private function _verificarPermissoesACL_AutoRedEExit() : void{
+        
+        //obtendo argumento passado pela rota.
+        $argRaw = $this->getArgRawControlador();
+
+        if(!$argRaw  || !isset($argRaw['objPerm']))
+            return; //Significa que não existe permissões definidas para esta rota.
+
+        try{
+
+            //obtendo objeto já configurado com as permissões do usuário
+            $objPermissoesACL = $this->objAuth->getObjPermissoesACL_DeUsuarioLogado();
+            
+            $resCheck = $objPermissoesACL->verificarEstadoPermissao($argRaw['objPerm']);
+
+            if($resCheck === null){ //Erro inesperado
+                $this->_emitirViewErroInesperado_EXIT();
+            } else if($resCheck === false){ //Não permitido.
+                Views::abrir(_ID_VIEW_ADM_ERRO_SEMPERM_);
+                exit;
+            }
+
+        } catch(DBException $e){ //Em caso de erro de banco de dados.
+            Views::abrir(_ID_VIEW_GERAL_ERRODB_);
+            exit;
+        }
+    }
+
     /**
      * Instancia de objetos pertinentes à classe
      *
@@ -95,6 +124,9 @@ class AdminPostsController extends Controlador{
 
         //Certifica de que tudo que chegue nesta classe precise estar logado, independente do método acionado
         $this->_verificarSessaoAtivaDB_AutoRedEExit();
+
+        //Verificação das permissões ACL
+        $this->_verificarPermissoesACL_AutoRedEExit();
     }
 
     //Listar Usuário
@@ -462,6 +494,118 @@ class AdminPostsController extends Controlador{
             $arrayArgs = [
 
                 'tituloPagina' => _NOME_SIS_." - Admin / Editar Postagem",
+                'auth' =>          $arrInfsUsLogado
+
+            ];
+
+            $arrayArgs['results'] = [
+                'procAtv' => true, //Indica quando o processo esta sendo realizado
+                'sts' => false,
+                'msg' => $e->getMessage(),
+                'parms'=> $arrayReq
+            ];
+
+            Views::abrir($strIdViewEspecMetodo, $arrayArgs);
+        }        
+
+    }
+
+
+    # Excluir Postagem ------------------
+    //Processo de exclusão de postagem
+    public function processoExcluirPostagem() : void{
+
+        #Id view específica deste método
+        $strIdViewEspecMetodo = "admin.posts.excluir";
+
+        //Obtendo dados do usuário logado
+        $arrInfsUsLogado = $this->objAuth->getArrayCacheDadosUsuarioLogado();
+
+        //Obtendo e tratando parâmetro da rota.
+        $id = $this->getValorParmViaRota(0);
+        if(isset($id)){
+            $id = (int) $id;
+        } else {            
+            $id = 0;
+        }
+        
+        //Tentando obter os dados do DB
+        try {
+
+            //Consultando dados do objeto pertinente no banco dados
+            $arrDadosDB = $this->objTrabalho->getDadosPostagem($id);
+
+            #Em caso de erro
+            if(empty($arrDadosDB)){
+                #Finalizando
+                $this->_emitirErroRegsNaoEncontrado_EXIT();
+            }
+        
+        } catch(DBException $e){ //Err
+
+            # Lançando erro geral de banco de dados
+            Views::abrir(_ID_VIEW_GERAL_ERRODB_);    
+
+            exit;
+        }
+
+        
+        //Obtendo dados da requisição
+        $arrayReq = [
+        ];
+
+        try {
+            
+            //Removendo usuário
+            $this->objTrabalho->excluirPostagem($arrDadosDB['id']);
+
+            //Argumentos padrões do sistema.
+            $arrayArgs = [
+
+                'tituloPagina' => _NOME_SIS_." - Admin / Excluir Postagem",
+                'auth' =>          $arrInfsUsLogado
+
+            ];
+
+            //Enviando mensagem de sucesso!
+            $arrayArgs['results'] = [
+                'procAtv' => true, //Indica quando o processo esta sendo realizado
+                'sts' => true,
+                'msg' => "A postagem foi excluída com sucesso!",
+                'parms'=> $arrayReq
+            ];
+
+            Views::abrir($strIdViewEspecMetodo, $arrayArgs);
+        
+        } catch(DBException $e){ //Em caso de erro de banco de dados.
+            
+            //$e->debug();
+            //Views::abrir(_ID_VIEW_GERAL_ERRODB_);
+
+            //Argumentos padrões do sistema.
+            $arrayArgs = [
+
+                'tituloPagina' => _NOME_SIS_." - Admin / Excluir Usuário",
+                'auth' =>          $arrInfsUsLogado
+
+            ];
+
+            $arrayArgs['results'] = [
+                'procAtv' => true, //Indica quando o processo esta sendo realizado
+                'sts' => false,
+                'msg' => "Desculpe! Ocorre uma falha interna na operação! Tente mais tarde por gentileza. #DB0001",
+                'parms'=> $arrayReq
+            ];
+
+            Views::abrir($strIdViewEspecMetodo, $arrayArgs);
+            
+
+        } catch (\Exception $e) { //Erro no procedimento.
+
+            //Argumentos padrões do sistema.
+            $arrayArgs = [
+
+                'tituloPagina' => _NOME_SIS_." - Admin / Excluir Usuário",
                 'auth' =>          $arrInfsUsLogado
 
             ];

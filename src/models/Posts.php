@@ -146,6 +146,48 @@ class Posts {
 
     }
 
+    //Exlcuir do banco de dados uma determinada postagem
+    private function _excluirPostagemBancoDados(int $idPostagem) : bool { #throw DBException
+
+        $this->_verificarObjDB();
+
+        $strSql = "
+            DELETE
+            FROM
+                "._TAB_Posts_."
+            WHERE
+                id = ?
+        ";
+
+        //Tentando preparar a consulta.
+        $objStmt = $this->objMysqli->prepare($strSql);
+
+        //Caso não consiga
+        if(!$objStmt){
+            throw new DBException("Ocorreu uma falha no DB.", $this->objMysqli->errno, $this->objMysqli->error, null);
+        }
+
+        //Setando parâmetros
+        $objStmt->bind_param('i', $idPostagem);
+        
+        //Caso não execute
+        if(!$objStmt->execute()){
+            throw new DBException("Ocorreu uma falha no DB", $objStmt->errno, $objStmt->error, null);
+        }
+
+        //Verificando se os registros foram afetados
+        if($this->objMysqli->affected_rows > 0){
+            
+            $objStmt->close();
+            return true;
+
+        } else {
+            $objStmt->close();
+            return false;
+        }
+
+    }
+
     function __construct($objMysqli){
         $this->objMysqli = $objMysqli;
 
@@ -537,6 +579,19 @@ class Posts {
         $objStmt->close();
 
         return $arrayRetorno;
+
+    }
+
+    //Processo de exclusão de postagem
+    public function excluirPostagem(int $idPostagem) : void{ #throw DBException, \Exception
+
+        //Conferindo id do usuário
+        if($idPostagem == 0)
+            throw new \Exception("Erro! A postagem não foi localizada!", 1001);
+
+        //Finalmente inserindo dados
+        if(!$this->_excluirPostagemBancoDados($idPostagem))
+            throw new \Exception("Desculpe! Não foi possível realizar esta operação! Tente mais tarde", 5168);
 
     }
     

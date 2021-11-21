@@ -44,6 +44,35 @@ class AcoesMinhaContaUsAdmController extends Controlador{
         }
         
     }
+    
+    //Realiza o processo de verificar as permissões ACL para este conteúdo.
+    private function _verificarPermissoesACL_AutoRedEExit() : void{
+        
+        //obtendo argumento passado pela rota.
+        $argRaw = $this->getArgRawControlador();
+
+        if(!$argRaw  || !isset($argRaw['objPerm']))
+            return; //Significa que não existe permissões definidas para esta rota.
+
+        try{
+
+            //obtendo objeto já configurado com as permissões do usuário
+            $objPermissoesACL = $this->objAuth->getObjPermissoesACL_DeUsuarioLogado();
+            
+            $resCheck = $objPermissoesACL->verificarEstadoPermissao($argRaw['objPerm']);
+
+            if($resCheck === null){ //Erro inesperado
+                $this->_emitirViewErroInesperado_EXIT();
+            } else if($resCheck === false){ //Não permitido.
+                Views::abrir(_ID_VIEW_ADM_ERRO_SEMPERM_);
+                exit;
+            }
+
+        } catch(DBException $e){ //Em caso de erro de banco de dados.
+            Views::abrir(_ID_VIEW_GERAL_ERRODB_);
+            exit;
+        }
+    }
 
     /**
      * Instancia de objetos pertinentes à classe
@@ -83,6 +112,9 @@ class AcoesMinhaContaUsAdmController extends Controlador{
 
         //Certifica de que tudo que chegue nesta classe precise estar logado, independente do método acionado
         $this->_verificarSessaoAtivaDB_AutoRedEExit();
+
+        //Verificação das permissões ACL
+        $this->_verificarPermissoesACL_AutoRedEExit();
     }
 
    

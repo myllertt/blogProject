@@ -53,7 +53,7 @@
                   
                     <td>
                         <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink('rota.admin.posts.edit.id', $reg['id']) ?>'" value="editar">
-                        <input type="button" onclick="confirmarExclusao('<?php echo \Sistema\Rotas::gerarLink('rota.admin.usuarios.excluir', $reg['id']) ?>')" value="excluir">
+                        <input type="button" onclick="confirmarExclusao('<?php echo \Sistema\Rotas::gerarLink('rota.admin.posts.excluir.id', $reg['id']) ?>')" value="excluir">
                     </td>
                 </tr>
 

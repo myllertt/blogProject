@@ -21,10 +21,18 @@ Documentação de Instalação do sistema.
         Require all granted
 </Directory>
 
-*/
+* No diretório "/var/www/blogProject/src/public/" haverá o arquivo ".htaccess" onde nele haverá uma configuração fazendo com que toda o trafego do site seja direcionado para para o "/index.php". Pois foi desenvolvido um processamento de rotas próprio.
 
+[BANCO DE DADOS]
 * Configurando parâmetros do banco de dados.
 
 # Neste caso definidos no arquivo abaixo (DBConeConfigs.php)
 	
 blogProject/src/configs/DBConeConfigs.php
+
+* Caso este arquivo não esteja presente, procure por "DBConeConfigs.php.example", neste caso é só fazer uma cópia dele, configurar os parâmetros e colocar o nome correto "DBConeConfigs.php"
+
+
+[TESTE]
+* Para realizar um teste rápido no sistema de rotas e também na conexão com o banco de dados é só acessar O LINK "/teste_sistema". Caso retorne um erro 404, signfica que o processamento de rotas não esta funcionado. Neste caso é bom verificar se o módulo rewrite realmente esta ativado no apache.
+

@@ -95,12 +95,16 @@ try {
         //Editar postagem
         Views::definir("admin.posts.editar",          __DIR_VIEWS__."/admin/posts/editarPostagem.view.php");
         
+        //Excluir postagem.
+        Views::definir("admin.posts.excluir",          __DIR_VIEWS__."/admin/posts/excluirPostagem.view.php");
+        
 
 
         # EMISSÃO ERRO REGISTRO NÃO ENCONTRADO
         Views::definir("admin.posts.erroRegsNaoEnc",          __DIR_VIEWS__."/admin/posts/emitirErroRegsNaoEncontrado.view.php");
 
-
+    # ERROS
+        Views::definir("admin.erros.semPermissao",          __DIR_VIEWS__."/admin/erros/semPermissao.view.php");
 
     # ----------------------------------------------
 

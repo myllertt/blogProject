@@ -37,7 +37,9 @@ GBCFGS_Views::$srcArqDefinicoesViews = __DIR_VIEWS__."/_definicoesViewsInclusoes
 # Configurações de nomes das tabelas ----
 define("_TAB_Posts_",       "Posts"); 
 define("_TAB_UsAdmin_",     "UsuariosAdmin"); 
-define("_TAB_UsSite_",      "UsuariosSite"); 
+define("_TAB_UsSite_",      "UsuariosSite");
+define("_TAB_Permissoes_",  "Permissoes"); 
+define("_TAB_PermsUsAdm_",  "PermissoesUsuariosAdmin");  
 
 # CONFIGURAÇÕES DO SISTEMA EM SI ---------------------------
 
@@ -48,6 +50,10 @@ define("_NOME_SIS_",                        "Blog Project");
 define("_ID_VIEW_GERAL_ERRODB_",            "errosGerais.ErroDB"); 
 //Erro geral padrão de erro inesperado
 define("_ID_VIEW_GERAL_ERROINESPERADO_",    "errosGerais.ErroInesperado"); 
+
+#IDs views nivel ADMIN
+//Erro no nível ADMIN, quando o usuário não tem permissões para acessar algum determinado conteúdo
+define("_ID_VIEW_ADM_ERRO_SEMPERM_",            "admin.erros.semPermissao"); 
 
 # Rotas gerais sistema ..........................................
 //Site Login
