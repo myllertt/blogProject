@@ -539,7 +539,7 @@ class UsuariosAdmin {
         if(!$incluirHashSenha){
             $strSql = "
                 SELECT
-                    id,status,usuario,nome,sobrenome,email,genero
+                    id,status,usuario,nome,sobrenome,email,genero,basePermsACL
                 FROM
                     "._TAB_UsAdmin_."
                 WHERE
@@ -549,7 +549,7 @@ class UsuariosAdmin {
         } else {
             $strSql = "
                 SELECT
-                    id,status,usuario,hashSenha,nome,sobrenome,email,genero
+                    id,status,usuario,hashSenha,nome,sobrenome,email,genero,basePermsACL
                 FROM
                     "._TAB_UsAdmin_."
                 WHERE

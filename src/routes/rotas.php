@@ -387,6 +387,25 @@ try {
     );
 
 
+    //Tela Editar Permissões de acesso
+    $objProcessamentoRotas->definirRota_GET(
+        "/admin/usuarios/editarPerms/{id}",                               # Rota HTTP
+        "ManipulacaoPermissoesUsAdmController",                                          # Nome Classe Controlador
+        "telaEditarPermissoesAcesso",                                                 # Nome método inicial de ataque
+        ['objPerm' => new ACL_PERM("users_editperms")],                                                           # Argumento passado 
+        __DIR_CONTROLADORES__."/admin/ManipulacaoPermissoesUsAdmController.php",  # Endereço de inclusão do arquivo controlador respectivo
+        'rota.admin.usuarios.editPermsAc.id'                                      # Nome da rota.
+    );
+    //Processo Editar Permissões de acesso
+    $objProcessamentoRotas->definirRota_PUT(
+        "/admin/usuarios/editarPerms/{id}",                                        # Rota HTTP
+        "ManipulacaoPermissoesUsAdmController",                                   # Nome Classe Controlador
+        "processoPermissoesAcesso",                                           # Nome método inicial de ataque
+        ['objPerm' => new ACL_PERM("users_editperms")],                                                               # Argumento passado 
+        __DIR_CONTROLADORES__."/admin/ManipulacaoPermissoesUsAdmController.php",  # Endereço de inclusão do arquivo controlador respectivo
+    );
+
+
     //Posts ---------------------------------------------
 
     //Tela Listar usuários

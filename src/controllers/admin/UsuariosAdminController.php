@@ -357,6 +357,7 @@ class UsuariosAdminController extends Controlador{
 
         //Passando dados em branco
         $arrayReq = [
+            'id' =>         $arrDadosUs['id'],
             'usuario' =>    $arrDadosUs['usuario'],
             'nome' =>       $arrDadosUs['nome'],
             'status' =>     $arrDadosUs['status'],
@@ -419,6 +420,7 @@ class UsuariosAdminController extends Controlador{
 
         //Obtendo dados da requisição
         $arrayReq = [
+            'id' => $arrDadosUs['id'],
             'usuario' => $arrDadosUs['usuario'],
             'status' => $this->getValorParmRequest("sts") ?? "",
             'nome' => $this->getValorParmRequest("nme") ?? "",

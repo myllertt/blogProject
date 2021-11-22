@@ -81,6 +81,9 @@ try {
         //Redefinir senha do usuário
         Views::definir("admin.usuarios.redefSenha",          __DIR_VIEWS__."/admin/usuarios/redefinirSenhaUsuario.view.php");
 
+        //Editar permissões de acesso.
+        Views::definir("admin.usuarios.editPermsAc",          __DIR_VIEWS__."/admin/usuarios/editarPermissoesAcesso.view.php");
+
 
         # EMISSÃO ERRO USUÁRIO NÃO ECONTRADO
         Views::definir("admin.usuarios.erroUsNaoEnc",          __DIR_VIEWS__."/admin/usuarios/emitirErroUsNaoEncontrado.view.php");

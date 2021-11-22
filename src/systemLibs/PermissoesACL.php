@@ -100,6 +100,18 @@ namespace Sistema\PermissoesACL {
         private $codigo;
         private $descricao;
 
+        //Verifica a cadeia de caractéres do código da permissão
+        private function _verificarCadeiaCarac(string $str) : bool{
+
+            //Aceita apenas letras(Maiu Minu), numeros, Caracteres (./-_)
+            if (preg_match('/^[a-z0-9._\-\/]+$/i', $str)) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+
         function __construct(string $codigo, string $descricao = ""){
             $this->codigo = $codigo;
             $this->descricao = $descricao;
@@ -114,7 +126,17 @@ namespace Sistema\PermissoesACL {
             if(strlen($this->codigo > 64))
                 return false;
 
+            //Verificando cadeia de caracteres
+            if(!$this->_verificarCadeiaCarac($this->codigo))
+                return false;
+
+
             return true;
+        }
+
+        //Método público e estatico para a validação do código.
+        public static function validarCodigo(string $codigo) : bool{
+            return self::_verificarCadeiaCarac($codigo);
         }
 
         //Método mágico.

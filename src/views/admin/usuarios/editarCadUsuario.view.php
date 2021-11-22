@@ -4,7 +4,7 @@
 
     <h3>Editar Dados Cadastrais</h3>
 
-    <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink('rota.admin.usuarios.listar') ?>'" value="Editar Permissões de Acesso">
+    <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink('rota.admin.usuarios.editPermsAc.id', $results['parms']['id']) ?>'" value="Editar Permissões de Acesso">
     <br>
     <br>
 
