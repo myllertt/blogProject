@@ -4,3 +4,8 @@
 
 * Acessi à área administrativa.
     http://seu_ip/admin
+
+
+* Caso tenha subido o o dump disponibilizado do banco de dados, todos os usuários lá presentes tem a senha como "123456789".
+
+Utilize o usuário "admin" e senha "123456789". Pois este usuário possui permissões de acesso totais

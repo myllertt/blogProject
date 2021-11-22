@@ -1,7 +1,5 @@
 <?php Sistema\Views\Views::abrir("admin.layout.cabecalho", $_refArgsView) ?>
 
-<body>
-
     <h3>Criar Postagem</h3>
 
     <?php if(!$results['sts']): ?>        
@@ -36,7 +34,7 @@
             </div>
             
             <div>
-                <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink('rota.posts.listar') ?>'" value="cancelar"> <input type="submit" value="Postar">
+                <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink('rota.admin.posts.listar') ?>'" class="btn btn-secondary" value="cancelar"> <input type="submit" class="btn btn-primary" value="Postar">
             </div>
 
         </form>
@@ -46,7 +44,7 @@
         <h2>
             <?php echo $results['msg'] ?>
         </h2>
-        <a href="<?php echo \Sistema\Rotas::gerarLink('rota.posts.listar') ?>">Voltar</a>
+        <a href="<?php echo \Sistema\Rotas::gerarLink('rota.admin.posts.listar') ?>">Voltar</a>
     <?php endif ?>
 
     <script src="/js/admin/posts/postar.js"></script>
@@ -54,7 +52,5 @@
         this.objForm.setCampoStatus("<?php echo addslashes($results['parms']['status']) ?>");
     </script>
     
-
-</body>
 
 <?php Sistema\Views\Views::abrir("admin.layout.rodape", $_refArgsView) ?>

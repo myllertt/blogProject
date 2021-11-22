@@ -17,7 +17,7 @@ class Posts {
      * @return void
      */
     private function _definirConfigsEspecificas(){
-        $this->arrayCFGSEsp['MAX_RES_PAG'] = 2; //Máximo de POSTS por página home
+        $this->arrayCFGSEsp['MAX_RES_PAG'] = 3; //Máximo de POSTS por página home
         $this->arrayCFGSEsp['MAX_CARC_PREVIA_POSTS'] = 128; //Máximo de caracs para a prévia dos posts
         $this->arrayCFGSEsp['MAX_AVANC_PAGS'] = 50; //Máximo avanço páginas.
 

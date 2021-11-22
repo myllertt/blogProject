@@ -1,6 +1,6 @@
 <?php Sistema\Views\Views::abrir("site.layout.cabecalho", $_refArgsView) ?>
 
-<body>
+<!-- <body> -->
 
     <h3>Alterar Minha Senha</h3>
 
@@ -15,7 +15,7 @@
                 <?php echo $results['msg'] ?>
             </div> 
         <?php endif ?> 
-
+        <br>
     <?php endif ?> 
     
     <div>
@@ -38,14 +38,16 @@
             </div> 
 
             <div>
-               <input type="submit" value="Alterar"> <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink('rota.site.areaUs') ?>'" value="voltar">
+                <br>
+                <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink('rota.site.areaUs') ?>'" class="btn btn-secondary" value="voltar">
+                <input type="submit" class="btn btn-primary" value="Alterar">
             </div>            
 
         </form>
 
     </div>
     
-</body>
+<!-- </body> -->
 
 <script src="/js/global/sha512.js"></script>
 <script src="/js/site/areaUsuario/alterarSenha.js"></script>

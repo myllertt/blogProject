@@ -1,7 +1,5 @@
 <?php Sistema\Views\Views::abrir("site.layout.cabecalho", $_refArgsView) ?>
 
-<body>
-
     <h3>Editar Dados</h3>
 
     <?php if($results['msg']): ?>   
@@ -15,7 +13,7 @@
                 <?php echo $results['msg'] ?>
             </div> 
         <?php endif ?> 
-
+        <br>
     <?php endif ?> 
 
     <div>
@@ -50,14 +48,15 @@
             </div>
 
             <div>
-               <input type="submit" value="Editar"> <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink('rota.site.areaUs') ?>'" value="voltar">
+               <br>
+               <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink('rota.site.areaUs') ?>'" class="btn btn-secondary" value="voltar">
+               <input type="submit" class="btn btn-primary" value="Editar">
             </div>
 
         </form>
 
     </div>
 
-</body>
 
 <script src="/js/site/areaUsuario/editarCad.js"></script>
 <script>

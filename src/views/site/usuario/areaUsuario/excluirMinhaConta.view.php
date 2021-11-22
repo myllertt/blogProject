@@ -1,6 +1,5 @@
 <?php Sistema\Views\Views::abrir("site.layout.cabecalho", $_refArgsView) ?>
 
-<body>
 
     <h3>Excluir minha conta</h3>
 
@@ -22,7 +21,9 @@
             </h2>
             
             <div>
-                <input type="submit" value="Excluir"> <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink('rota.site.areaUs') ?>'" value="voltar">
+                <br>
+                <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink('rota.site.areaUs') ?>'" class="btn btn-secondary" value="voltar">
+                <input type="submit" class="btn btn-danger" value="Confirmar Exclusão">
             </div>
 
         </form>
@@ -40,7 +41,5 @@
         this.objForm.setCampoGenero("<?php echo addslashes($results['parms']['genero']) ?>");
     </script>
     
-
-</body>
 
 <?php Sistema\Views\Views::abrir("site.layout.rodape", $_refArgsView) ?>

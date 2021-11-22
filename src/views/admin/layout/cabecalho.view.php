@@ -8,33 +8,71 @@
         <?php echo htmlspecialchars($tituloPagina) ?? "Pagina" ?>
     </title>
     <link rel="stylesheet" href="/css/site/site.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
-<div>
-    <H1>Blog Project - Área Administrativa</H1>
-    <ul>
-        <li><a href="<?php echo \Sistema\Rotas::gerarLink('rota.admin.posts.listar') ?>">Listar Postagens</a></li>
-        <li><a href="<?php echo \Sistema\Rotas::gerarLink('rota.admin.posts.postar') ?>">Criar Postagem</a></li>
-    </ul>
-    <ul>
-        <li><a href="<?php echo \Sistema\Rotas::gerarLink('rota.admin.usuarios.listar') ?>">Listar Usuários</a></li>
-        <li><a href="<?php echo \Sistema\Rotas::gerarLink('rota.admin.usuarios.cadastro') ?>">Cadastrar Usuário</a></li>
-    </ul>
-    <ul>
-        <li><a href="<?php echo \Sistema\Rotas::gerarLink('rota.admin.sistema.backups') ?>">Sistema Backups</a></li>
-    </ul>
-    <ul>
-        <li><a href="<?php echo \Sistema\Rotas::gerarLink('rota.admin.minhaConta.editCad') ?>">Alterar Cadastro</a></li>
-        <li><a href="<?php echo \Sistema\Rotas::gerarLink('rota.admin.minhaConta.altSenha') ?>">Alterar Senha</a></li>
-        <li><a href="<?php echo \Sistema\Rotas::gerarLink('rota.admin.minhaConta.excConta') ?>">Excluir Conta</a></li>
-        <li><a href="<?php echo \Sistema\Rotas::gerarLink('rota.admin.logout') ?>">Sair</a></li>
-    </ul>
-    <!--
-    <ul>
-        <li><a href="<?php echo \Sistema\Rotas::gerarLink("site.home") ?>">Home</a></li>
-        <li><a href="<?php echo \Sistema\Rotas::gerarLink('rota.site.login') ?>">Login</a></li>
-        <li><a href="<?php echo \Sistema\Rotas::gerarLink("site.us.telaRegs.get") ?>">Registrar</a></li>
-    </ul> -->
 
-    <hr>
-</div>
+<body>
+
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#"><?php echo _NOME_SIS_ ?></a>
+    </div>
+    
+    <ul class="nav navbar-nav">
+
+      <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Postagens
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="<?php echo \Sistema\Rotas::gerarLink('rota.admin.posts.listar') ?>">Listar</a></li>
+          <li><a href="<?php echo \Sistema\Rotas::gerarLink('rota.admin.posts.postar') ?>">Criar Postagem</a></li>
+        </ul>
+      </li>
+
+      <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Usuários
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="<?php echo \Sistema\Rotas::gerarLink('rota.admin.usuarios.listar') ?>">Listar</a></li>
+          <li><a href="<?php echo \Sistema\Rotas::gerarLink('rota.admin.usuarios.cadastro') ?>">Cadastrar</a></li>
+        </ul>
+      </li>
+
+      <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Minha Conta
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="<?php echo \Sistema\Rotas::gerarLink('rota.admin.minhaConta.editCad') ?>">Editar Dados</a></li>
+          <li><a href="<?php echo \Sistema\Rotas::gerarLink('rota.admin.minhaConta.altSenha') ?>">Alterar Senha</a></li>
+          <li><a href="<?php echo \Sistema\Rotas::gerarLink('rota.admin.minhaConta.excConta') ?>">Excluir Meu Usuário</a></li>
+        </ul>
+      </li>
+
+
+      <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Sistema
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="<?php echo \Sistema\Rotas::gerarLink('rota.admin.sistema.backups') ?>">Backups</a></li>
+        </ul>
+      </li>
+
+
+    </ul>
+
+    <?php if(isset($auth) && isset($auth['usuario'])): ?>
+      <button onclick="window.location='<?php echo \Sistema\Rotas::gerarLink('rota.admin.logout') ?>'" class="btn btn-danger navbar-btn">logout (<?php echo $auth['usuario'] ?>)</button>
+    <?php else: ?>
+      <button onclick="window.location='<?php echo \Sistema\Rotas::gerarLink('rota.admin.logout') ?>'" class="btn btn-danger navbar-btn">logout</button>
+    <?php endif ?>
+  </div>
+</nav>
+
+<div style="margin-top:60px"></div>
+<div class="container">
+
 

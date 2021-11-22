@@ -3,7 +3,6 @@
 <link rel="stylesheet" href="/css/site/areaUsuario/areaUsuario.css">
                              
 
-<body>
 
     <h3>Olá <?php echo $auth['nome'] ?>, Seja bem-vindo(a)</h3>
 
@@ -23,6 +22,5 @@
     </div>
     
     
-</body>
 
 <?php Sistema\Views\Views::abrir("site.layout.rodape", $_refArgsView) ?>

@@ -1,7 +1,5 @@
 <?php Sistema\Views\Views::abrir("admin.layout.cabecalho", $_refArgsView) ?>
 
-<body>
-
     <h3>Cadastro de Usuário</h3>
 
     <?php if(!$results['sts']): ?>        
@@ -65,7 +63,8 @@
             </div> 
             
             <div>
-                <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink('rota.admin.usuarios.listar') ?>'" value="cancelar"> <input type="submit" value="cadastrar">
+                <br>
+                <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink('rota.admin.usuarios.listar') ?>'" class="btn btn-secondary" value="cancelar"> <input type="submit" class="btn btn-primary" value="cadastrar">
             </div>
 
         </form>
@@ -84,7 +83,4 @@
         this.objForm.setCampoStatus("<?php echo addslashes($results['parms']['status']) ?>");
     </script>
     
-
-</body>
-
 <?php Sistema\Views\Views::abrir("admin.layout.rodape", $_refArgsView) ?>

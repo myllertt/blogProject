@@ -6,7 +6,7 @@
     </h3>
 
     <div>
-        <input type="button" onclick="window.history.back()" value="voltar">
+        <input type="button" onclick="window.history.back()" class="btn btn-secondary" value="voltar">
     </div>
     
 </body>

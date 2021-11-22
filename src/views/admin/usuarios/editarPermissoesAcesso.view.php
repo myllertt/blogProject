@@ -1,7 +1,5 @@
 <?php Sistema\Views\Views::abrir("admin.layout.cabecalho", $_refArgsView) ?>
 
-<body>
-
     <h3>Editar Permissões de Acesso</h3>
 
     <?php if($results['msg']): ?>   
@@ -28,7 +26,7 @@
             <input type="hidden" name="_method" value = "PUT">
             <input type="hidden" id="strCatPerms" name="strCatPerms" value = "">
 
-            <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink('rota.admin.usuarios.editCadUs', $results['parms']['id']) ?>'" value="voltar"> <input type="submit" value="salvar edições">
+            <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink('rota.admin.usuarios.editCadUs', $results['parms']['id']) ?>'" class="btn btn-secondary" value="voltar"> <input type="submit" class="btn btn-primary" value="salvar edições">
             <br>
             <br>
             
@@ -65,8 +63,6 @@
 
 
     </div>
-
-</body>
 
 <script src="/js/admin/usuarios/editarPermsUs.js"></script>
 <script>

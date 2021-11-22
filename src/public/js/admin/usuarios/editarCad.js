@@ -7,11 +7,6 @@ function Form(){
     }
 
     this._validar = function(){
-
-        if(this._objsU['sts'].value == '0'){
-            if(!confirm("Atenção! Você está prestes a desativar o seu próprio usuário! Caso faça isso será desconectado imediatamente. Você confirma esta operação?"))
-                return "";
-        }
         
         return true;
             

@@ -1,7 +1,5 @@
 <?php Sistema\Views\Views::abrir("admin.layout.cabecalho", $_refArgsView) ?>
 
-<body>
-
     <h3>Redefinir Senha Usuário</h3>
 
     <?php if($results['msg']): ?>   
@@ -35,15 +33,14 @@
             </div> 
 
             <div>
-                <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink('rota.admin.usuarios.listar') ?>'" value="cancelar"> <input type="submit" value="Alterar">
+                <br>
+                <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink('rota.admin.usuarios.listar') ?>'" class="btn btn-secondary" value="cancelar"> <input type="submit" class="btn btn-primary" value="Alterar">
             </div>            
 
         </form>
 
     </div>
     
-</body>
-
 <script src="/js/global/sha512.js"></script>
 <script src="/js/admin/usuarios/redefSenha.js"></script>
 

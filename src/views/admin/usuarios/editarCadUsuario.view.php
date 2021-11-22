@@ -1,10 +1,8 @@
 <?php Sistema\Views\Views::abrir("admin.layout.cabecalho", $_refArgsView) ?>
 
-<body>
-
     <h3>Editar Dados Cadastrais</h3>
 
-    <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink('rota.admin.usuarios.editPermsAc.id', $results['parms']['id']) ?>'" value="Editar Permissões de Acesso">
+    <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink('rota.admin.usuarios.editPermsAc.id', $results['parms']['id']) ?>'" class="btn btn-warning" value="Editar Permissões de Acesso">
     <br>
     <br>
 
@@ -67,14 +65,14 @@
             </div>
 
             <div>
-                <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink('rota.admin.usuarios.listar') ?>'" value="cancelar"> <input type="submit" value="Editar">
+                <br>
+                <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink('rota.admin.usuarios.listar') ?>'" class="btn btn-secondary" value="cancelar"> <input type="submit" class="btn btn-primary" value="Editar">
             </div>
 
         </form>
 
     </div>
 
-</body>
 
 <script src="/js/admin/usuarios/editarCad.js"></script>
 <script>

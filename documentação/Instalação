@@ -36,7 +36,10 @@ blogProject/src/configs/DBConeConfigs.php
 
 * O pacote mysql-client precisa estar instalado no sistema para que o comando mysqldump funcione. Instalação: sudo apt-get install mysql-client
 
+[PERMISSÕES DE ESCRITA]
+
+* No diretório "src/.tmp" é preciso que conceda permissões de escrita para o usuário do apache (www-data). Esta pasta é utilizada para geração do backup do sistema
+
 
 [TESTE]
-* Para realizar um teste rápido no sistema de rotas e também na conexão com o banco de dados é só acessar O LINK "/teste_sistema". Caso retorne um erro 404, signfica que o processamento de rotas não esta funcionado. Neste caso é bom verificar se o módulo rewrite realmente esta ativado no apache.
-
+* Para realizar um teste rápido no sistema de rotas e também na conexão com o banco de dados é só acessar O LINK "/teste_sistema". Caso retorne um erro 404, significa que o processamento de rotas não esta funcionado. Neste caso é bom verificar se o módulo rewrite realmente esta ativado no apache.

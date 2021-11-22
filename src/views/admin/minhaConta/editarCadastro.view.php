@@ -1,7 +1,5 @@
 <?php Sistema\Views\Views::abrir("admin.layout.cabecalho", $_refArgsView) ?>
 
-<body>
-
     <h3>Editar Meus Dados</h3>
 
     <?php if($results['msg']): ?>   
@@ -58,14 +56,14 @@
             </div>
 
             <div>
-            <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink(_ROTA_ADMIN_HOME_) ?>'" value="cancelar"> <input type="submit" value="Editar">
+            <br>
+            <input type="button" onclick="window.location.href='<?php echo \Sistema\Rotas::gerarLink(_ROTA_ADMIN_HOME_) ?>'" class="btn btn-secondary" value="cancelar"> <input type="submit" class="btn btn-primary" value="Editar">
             </div>
 
         </form>
 
     </div>
 
-</body>
 
 <script src="/js/admin/minhaConta/editarCad.js"></script>
 <script>
