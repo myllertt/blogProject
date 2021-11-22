@@ -62,11 +62,13 @@ class DriverConexaoDB {
         ];
 
         //Zerando atributos críticos das configurações públicas
+        /* Ate o momento precisou ser removido pois estava impedido o backup do DB via menu do sistema
         DBConeConfigs::$host = null;
         DBConeConfigs::$port = null;
         DBConeConfigs::$user = null;
         DBConeConfigs::$password = null;
         DBConeConfigs::$DBName = null;
+        */
     }
 
 

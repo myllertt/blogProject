@@ -107,7 +107,14 @@ try {
         Views::definir("admin.posts.erroRegsNaoEnc",          __DIR_VIEWS__."/admin/posts/emitirErroRegsNaoEncontrado.view.php");
 
     # ERROS
+        //Quando usuário não tem permissões para acessar o conteúdo
         Views::definir("admin.erros.semPermissao",          __DIR_VIEWS__."/admin/erros/semPermissao.view.php");
+
+
+    # BACKUPS
+        //Backups do sistema
+        Views::definir("admin.sistema.backups",          __DIR_VIEWS__."/admin/sistema/backups.view.php");
+
 
     # ----------------------------------------------
 

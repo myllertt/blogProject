@@ -41,6 +41,10 @@ define("_TAB_UsSite_",      "UsuariosSite");
 define("_TAB_Permissoes_",  "Permissoes"); 
 define("_TAB_PermsUsAdm_",  "PermissoesUsuariosAdmin");  
 
+# Backup base dados.
+//Diretório utilizado para gerar arquivos temporários que possibilitam o backup da base de dados.
+define("__DIR_TMP_DUMP__",       __DIR_RAIZ__."/.tmp"); 
+
 # CONFIGURAÇÕES DO SISTEMA EM SI ---------------------------
 
 define("_NOME_SIS_",                        "Blog Project"); 

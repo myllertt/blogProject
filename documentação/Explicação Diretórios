@@ -6,3 +6,5 @@ src/public         O único diretório público para o apache. Neste caso sendo 
 src/routes         Contem objetos responsáveis por definir todas rotas do sistemas.
 src/systemLibs     Diretório responsável por armazenar classes que compoem objetivos gerais que servem a todo o sistema.
 src/views          Todas as views do sistema estão neste diretório.
+src/.tmp           utilizada para geração de arquivos temporários. É necessário que o apache tenha permissão de escrita nesta pasta.
+

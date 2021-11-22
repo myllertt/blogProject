@@ -32,6 +32,10 @@ blogProject/src/configs/DBConeConfigs.php
 
 * Caso este arquivo não esteja presente, procure por "DBConeConfigs.php.example", neste caso é só fazer uma cópia dele, configurar os parâmetros e colocar o nome correto "DBConeConfigs.php"
 
+* Atenção! O usuário configurado para a conexão de banco de dados precisa ter pelo menos permissões de LOCK TABLE e PROCESS para que seja possível realizar o backup da base de dados.
+
+* O pacote mysql-client precisa estar instalado no sistema para que o comando mysqldump funcione. Instalação: sudo apt-get install mysql-client
+
 
 [TESTE]
 * Para realizar um teste rápido no sistema de rotas e também na conexão com o banco de dados é só acessar O LINK "/teste_sistema". Caso retorne um erro 404, signfica que o processamento de rotas não esta funcionado. Neste caso é bom verificar se o módulo rewrite realmente esta ativado no apache.

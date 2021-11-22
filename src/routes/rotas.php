@@ -204,6 +204,9 @@ try {
 
 
 
+
+
+
     #Área administrativa ====================================================================
 
     //Raiz admin
@@ -475,16 +478,30 @@ try {
         __DIR_CONTROLADORES__."/admin/AdminPostsController.php",  # Endereço de inclusão do arquivo controlador respectivo
         'rota.admin.posts.excluir.id'                                      # Nome da rota.
     );
+
+
+    //SISTEMA ---------------------------------------------
     
+    //Tela opção para backup
+    $objProcessamentoRotas->definirRota_GET(
+        "/admin/sistema/backups",                                       # Rota HTTP
+        "SistemaBackupsController",                                  # Nome Classe Controlador
+        "telaBackup",                                       # Nome método inicial de ataque
+        ['objPerm' => new ACL_PERM("sistema_backups")],                                                           # Argumento passado 
+        __DIR_CONTROLADORES__."/admin/SistemaBackupsController.php",  # Endereço de inclusão do arquivo controlador respectivo
+        'rota.admin.sistema.backups'                                 # Nome da rota.
+    );
+    //Processo de backup
+    $objProcessamentoRotas->definirRota_GET(
+        "/admin/sistema/backups/download",                                       # Rota HTTP
+        "SistemaBackupsController",                                  # Nome Classe Controlador
+        "processoBackupDownload",                                       # Nome método inicial de ataque
+        ['objPerm' => new ACL_PERM("sistema_backups_download")],                                                           # Argumento passado 
+        __DIR_CONTROLADORES__."/admin/SistemaBackupsController.php",  # Endereço de inclusão do arquivo controlador respectivo
+        'rota.admin.sistema.backups.download'                                      # Nome da rota.
+    );
 
     #========================================================================================
-
-
-
-
-
-
-
 
 
 
