@@ -45,7 +45,11 @@ class UsuariosAdminController extends Controlador{
         
     }
 
-    //Realiza o processo de verificar as permissões ACL para este conteúdo.
+    /**
+     * Realiza o processo de verificar as permissões ACL para este conteúdo.
+     *
+     * @return void
+     */
     private function _verificarPermissoesACL_AutoRedEExit() : void{
         
         //obtendo argumento passado pela rota.
@@ -129,8 +133,12 @@ class UsuariosAdminController extends Controlador{
         $this->_verificarPermissoesACL_AutoRedEExit();
     }
 
-    //Listar Usuário
-    public function telaListagem(){
+    /**
+     * Tela de Listagem de Usuário
+     *
+     * @return void
+     */
+    public function telaListagem() : void{
 
         #Id view específica deste método
         $strIdViewEspecMetodo = "admin.usuarios.listar";
@@ -179,7 +187,13 @@ class UsuariosAdminController extends Controlador{
     }
 
     # Área de cadastro ------------------------
-    public function telaCadastro(){
+
+    /**
+     * Tela de cadastro do usuário
+     *
+     * @return void
+     */
+    public function telaCadastro() : void{
 
         #Id view específica deste método
         $strIdViewEspecMetodo = "admin.usuarios.cadastrar";
@@ -216,7 +230,12 @@ class UsuariosAdminController extends Controlador{
         Views::abrir($strIdViewEspecMetodo, $arrayArgs);
 
     }
-    public function processoCadastro(){
+    /**
+     * Processo de cadastro do usuário
+     *
+     * @return void
+     */
+    public function processoCadastro() : void{
 
         #Id view específica deste método
         $strIdViewEspecMetodo = "admin.usuarios.cadastrar";
@@ -499,7 +518,11 @@ class UsuariosAdminController extends Controlador{
     
 
     # Excluir usuário ------------------
-    //Processo de exclusão de usuário
+    /**
+     * Processo de exclusão de usuário
+     *
+     * @return void
+     */
     public function processoExcluirUs() : void{
 
         #Id view específica deste método

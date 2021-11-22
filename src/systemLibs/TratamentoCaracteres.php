@@ -4,7 +4,12 @@
 
 class TratamentoCaracteres {
 
-    //Converte um formato de data USA (date) em formato (Data) Brasileiro.
+    /**
+     * Converte um formato de data USA (date) em formato (Data) Brasileiro.
+     *
+     * @param string $dataSimplesUSA
+     * @return string
+     */
     public static function dataSimplesUSA_DataSimplesBR(string $dataSimplesUSA) : string{ # AAAA-MM-DD => MM/DD/AAAA
 		
         if(strlen($dataSimplesUSA) != 10)
@@ -14,7 +19,12 @@ class TratamentoCaracteres {
 	
     }
 
-    //Converte um formato de dataTime USA (dateTime) em formato (data e hora) Brasileiro.
+    /**
+     * Converte um formato de dataTime USA (dateTime) em formato (data e hora) Brasileiro.
+     *
+     * @param string $dateTime
+     * @return string
+     */
     public static function dateTimeUSA_DataHoraBR(string $dateTime) : string{ # AAAA-MM-DD 00:00:00 => DD/MM/AAAA 00:00:00
 		
         if(strlen($dateTime) != 19)
@@ -24,10 +34,23 @@ class TratamentoCaracteres {
 	
     }
 
+    /**
+     * Remove a hora de uma string na forma de dateTime
+     *
+     * @param string $dataTime
+     * @return string
+     */
     public static function removerHoraDataTime(string $dataTime) : string{
         return substr($dataTime, 0, 10);
     }
 
+    /**
+     * Gera a abreviação de um nome através no nome e sobrenome
+     *
+     * @param string $nome
+     * @param string $sobrenome
+     * @return string
+     */
     public static function gerarAbreviacaoNome(string $nome, string $sobrenome) : string {
         
         if($sobrenome != ""){
@@ -41,7 +64,12 @@ class TratamentoCaracteres {
     }
 
 
-    //Verifica os caracteres padrão de um usuário
+    /**
+     * Verifica os caracteres são padrões de um usuário
+     *
+     * @param string $string
+     * @return boolean
+     */
     public static function verifCaracteresPadraoUsuario(string $string) : bool{
 
         if($string == "")
@@ -61,7 +89,12 @@ class TratamentoCaracteres {
     
     }
 
-    //Se encontrar caractéres não permitidos irá retornar true.
+    /**
+     * Se encontrar caractéres não permitidos irá retornar true.
+     *
+     * @param [type] $string
+     * @return boolean
+     */
     public static function verifSeTemCaracNaoPermitidosCampoSenha($string) : bool{
         
         $arrNp = [' ', "\\", "\n", "\r", "\t"];
@@ -71,7 +104,12 @@ class TratamentoCaracteres {
         return false;
     }
 
-    //Remover carateres de passíveis tags html
+    /**
+     * Remover carateres de passíveis tags html
+     *
+     * @param [type] $string
+     * @return string
+     */
     public static function rmvCharTags($string) : string{
         
         $arrChr = ['<', '>', "\\"];

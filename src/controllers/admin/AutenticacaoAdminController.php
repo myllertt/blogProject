@@ -16,7 +16,11 @@ class AutenticacaoAdminController extends Controlador{
     # Atributos específicos
     private $CFG_idViewPadraoTrabalho = "admin.login"; //id da view padrão de trabalho deste controlador
 
-    //Caso perceba alguma sessão ativa do tipo, a página será redirecionada
+    /**
+     * Caso perceba alguma sessão ativa do tipo, a página será redirecionada
+     *
+     * @return void
+     */
     private function _autoRedSessaoAtiva_AutoExit() : void{
 
         //Realizando direc. caso encontre sessão ativa.
@@ -27,13 +31,22 @@ class AutenticacaoAdminController extends Controlador{
         
     }
 
-    private function _instanciaObjetos(){
+    /**
+     * Instância geral de objetos fundamentais da classe
+     *
+     * @return void
+     */
+    private function _instanciaObjetos() : void{
 
         $this->objTrabalho = new AuthUsuariosAdmin( DriverConexaoDB::getObjDB() );
 
     }
 
-    
+    /**
+     * Construtor
+     *
+     * @param [type] $objRequest: Objeto de requisição
+     */
     function __construct($objRequest){
         parent::__construct($objRequest);
 
@@ -41,7 +54,12 @@ class AutenticacaoAdminController extends Controlador{
     }
 
     # Área de Login ------------------------
-    public function telaLogin(){
+    /**
+     * Tela de login
+     *
+     * @return void
+     */
+    public function telaLogin() : void{
 
         #Id view específica deste método
         $strIdViewEspecMetodo = $this->CFG_idViewPadraoTrabalho;
@@ -71,7 +89,12 @@ class AutenticacaoAdminController extends Controlador{
         Views::abrir($strIdViewEspecMetodo, $arrayArgs);
 
     }
-    public function processoLogin(){
+    /**
+     * Processo de login
+     *
+     * @return void
+     */
+    public function processoLogin() : void {
 
         #Id view específica deste método
         $strIdViewEspecMetodo = $this->CFG_idViewPadraoTrabalho;
@@ -160,7 +183,12 @@ class AutenticacaoAdminController extends Controlador{
     }
 
     #Logout de usuário --------------------
-    public function logout(){
+    /**
+     * Processo de logout do usuário
+     *
+     * @return void
+     */
+    public function logout() : void {
 
         #Id view específica deste método
         $strIdViewEspecMetodo = $this->CFG_idViewPadraoTrabalho;
@@ -184,7 +212,7 @@ class AutenticacaoAdminController extends Controlador{
             exit;
         }
 
-    }
+    } 
 
 }
 

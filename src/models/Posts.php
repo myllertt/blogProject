@@ -11,6 +11,11 @@ class Posts {
 
     private $arrayCFGSEsp; //Array de configurações específicas.
 
+    /**
+     * Método definição de configurações específicas da classe
+     *
+     * @return void
+     */
     private function _definirConfigsEspecificas(){
         $this->arrayCFGSEsp['MAX_RES_PAG'] = 2; //Máximo de POSTS por página home
         $this->arrayCFGSEsp['MAX_CARC_PREVIA_POSTS'] = 128; //Máximo de caracs para a prévia dos posts
@@ -24,13 +29,28 @@ class Posts {
         $this->arrayCFGSEsp['MAX_CARC_TITULO_POST'] = 128; //Quantidade máxima de caracteres que o título de uma postagem pode ter.
     }
 
+    /**
+     * Verifica se objeto da classe $this->objMysqli existe
+     *
+     * @return void
+     * @throws DBException : Em caso de erro de banco de dados
+     */
     private function _verificarObjDB(){
         if(!$this->objMysqli){
             throw new DBException("Falha ao iniciar a conexão com o banco de dados");            
         }
     }
 
-    //Realiza a validação dos dados fundamentais de uma postagem
+    /**
+     * Realiza a validação dos dados fundamentais de uma postagem
+     *
+     * @param string $status
+     * @param string $titulo
+     * @param string $conteudo
+     * @return void
+     * @throws DBException : Em caso de erro de banco de dados
+     * @throws \Exception : Em caso de erro de procedimento
+     */
     private function _validarDadosPostagem(string $status, string $titulo, string $conteudo) : void{ #throw \Exception
 
         #status----------
@@ -66,7 +86,13 @@ class Posts {
 
     }
 
-    //Insere uma nova postagem no banco de dados.
+    /**
+     * Insere uma nova postagem no banco de dados.
+     *
+     * @param array $arrayDados
+     * @return void
+     * @throws DBException : Em caso de erro de banco de dados
+     */
     private function _inserirPostagemBancoDados(array $arrayDados) : void{ #throw DBException
 
         /*
@@ -104,7 +130,14 @@ class Posts {
         }
     }
 
-    //Atualiza os dados dados de uma postagem no banco de dados.
+    /**
+     * Atualiza os dados dados de uma postagem no banco de dados.
+     *
+     * @param integer $idPostagem
+     * @param array $arrayDados
+     * @return void
+     * @throws DBException : Em caso de erro de banco de dados
+     */
     private function _atualizarDadosPostagemBancoDados(int $idPostagem, array $arrayDados) : void{ #throw DBException
 
         /*
@@ -146,7 +179,13 @@ class Posts {
 
     }
 
-    //Exlcuir do banco de dados uma determinada postagem
+    /**
+     * Exlcuir do banco de dados uma determinada postagem
+     *
+     * @param integer $idPostagem
+     * @return boolean
+     * @throws DBException : Em caso de erro de banco de dados
+     */
     private function _excluirPostagemBancoDados(int $idPostagem) : bool { #throw DBException
 
         $this->_verificarObjDB();
@@ -188,13 +227,24 @@ class Posts {
 
     }
 
+    /**
+     * Construtor
+     *
+     * @param [mysqli] $objMysqli
+     */
     function __construct($objMysqli){
         $this->objMysqli = $objMysqli;
 
         $this->_definirConfigsEspecificas();
     }
 
-
+    /**
+     * Obtém um resumo dos posts ativos
+     *
+     * @param integer $pagina : Número da página
+     * @return array
+     * @throws DBException : Em caso de erro de banco de dados
+     */
     public function obterResumoPostsAtivos(int $pagina = 1) : array{ # throw DBException;
 
         //Verificando a paginação.
@@ -286,6 +336,13 @@ class Posts {
 
     }
 
+    /**
+     * Obtém os dados completos de um post ativo
+     *
+     * @param integer $id
+     * @return array
+     * @throws DBException : Em caso de erro de banco de dados
+     */
     public function obterPostAtivo(int $id) : array{ # throw DBException;
 
         //Verificação do objeto do banco de dados
@@ -381,6 +438,8 @@ class Posts {
      * @param string $titulo
      * @param string $conteudo
      * @return void
+     * @throws DBException : Em caso de erro de banco de dados
+     * @throws \Exception : Em caso de erro de procedimento
      */
     public function criarPostagem(int $idUsuario, string $status = "1", string $titulo, string $conteudo) : void { #throw DBException, \Exception
     
@@ -406,6 +465,17 @@ class Posts {
 
     }
 
+    /**
+     * Método utilizado para editar uma determinada postagem
+     *
+     * @param integer $idPostagem
+     * @param string $status
+     * @param string $titulo
+     * @param string $conteudo
+     * @return void
+     * @throws DBException : Em caso de erro de banco de dados
+     * @throws \Exception : Em caso de erro de procedimento
+     */
     public function editarPostagem(int $idPostagem, string $status, string $titulo, string $conteudo) : void { #throw DBException, \Exception
     
         //Conferindo id do usuário
@@ -429,7 +499,13 @@ class Posts {
 
     }
 
-    //obtem lista de posts, seja eles ativos ou não.
+    /**
+     * obtem lista de posts, seja eles ativos ou não.
+     *
+     * @param integer $pagina: Página escolhida
+     * @return array
+     * @throws DBException : Em caso de erro de banco de dados
+     */
     public function obterListaPaginadaPosts(int $pagina = 1) : array{ # throw DBException;
 
         //Verificando a paginação.
@@ -528,7 +604,13 @@ class Posts {
 
     }
 
-    //Processo de obter dados de uma postagem
+    /**
+     * Processo de obter dados de uma postagem
+     *
+     * @param integer $id
+     * @return array
+     * @throws DBException : Em caso de erro de banco de dados
+     */
     public function getDadosPostagem(int $id) : array{ #throw DBException
 
            
@@ -582,7 +664,14 @@ class Posts {
 
     }
 
-    //Processo de exclusão de postagem
+    /**
+     * Processo de exclusão de postagem
+     *
+     * @param integer $idPostagem
+     * @return void
+     * @throws DBException : Em caso de erro de banco de dados
+     * @throws \Exception : Em caso de erro de procedimento
+     */
     public function excluirPostagem(int $idPostagem) : void{ #throw DBException, \Exception
 
         //Conferindo id do usuário
@@ -597,11 +686,23 @@ class Posts {
     
     
     #GETTERS
+    /**
+     * Obtém um objeto do tipo mysqli
+     *
+     * @return [mysqli]
+     */
+
     public function getObjMysqli(){
         return $this->objMysqli;
     }
     
     #SETTERS
+    /**
+     * Edita o objeto do tipo mysqli
+     *
+     * @param [mysqli] $objMysqli
+     * @return void
+     */
     public function setObjMysqli($objMysqli){
         $this->objMysqli = $objMysqli;
     }

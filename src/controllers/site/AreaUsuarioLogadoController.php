@@ -519,7 +519,7 @@ class AreaUsuarioLogadoController extends Controlador{
 
         }
 
-    }
+    } 
 
     
 

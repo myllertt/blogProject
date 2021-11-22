@@ -45,7 +45,11 @@ class SistemaBackupsController extends Controlador{
         
     }
 
-    //Realiza o processo de verificar as permissões ACL para este conteúdo.
+    /**
+     * Realiza o processo de verificar as permissões ACL para este conteúdo.
+     *
+     * @return void
+     */
     private function _verificarPermissoesACL_AutoRedEExit() : void{
         
         //obtendo argumento passado pela rota.

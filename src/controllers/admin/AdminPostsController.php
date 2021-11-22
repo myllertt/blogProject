@@ -45,7 +45,11 @@ class AdminPostsController extends Controlador{
         
     }
 
-    //Realiza o processo de verificar as permissões ACL para este conteúdo.
+    /**
+     * Realiza o processo de verificar as permissões ACL para este conteúdo.
+     *
+     * @return void
+     */
     private function _verificarPermissoesACL_AutoRedEExit() : void{
         
         //obtendo argumento passado pela rota.
@@ -129,8 +133,12 @@ class AdminPostsController extends Controlador{
         $this->_verificarPermissoesACL_AutoRedEExit();
     }
 
-    //Listar Usuário
-    public function telaListagem(){
+    /**
+     * tela de listagem de Usuário
+     *
+     * @return void
+     */
+    public function telaListagem() : void{
 
         #Id view específica deste método
         $strIdViewEspecMetodo = "admin.posts.listar";
@@ -190,8 +198,13 @@ class AdminPostsController extends Controlador{
     }
 
     # Área de Criar Postagem ------------------------
-    //Tela para criar de postagem
-    public function telaCriarPostagem(){
+    
+    /**
+     * Tela para criar de postagem
+     *
+     * @return void
+     */
+    public function telaCriarPostagem() : void{
 
         #Id view específica deste método
         $strIdViewEspecMetodo = "admin.posts.postar";
@@ -224,8 +237,13 @@ class AdminPostsController extends Controlador{
         Views::abrir($strIdViewEspecMetodo, $arrayArgs);
 
     }
-    //processo de criar postagem
-    public function processoCriarPostagem(){
+
+    /**
+     * processo de criar postagem
+     *
+     * @return void
+     */
+    public function processoCriarPostagem() : void{
 
         #Id view específica deste método
         $strIdViewEspecMetodo = "admin.posts.postar";
@@ -512,7 +530,11 @@ class AdminPostsController extends Controlador{
 
 
     # Excluir Postagem ------------------
-    //Processo de exclusão de postagem
+    /**
+     * Processo de exclusão de postagem
+     *
+     * @return void
+     */
     public function processoExcluirPostagem() : void{
 
         #Id view específica deste método

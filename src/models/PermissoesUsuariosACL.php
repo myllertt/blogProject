@@ -14,17 +14,34 @@ class PermissoesUsuariosACL {
 
     private $arrayCFGSEsp; //Array de configurações específicas.
     
+    /**
+     * Método definição de configurações específicas da classe
+     *
+     * @return void
+     */
     private function _definirConfigsEspecificas(){
         //
     }
 
+    /**
+     * Verifica se objeto da classe $this->objMysqli existe
+     *
+     * @return void
+     * @throws DBException : Em caso de erro de banco de dados
+     */
     private function _verificarObjDB(){
         if(!$this->objMysqli){
             throw new DBException("Falha ao iniciar a conexão com o banco de dados");            
         }
     }
 
-    //Exlcuir do banco de dados um determinado usuário
+    /**
+     * Exlcuir do banco de dados um determinado usuário
+     *
+     * @param integer $idUsuario
+     * @return boolean
+     * @throws DBException : Em caso de erro de banco de dados
+     */
     private function _excluirPermissoesUsuarioBancoDados(int $idUsuario) : bool { #throw DBException
 
         $this->_verificarObjDB();
@@ -66,7 +83,14 @@ class PermissoesUsuariosACL {
 
     }
 
-    //Editando a definição de basePermsACL no banco de dados.
+    /**
+     * Editando a definição de basePermsACL no banco de dados.
+     *
+     * @param integer $idUsuario
+     * @param string $basePermsACL
+     * @return void
+     * @throws DBException : Em caso de erro de banco de dados
+     */
     private function _editar_basePermsACL_UsuarioBancoDados(int $idUsuario, string $basePermsACL) : void{ #throw DBException
         
         $this->_verificarObjDB();
@@ -100,7 +124,16 @@ class PermissoesUsuariosACL {
         $objStmt->close();
     }
 
-    ///Definir permissões usuário
+    /**
+     * efinir permissões usuário
+     *
+     * @param string $modo
+     * @param integer $idUsuario
+     * @param array $arrayPermissoes
+     * @return void
+     * @throws DBException : Em caso de erro de banco de dados
+     * @throws \Exception : Em caso de erro de procedimento
+     */
     private function _definirPermissoesUsuario(string $modo, int $idUsuario, array $arrayPermissoes) { # throw DBException, \Exception
 
         //Verificando a entrada do usuário
@@ -205,7 +238,11 @@ class PermissoesUsuariosACL {
 
     }
 
-
+    /**
+     * Construtor
+     *
+     * @param [mysqli] $objMysqli
+     */
     function __construct($objMysqli){
 
         $this->objMysqli = $objMysqli;
@@ -214,7 +251,13 @@ class PermissoesUsuariosACL {
         $this->_definirConfigsEspecificas();
     }
 
-    //Obtém todas as permissões cadastradas no sistema
+    /**
+     * Obtém todas as permissões cadastradas no sistema
+     *
+     * @param boolean $modoSimplificado : TRUE = Consulta simplificada, FALSE = Consulta composta
+     * @return array
+     * @throws DBException : Em caso de erro de banco de dados
+     */
     public function obterTodasPermissoes(bool $modoSimplificado = false) : array{ # throw DBException;
        
         //Verificação do objeto do banco de dados
@@ -256,7 +299,13 @@ class PermissoesUsuariosACL {
         return $arrayRetornoFinal;
     }
 
-    //Obtém as permissões específicas de um determinado usuário.
+    /**
+     * Obtém as permissões específicas de um determinado usuário.
+     *
+     * @param integer $idUsuario
+     * @return array
+     * @throws DBException : Em caso de erro de banco de dados
+     */
     public function obterPermissoesUsuario(int $idUsuario) : array {
 
          //Verificação do objeto do banco de dados
@@ -308,21 +357,48 @@ class PermissoesUsuariosACL {
         
     }
  
-    //Definir permissões usuário. Base padrão PERMTIR
+    /**
+     * Definir permissões usuário. Base padrão PERMTIR
+     *
+     * @param integer $idUsuario
+     * @param array $arrayPermissoes
+     * @return void
+     * @throws DBException : Em caso de erro de banco de dados
+     * @throws \Exception : Em caso de erro de procedimento
+     */
     public function definirPermissoesUsuario_basePadraoPERMITIR(int $idUsuario, array $arrayPermissoes){ # throw DBException, \Exception
         $this->_definirPermissoesUsuario('permitir', $idUsuario, $arrayPermissoes);
     }
-    //Definir permissões usuário. Base padrão PERMTIR
+    /**
+     * Definir permissões usuário. Base padrão PERMTIR
+     *
+     * @param integer $idUsuario
+     * @param array $arrayPermissoes
+     * @return void
+     * @throws DBException : Em caso de erro de banco de dados
+     * @throws \Exception : Em caso de erro de procedimento
+     */
     public function definirPermissoesUsuario_basePadraoNEGAR(int $idUsuario, array $arrayPermissoes){ # throw DBException, \Exception
         $this->_definirPermissoesUsuario('negar', $idUsuario, $arrayPermissoes);
     }
     
     #GETTERS
+    /**
+     * Obtém um objeto do tipo mysqli
+     *
+     * @return [mysqli]
+     */
     public function getObjMysqli(){
         return $this->objMysqli;
     }
     
     #SETTERS
+    /**
+     * Edita o objeto do tipo mysqli
+     *
+     * @param [mysqli] $objMysqli
+     * @return void
+     */
     public function setObjMysqli($objMysqli){
         $this->objMysqli = $objMysqli;
     }

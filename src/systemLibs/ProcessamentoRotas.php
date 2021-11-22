@@ -10,6 +10,11 @@ namespace Sistema{
 
         private $assocNomeRotas; //Associação dos nomes das rotas.
 
+        /**
+         * Definição de configurações pertinentes à classe
+         *
+         * @return void
+         */
         private function _setConfiguracoes(){
             $this->CFGS = [];
 
@@ -21,11 +26,24 @@ namespace Sistema{
 
         }
 
+        /**
+         * Método padrão de encaminhamento de erros
+         *
+         * @param string $msg
+         * @return void
+         * @throws PcRException : Erro específico do processamento de rotas
+         */
         private function _encaminharErroDefinicoes(string $msg) : void{
             # Sistema\ProcessamentoRotas\Exceptions\PcRException
             throw new ProcessamentoRotas\Exceptions\PcRException( get_class($this).": Falha na definição das rotas: \n Inf(".$msg.")" );
         }
 
+        /**
+         * Verifica a estrutura de uma rota dinâmica ex: reg/{id}
+         *
+         * @param string $parametro
+         * @return boolean
+         */
         private function _verificarEstrutuParamDinamicoRota(string $parametro) : bool{
 
             //Aceita apenas letras(Maiu Minu), numeros, Caracteres (_{})
@@ -37,6 +55,12 @@ namespace Sistema{
         
         }
 
+        /**
+         * Verifica se a estrutura de uma rota é válida
+         *
+         * @param string $rota
+         * @return boolean
+         */
         private function _verificarSeEstruturaRotaEValida(string $rota) : bool{
 
             //Aceita apenas letras(Maiu Minu), numeros, Caracteres (./-_{})
@@ -48,6 +72,13 @@ namespace Sistema{
 
         }
 
+        /**
+         * Busca detectar duplicidade em rotas definidas na classe
+         *
+         * @param string $metodo
+         * @param string $strRotaCMP
+         * @return boolean
+         */
         private function _detectarDuplicidadeEmRotasDefinidas(string $metodo, string $strRotaCMP) : bool{
             
             if(isset($this->arrayRotasConfigs[$metodo]) && isset($this->arrayRotasConfigs[ $metodo ][ $strRotaCMP ]))
@@ -56,7 +87,12 @@ namespace Sistema{
             return false;
         }
 
-        #Retorna o nome da rota (string) se existir e (false) se não existir 
+        /**
+         * #Retorna o nome da rota 
+         *
+         * @param string $nome
+         * @return (string) se existir e (false) se não existir
+         */ 
         private function _verificarSeNomeRotaExiste(string $nome){
             if(isset($this->assocNomeRotas[ $nome ])){
                 return $this->assocNomeRotas[ $nome ]['strRota'];
@@ -128,6 +164,12 @@ namespace Sistema{
             
         }
 
+        /**
+         * Processa os parâmetros de uma rota.
+         *
+         * @param string $rota
+         * @return false(Em caso de erro)|array(Em caso sucesso no processamento)
+         */
         private function _processarParametrosRota(string $rota) {
             
             if(strlen($rota) <= 0)
@@ -217,6 +259,19 @@ namespace Sistema{
 
         }
 
+        /**
+         * Define uma rota. (Processo mais genérico)
+         *
+         * @param string $metodo : 'GET' 'SET', ... Disponível nas configurações
+         * @param string $rota : estrutura da rota.
+         * @param string $nomeClasseControlador : Nome da classe do controlador
+         * @param string $nomeMetodoChamadoInicial : Método inicial chamado no controlador pela rota.
+         * @param [type] $argumento : Argumento "raw" passado pela rota. 
+         * @param string|null $linkInclusao : link que o sistema fará inclusão.
+         * @param string|null $nomeRota : nome da rota. (Não pode ser repetido)
+         * @return void
+         * @throws PcRException : Erro específico do processamento de rotas
+         */
         private function _definirRotaMetodo(string $metodo, string $rota, string $nomeClasseControlador, string $nomeMetodoChamadoInicial, $argumento, string $linkInclusao = null, string $nomeRota = null) : void {
             
             //A rota não pode ser em braco
@@ -271,6 +326,11 @@ namespace Sistema{
             }
         }
 
+        /**
+         * Obtém o método da requisição. POST, GET, etc.
+         *
+         * @return string
+         */
         private function _obterMetodoDaRequisicao() : string{
 
             $metodoRequest = $_SERVER['REQUEST_METHOD'];
@@ -301,6 +361,11 @@ namespace Sistema{
 
         }
 
+        /**
+         * Obtém a rota que foi requisitada.
+         *
+         * @return string
+         */
         private function _obterRotaRequisitada() : string{
 
             
@@ -323,6 +388,13 @@ namespace Sistema{
 
         }
 
+        /**
+         * Comparações de array requisitado, para descobrí-lo nas rotas.
+         *
+         * @param array $arrayReqExp
+         * @param array $arrayRotaExp
+         * @return false(Em caso de não encontrar)|array(Em caso de sucesso)
+         */
         private function _compararArrayReqComArrayRota(array &$arrayReqExp, array &$arrayRotaExp){
             
             $cntParms = 0;
@@ -356,6 +428,14 @@ namespace Sistema{
 
         }
 
+        /**
+         * Localiza a rota dentro do array de definições(Rotas definidas)
+         *
+         * @param string $metodo
+         * @param string $rota
+         * @return FALSE(Em caso de não encontrar)|array(Em caso de encontrar)
+         * @throws PcRException : Erro específico do processamento de rotas
+         */
         private function _localizarRotaNoArrayDefinicoes(string $metodo, string $rota){
             
             //Se não enviar nada então ouve não precisa prosseguir
@@ -431,6 +511,13 @@ namespace Sistema{
             return false;
         }
 
+        /**
+         * Processo de acionamento do controlador
+         *
+         * @param array $arrayInfsRota
+         * @return void
+         * @throws PcRException : Erro específico do processamento de rotas
+         */
         private function _acionarControlador(array $arrayInfsRota){
             
             //Muito improvável de ocorrer
@@ -512,7 +599,12 @@ namespace Sistema{
            
         }
 
-        //Método auxiliar de outra classe. Não devendo ser utilizada por outro usuário.
+        /**
+         * Método auxiliar de outra classe. Não devendo ser utilizada por outro usuário.
+         *
+         * @param string $nomeRota
+         * @return NULL(Ao não obter)|array(Ao obter os objetos)
+         */
         public function __getArrayObjsRotaPorNomeRota(string $nomeRota){
 
             if(isset($this->assocNomeRotas[ $nomeRota ])){
@@ -523,6 +615,9 @@ namespace Sistema{
 
         }
 
+        /**
+         * Construtor
+         */
         function __construct(){
             $this->_setConfiguracoes();
 
@@ -533,36 +628,109 @@ namespace Sistema{
         //----------Métodos Públicos -----------------------------------------------
 
         # Métodos para configurações de rotas.
+
+        /**
+         * Define uma rota em modo GET
+         *
+         * @param string $rota : estrutura da rota.
+         * @param string $nomeClasseControlador : Nome da classe do controlador
+         * @param string $nomeMetodoChamadoInicial : Método inicial chamado no controlador pela rota.
+         * @param [type] $argumento : Argumento "raw" passado pela rota. 
+         * @param string|null $linkInclusao : link que o sistema fará inclusão.
+         * @param string|null $nomeRota : nome da rota. (Não pode ser repetido)
+         * @return void
+         * @throws PcRException : Erro específico do processamento de rotas
+         */
         public function definirRota_GET(string $rota, string $nomeClasseControlador, string $nomeMetodoChamadoInicial, $argumento, string $linkInclusao = null, string $nomeRota = null) : void {
 
             $this->_definirRotaMetodo("GET", $rota, $nomeClasseControlador, $nomeMetodoChamadoInicial, $argumento, $linkInclusao, $nomeRota);
 
         }
 
+        /**
+         * Define uma rota em modo POST
+         *
+         * @param string $rota : estrutura da rota.
+         * @param string $nomeClasseControlador : Nome da classe do controlador
+         * @param string $nomeMetodoChamadoInicial : Método inicial chamado no controlador pela rota.
+         * @param [type] $argumento : Argumento "raw" passado pela rota. 
+         * @param string|null $linkInclusao : link que o sistema fará inclusão.
+         * @param string|null $nomeRota : nome da rota. (Não pode ser repetido)
+         * @return void
+         * @throws PcRException : Erro específico do processamento de rotas
+         */
         public function definirRota_POST(string $rota, string $nomeClasseControlador, string $nomeMetodoChamadoInicial, $argumento, string $linkInclusao = null, string $nomeRota = null) : void {
 
             $this->_definirRotaMetodo("POST", $rota, $nomeClasseControlador, $nomeMetodoChamadoInicial, $argumento, $linkInclusao, $nomeRota);
 
         }
 
+        /**
+         * Define uma rota em modo PUT
+         *
+         * @param string $rota : estrutura da rota.
+         * @param string $nomeClasseControlador : Nome da classe do controlador
+         * @param string $nomeMetodoChamadoInicial : Método inicial chamado no controlador pela rota.
+         * @param [type] $argumento : Argumento "raw" passado pela rota. 
+         * @param string|null $linkInclusao : link que o sistema fará inclusão.
+         * @param string|null $nomeRota : nome da rota. (Não pode ser repetido)
+         * @return void
+         * @throws PcRException : Erro específico do processamento de rotas
+         */
         public function definirRota_PUT(string $rota, string $nomeClasseControlador, string $nomeMetodoChamadoInicial, $argumento, string $linkInclusao = null, string $nomeRota = null) : void {
 
             $this->_definirRotaMetodo("PUT", $rota, $nomeClasseControlador, $nomeMetodoChamadoInicial, $argumento,  $linkInclusao, $nomeRota);
 
         }
 
+        /**
+         * Define uma rota em modo DELETE
+         *
+         * @param string $rota : estrutura da rota.
+         * @param string $nomeClasseControlador : Nome da classe do controlador
+         * @param string $nomeMetodoChamadoInicial : Método inicial chamado no controlador pela rota.
+         * @param [type] $argumento : Argumento "raw" passado pela rota. 
+         * @param string|null $linkInclusao : link que o sistema fará inclusão.
+         * @param string|null $nomeRota : nome da rota. (Não pode ser repetido)
+         * @return void
+         * @throws PcRException : Erro específico do processamento de rotas
+         */
         public function definirRota_DELETE(string $rota, string $nomeClasseControlador, string $nomeMetodoChamadoInicial = null, $argumento = null, string $linkInclusao = null, string $nomeRota = null) : void {
 
             $this->_definirRotaMetodo("DELETE", $rota, $nomeClasseControlador, $nomeMetodoChamadoInicial, $argumento,  $linkInclusao, $nomeRota);
 
         }
 
+        /**
+         * Define uma rota em modo PATCH
+         *
+         * @param string $rota : estrutura da rota.
+         * @param string $nomeClasseControlador : Nome da classe do controlador
+         * @param string $nomeMetodoChamadoInicial : Método inicial chamado no controlador pela rota.
+         * @param [type] $argumento : Argumento "raw" passado pela rota. 
+         * @param string|null $linkInclusao : link que o sistema fará inclusão.
+         * @param string|null $nomeRota : nome da rota. (Não pode ser repetido)
+         * @return void
+         * @throws PcRException : Erro específico do processamento de rotas
+         */
         public function definirRota_PATCH(string $rota, string $nomeClasseControlador, string $nomeMetodoChamadoInicial = null, $argumento = null, string $linkInclusao = null, string $nomeRota = null) : void {
 
             $this->_definirRotaMetodo("PATCH", $rota, $nomeClasseControlador, $nomeMetodoChamadoInicial, $argumento,  $linkInclusao, $nomeRota);
 
         }
 
+        /**
+         * Define uma rota em modo TODOS
+         *
+         * @param string $rota : estrutura da rota.
+         * @param string $nomeClasseControlador : Nome da classe do controlador
+         * @param string $nomeMetodoChamadoInicial : Método inicial chamado no controlador pela rota.
+         * @param [type] $argumento : Argumento "raw" passado pela rota. 
+         * @param string|null $linkInclusao : link que o sistema fará inclusão.
+         * @param string|null $nomeRota : nome da rota. (Não pode ser repetido)
+         * @return void
+         * @throws PcRException : Erro específico do processamento de rotas
+         */
         public function definirRota_TODOS(string $rota, string $nomeClasseControlador, string $nomeMetodoChamadoInicial = null, $argumento = null, string $linkInclusao = null, string $nomeRota = null) : void {
 
             $this->_definirRotaMetodo($this->CFGS['mtdsALL'], $rota, $nomeClasseControlador, $nomeMetodoChamadoInicial, $argumento,  $linkInclusao, $nomeRota);
@@ -570,6 +738,12 @@ namespace Sistema{
         }
         //------------------------------------
 
+        /**
+         * Método principal responsável por acionar o processamento de rotas.
+         *
+         * @return void
+         * @throws PcRException : Erro específico do processamento de rotas
+         */
         public function iniciarProcessamento(){
 
             //Obtendo método da requisição
@@ -635,12 +809,24 @@ namespace Sistema {
 
         private static $objProcessamentoRotas;
 
+        /**
+         * Define o objeto de trabalho para esta classe estática.
+         *
+         * @param \Sistema\ProcessamentoRotas $obj
+         * @return void
+         */
         public static function setObjetoTrabalho(\Sistema\ProcessamentoRotas $obj){       
             if(!self::$objProcessamentoRotas)
                 self::$objProcessamentoRotas = $obj;               
         }
 
-        //Gera um link a partir da rota.
+        /**
+         * Gera um link a partir da rota. (Muito útil)
+         *
+         * @param string $nomeRota
+         * @param [type] ...$args
+         * @return string
+         */
         public static function gerarLink(string $nomeRota, ...$args) : string{
             
             if($nomeRota == "")

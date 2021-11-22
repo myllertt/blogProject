@@ -112,6 +112,6 @@ class HomeAdminController extends Controlador{
 
     }   
 
-}
+} 
 
 ?>

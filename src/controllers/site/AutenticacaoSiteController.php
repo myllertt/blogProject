@@ -16,7 +16,11 @@ class AutenticacaoSiteController extends Controlador{
     # Atributos específicos
     private $CFG_idViewPadraoTrabalho = "site.us.login"; //id da view padrão de trabalho deste controlador
 
-    //Caso perceba alguma sessão ativa do tipo, a página será redirecionada
+    /**
+     * Caso perceba alguma sessão ativa do tipo, a página será redirecionada
+     *
+     * @return void
+     */
     private function _autoRedSessaoAtiva_AutoExit() : void{
 
         //Realizando direc. caso encontre sessão ativa.
@@ -27,13 +31,22 @@ class AutenticacaoSiteController extends Controlador{
         
     }
 
+    /**
+     * Instancia de objetos pertinentes à classe
+     *
+     * @return void
+     */
     private function _instanciaObjetos(){
 
         $this->objTrabalho = new AuthUsuariosSite( DriverConexaoDB::getObjDB() );
 
     }
 
-    
+    /**
+     * Construtor
+     *
+     * @param [\Sistema\ProcessamentoRotas\Request] $objRequest
+     */
     function __construct($objRequest){
         parent::__construct($objRequest);
 
@@ -41,7 +54,12 @@ class AutenticacaoSiteController extends Controlador{
     }
 
     # Área de Login ------------------------
-    public function telaLogin(){
+    /**
+     * Exibição de tela de login
+     *
+     * @return void
+     */
+    public function telaLogin() : void{
 
         #Id view específica deste método
         $strIdViewEspecMetodo = $this->CFG_idViewPadraoTrabalho;
@@ -72,7 +90,12 @@ class AutenticacaoSiteController extends Controlador{
         Views::abrir($strIdViewEspecMetodo, $arrayArgs);
 
     }
-    public function processoLogin(){
+    /**
+     * Processo de login
+     *
+     * @return void
+     */
+    public function processoLogin() : void{
 
         #Id view específica deste método
         $strIdViewEspecMetodo = $this->CFG_idViewPadraoTrabalho;
@@ -159,7 +182,12 @@ class AutenticacaoSiteController extends Controlador{
     }
 
     #Logout de usuário --------------------
-    public function logout(){
+    /**
+     * Processo de logout
+     *
+     * @return void
+     */
+    public function logout() : void{
 
          
         try {

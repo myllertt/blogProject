@@ -17,7 +17,11 @@ class DriverConexaoDB {
     private static $historicoUltMsgErro = ""; //Histórico de última msg de erro;
     private static $historicoUltCodErro = 0; //Histórico de último codigo de erro;
 
-    
+    /**
+     * Método que tenta iniciar a conexão do tipo mysqli
+     *
+     * @return boolean
+     */
     private static function iniciarConexao() : bool{
 
         self::$conectado = false;
@@ -49,7 +53,11 @@ class DriverConexaoDB {
 
     }
 
-    //Não significa iniciar conexão,mas sim a classe em si.
+    /**
+     * Não significa iniciar conexão,mas sim a classe em si.
+     *
+     * @return void
+     */
     public static function iniciar(): void{
         
         //carregando atributos das configurações do db
@@ -72,7 +80,11 @@ class DriverConexaoDB {
     }
 
 
-    //Obtém o objeto de conexão do banco de dados, ele tentará conectar caso não esteja conectado.
+    /**
+     * Obtém o objeto de conexão do banco de dados, ele tentará conectar caso não esteja conectado.
+     *
+     * @return mysqli|false(Em caso de erro)
+     */
     public static function getObjDB(){
 
         if(self::$conectado){
@@ -87,17 +99,29 @@ class DriverConexaoDB {
 
     }
 
-    //Retorna a última msg erro da tentativa de conexão ao banco de dados.
+    /**
+     * Retorna a última msg erro da tentativa de conexão ao banco de dados.
+     *
+     * @return string
+     */
     public static function getMsgDBErro() : string{
         return self::$historicoUltMsgErro;
     }
 
-    //Retorna o último cod erro da tentativa de conexão ao banco de dados.
+    /**
+     * Retorna o último cod erro da tentativa de conexão ao banco de dados.
+     *
+     * @return integer
+     */
     public static function getCodDBErro() : int{
         return self::$historicoUltCodErro;
     }
 
-    //Obter nome do banco de dados configurado
+    /**
+     * Obter nome do banco de dados configurado
+     *
+     * @return string
+     */
     public static function getNomeDB() : string{
         return self::$cacheParmsCon['db'];
     }

@@ -45,7 +45,11 @@ class AcoesMinhaContaUsAdmController extends Controlador{
         
     }
     
-    //Realiza o processo de verificar as permissões ACL para este conteúdo.
+    /**
+     * Realiza o processo de verificar as permissões ACL para este conteúdo.
+     *
+     * @return void
+     */
     private function _verificarPermissoesACL_AutoRedEExit() : void{
         
         //obtendo argumento passado pela rota.
@@ -442,7 +446,7 @@ class AcoesMinhaContaUsAdmController extends Controlador{
      *
      * @return void
      */
-    public function processoAlterarSenha(){ #ok
+    public function processoAlterarSenha() : void{ #ok
 
         #Id view específica deste método
         $strIdViewEspecMetodo = "admin.minhaConta.alterarSenha";

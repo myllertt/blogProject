@@ -13,12 +13,20 @@ class BackupSistemaDB {
 
     private $strCacheNomeArqGerado; //Caso o arquivo tenha sido gerado.
     
-    //Função de configurações.
+    /**
+     * Função de configurações.
+     *
+     * @return void
+     */
     private function _definirConfigsEspecificas(){
         
     }
 
-    //Remove arquivos temporários caso assim existam
+    /**
+     * Remove arquivos temporários caso assim existam
+     *
+     * @return void
+     */
     private function _removerArqsTempCasoExistam() : void {
 
         if($this->stsBack == 1 && $this->strCacheNomeArqGerado !== null){
@@ -31,7 +39,12 @@ class BackupSistemaDB {
 
     }
 
-    //Gerar caractéres aleatórios
+    /**
+     * Gerar caractéres aleatórios
+     *
+     * @param integer $qtd : Quantidade de carac. a serem gerados
+     * @return string
+     */
     private function _gerarCharsAlea(int $qtd){
 		
 		$pos = "";		
@@ -48,7 +61,12 @@ class BackupSistemaDB {
 		
 	}
 
-    //Verifica as condições do diretório.
+    /**
+     * Verifica as condições do diretório.
+     *
+     * @return void
+     * @throws \Exception : Em caso de erro de procedimento
+     */
     private function _verificarCondicoesDiretorio(){ //throw \Exception
 
         //Verificando diretório tmp de trabalho
@@ -61,7 +79,12 @@ class BackupSistemaDB {
         }
     }
 
-    //Realização do processo de geração do arquivo interno de backup e compactação
+    /**
+     * Realização do processo de geração do arquivo interno de backup e compactação
+     *
+     * @return void
+     * @throws \Exception : Em caso de erro de procedimento
+     */
     private function _processoMysqldump(){ //throw \Exception
 
         $date = new DateTime();
@@ -153,6 +176,9 @@ class BackupSistemaDB {
 
     }
 
+    /**
+     * Construtor
+     */
     function __construct(){
 
         #Configurações específicas
@@ -164,7 +190,11 @@ class BackupSistemaDB {
 
     }
 
-    //Função de gerar o backup
+    /**
+     * Função de gerar o backup
+     *
+     * @return void
+     */
     public function gerarBackup() : void { //throw \Exception
 
         $this->_removerArqsTempCasoExistam();
@@ -192,7 +222,11 @@ class BackupSistemaDB {
         }
     }
 
-    //Gerando o header de download do arquivo. Funciona apenas se o backup já tiver sido gerado
+    /**
+     * Gerando o header de download do arquivo. Funciona apenas se o backup já tiver sido gerado
+     *
+     * @return boolean
+     */
     public function gerarHeaderDownloadBackup() : bool{
         
         //Só funcionará se o processo tiver sido realizado.
@@ -219,7 +253,11 @@ class BackupSistemaDB {
         return true;
     }
 
-    //Descarrega os dados do arquivo. Funciona apenas se o backup já tiver sido gerado
+    /**
+     * Descarrega os dados do arquivo. Funciona apenas se o backup já tiver sido gerado
+     *
+     * @return boolean
+     */
     public function descarregarDadosBackup() : bool{
 
         //Só funcionará se o processo tiver sido realizado.
@@ -238,7 +276,9 @@ class BackupSistemaDB {
     }
     
 
-    //Se encarregará de remover o arquivo temporário caso tenha sido gerado
+    /**
+     * DESTRUTOR: Se encarregará de remover o arquivo temporário caso tenha sido gerado
+     */
     function __destruct(){
 
         $this->_removerArqsTempCasoExistam();

@@ -11,17 +11,35 @@ class UsuariosAdmin {
 
     private $arrayCFGSEsp; //Array de configurações específicas.
 
+    /**
+     * Método definição de configurações específicas da classe
+     *
+     * @return void
+     */
     private function _definirConfigsEspecificas(){
         $this->arrayCFGSEsp['MIN_CARACS_SENHA'] = 8; //Mínimo de caracteres para o campo senha.
         $this->arrayCFGSEsp['MAX_CARACS_SENHA'] = 64; //Máximo de caracteres para o campo senha.
     }
 
+    /**
+     * Verifica se objeto da classe $this->objMysqli existe
+     *
+     * @return void
+     * @throws DBException : Em caso de erro de banco de dados
+     */
     private function _verificarObjDB(){
         if(!$this->objMysqli){
             throw new DBException("Falha ao iniciar a conexão com o banco de dados");            
         }
     }
 
+    /**
+     * Consulta se um determinado já exsite.
+     *
+     * @param string $usuario
+     * @return boolean
+     * @throws DBException : Em caso de erro de banco de dados
+     */
     private function _consultarSeUsuarioExiste(string $usuario) : bool{
         
         $this->_verificarObjDB();
@@ -77,7 +95,18 @@ class UsuariosAdmin {
 
     }
 
-    private function _validarDadosCadastraisUsuario(string $status, string $nome, string $sobrenome, string $genero, string $email){ #throw DBException
+    /**
+     * Verifica os dados básicos cadastrais de um usuário
+     *
+     * @param string $status
+     * @param string $nome
+     * @param string $sobrenome
+     * @param string $genero
+     * @param string $email
+     * @return void
+     * @throws \Exception : Em caso de erro de procedimento
+     */
+    private function _validarDadosCadastraisUsuario(string $status, string $nome, string $sobrenome, string $genero, string $email){ #throw \Exception
 
         #status
         $arrSts = ['1', '0']; //Array de possíveis valores para status
@@ -119,6 +148,14 @@ class UsuariosAdmin {
 
     }
 
+    /**
+     * Realiza a validação do campo senha
+     *
+     * @param string $string
+     * @param string|null $lab : O título do campo
+     * @return void
+     * @throws Exception : Em caso de erro de banco de dados
+     */
     private function _validarCampoSenha(string $string, string $lab = null) : void { #throw \Exception
         
         $lenString = mb_strlen($string);
@@ -146,7 +183,12 @@ class UsuariosAdmin {
         
     }
 
-    //Gera um hash da senha de acordo com o algoritmo predefinido
+    /**
+     * Gera um hash da senha de acordo com o algoritmo predefinido
+     *
+     * @param string $string
+     * @return string
+     */
     private function _gerarHashSenha(string $string) : string{
         
         //Gera a inversão de algoritmo sha512
@@ -154,7 +196,13 @@ class UsuariosAdmin {
 
     }
 
-    //Cadastrar usuário no banco de dados.
+    /**
+     * Cadastrar usuário no banco de dados.
+     *
+     * @param array $arrayDados
+     * @return void
+     * @throws DBException : Em caso de erro de banco de dados
+     */
     private function _inserirNovoUsuarioBancoDados(array $arrayDados) : void{ #throw DBException
 
         /*
@@ -195,7 +243,14 @@ class UsuariosAdmin {
         }
     }
 
-    //Atualiza os dados cadastrais de um determinado usuário
+    /**
+     * Atualiza os dados cadastrais de um determinado usuário
+     *
+     * @param integer $idUsuario
+     * @param array $arrayDados
+     * @return void
+     * @throws DBException : Em caso de erro de banco de dados
+     */
     private function _atualizarDadosCadastraisUsuarioBancoDados(int $idUsuario, array $arrayDados) : void{ #throw DBException
 
         /*
@@ -241,7 +296,14 @@ class UsuariosAdmin {
 
     }
 
-    //Atualiza a senha do usuário no banco de dados.
+    /**
+     * Atualiza a senha do usuário no banco de dados.
+     *
+     * @param integer $idUsuario
+     * @param string $hashSenha
+     * @return boolean
+     * @throws DBException : Em caso de erro de banco de dados
+     */
     private function _atualizarSenhaUsuarioBancoDado(int $idUsuario, string $hashSenha) : bool{ #throw DBException
 
         $this->_verificarObjDB();
@@ -285,7 +347,13 @@ class UsuariosAdmin {
         }
     }
 
-    //Exlcuir do banco de dados um determinado usuário
+    /**
+     * Exlcuir do banco de dados um determinado usuário
+     *
+     * @param integer $idUsuario
+     * @return boolean
+     * @throws DBException : Em caso de erro de banco de dados
+     */
     private function _excluirUsuarioBancoDados(int $idUsuario) : bool { #throw DBException
 
         $this->_verificarObjDB();
@@ -327,6 +395,13 @@ class UsuariosAdmin {
 
     }
 
+    /**
+     * Obtém uma lista de usuários do DB
+     *
+     * @param array $arrayCampos :  As colunas respecitvas a tabela no banco de dados
+     * @param integer|null $limite : limite de resultados
+     * @return array
+     */
     private function _getListaUsuarios(array $arrayCampos, int $limite = null) : array{ #throw DBException
            
         $this->_verificarObjDB();
@@ -392,13 +467,31 @@ class UsuariosAdmin {
 
     }
 
+    /**
+     * Construtor
+     *
+     * @param [mysqli] $objMysqli
+     */
     function __construct($objMysqli){
         $this->objMysqli = $objMysqli;
 
         $this->_definirConfigsEspecificas();
     }
     
-    //Processo de registro do usuário
+    /**
+     * Processo de registro do usuário
+     *
+     * @param string $status
+     * @param string $usuario
+     * @param string $nome
+     * @param string $sobrenome
+     * @param string $genero
+     * @param string $email
+     * @param string $senha
+     * @return void
+     * @throws DBException : Em caso de erro de banco de dados
+     * @throws \Exception : Em caso de erro de procedimento
+     */
     public function cadastrarUsuario(string $status = "1", string $usuario, string $nome, string $sobrenome, string $genero, string $email, string $senha) : void{ #throw DBException, \Exception
 
         #usuario----------
@@ -446,7 +539,19 @@ class UsuariosAdmin {
             
     }
 
-    //Processo de edição de dados cadastrais
+    /**
+     * Processo de edição de dados cadastrais
+     *
+     * @param integer $idUsuario
+     * @param string $status
+     * @param string $nome
+     * @param string $sobrenome
+     * @param string $genero
+     * @param string $email
+     * @return void
+     * @throws DBException : Em caso de erro de banco de dados
+     * @throws \Exception : Em caso de erro de procedimento
+     */
     public function editarDadosCadastrais(int $idUsuario,     string $status, string $nome, string $sobrenome, string $genero, string $email) : void{ #throw DBException, \Exception
 
         if($idUsuario == 0)
@@ -469,7 +574,16 @@ class UsuariosAdmin {
 
     }
 
-    //Aterar senha do usuário
+    /**
+     * Aterar senha do usuário
+     *
+     * @param integer $idUsuario
+     * @param string $hashSenha_atual
+     * @param string $novaSenha
+     * @return void
+     * @throws DBException : Em caso de erro de banco de dados
+     * @throws \Exception : Em caso de erro de procedimento
+     */
     public function alterarSenha(int $idUsuario, string $hashSenha_atual, string $novaSenha) : void{ #throw DBException, \Exception
 
         if($idUsuario == 0)
@@ -499,7 +613,15 @@ class UsuariosAdmin {
 
     }
 
-    //Redefinição de senha (Neste caso não é requisitado a confirmação da senha antiga)
+    /**
+     * Redefinição de senha (Neste caso não é requisitado a confirmação da senha antiga)
+     *
+     * @param integer $idUsuario
+     * @param string $novaSenha
+     * @return void
+     * @throws DBException : Em caso de erro de banco de dados
+     * @throws \Exception : Em caso de erro de procedimento
+     */
     public function redefinirSenha(int $idUsuario, string $novaSenha) : void{ #throw DBException, \Exception
 
         if($idUsuario == 0)
@@ -521,7 +643,14 @@ class UsuariosAdmin {
 
     }
 
-    //Processo de exclusão do usuário
+    /**
+     * Processo de exclusão do usuário
+     *
+     * @param integer $idUsuario
+     * @return void
+     * @throws DBException : Em caso de erro de banco de dados
+     * @throws \Exception : Em caso de erro de procedimento
+     */
     public function excluirUsuario(int $idUsuario) : void{ #throw DBException, \Exception
 
         //Finalmente inserindo dados
@@ -530,7 +659,14 @@ class UsuariosAdmin {
 
     }
 
-    //Processo de obter dados cadastrais
+    /**
+     * Processo de obter dados cadastrais
+     *
+     * @param integer $idUsuario
+     * @param boolean $incluirHashSenha
+     * @return array
+     * @throws DBException : Em caso de erro de banco de dados
+     */
     public function getDadosCadastrais(int $idUsuario, bool $incluirHashSenha = false) : array{ #throw DBException
 
            
@@ -601,6 +737,7 @@ class UsuariosAdmin {
      *
      * @param integer|null $limiteRegs 
      * @return array
+     * @throws DBException : Em caso de erro de banco de dados
      */
     public function getUsuarios(int $limiteRegs = null) : array{ #throw DBException
 
@@ -653,11 +790,22 @@ class UsuariosAdmin {
     }
     
     #GETTERS
+    /**
+     * Obtém um objeto do tipo mysqli
+     *
+     * @return [mysqli]
+     */
     public function getObjMysqli(){
         return $this->objMysqli;
     }
     
     #SETTERS
+    /**
+     * Edita o objeto do tipo mysqli
+     *
+     * @param [mysqli] $objMysqli
+     * @return void
+     */
     public function setObjMysqli($objMysqli){
         $this->objMysqli = $objMysqli;
     }

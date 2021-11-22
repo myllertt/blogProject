@@ -13,17 +13,35 @@ class AuthUsuariosSite {
 
     private $arrCacheDadosUsLogado; //Cache de informações do usuário logado
 
+    /**
+     * Método definição de configurações específicas da classe
+     *
+     * @return void
+     */
     private function _definirConfigsEspecificas(){
         $this->arrayCFGSEsp['TIPO_SESSAO'] = 'site'; //Tipo site.
         $this->arrayCFGSEsp['SLEEP_TIME_ERROSENHA'] = 1; //Em caso de erro na validação do usuário ou senha o servidor irá gerar um delay intencional
     }
 
+    /**
+     * Verifica se objeto da classe $this->objMysqli existe
+     *
+     * @return void
+     * @throws DBException : Em caso de erro de banco de dados
+     */
     private function _verificarObjDB(){
         if(!$this->objMysqli){
             throw new DBException("Falha ao iniciar a conexão com o banco de dados");            
         }
     }
 
+    /**
+     * Consulta os dados do usuário no banco de dados
+     *
+     * @param string $usuario
+     * @return array
+     * @throws DBException : Em caso de erro de banco de dados
+     */
     private function _consultarUsuario(string $usuario) : array{
         
         $this->_verificarObjDB();
@@ -75,7 +93,13 @@ class AuthUsuariosSite {
 
     }
 
-    //Registra o tempo da última movimentação do usuário na sessão
+    /**
+     * Registra o tempo da última movimentação do usuário na sessão
+     *
+     * @param integer $idUsuario
+     * @return void
+     * @throws DBException : Em caso de erro de banco de dados
+     */
     private function _updateMovimentacaoUsSessaoDB(int $idUsuario) : void{ #throw DBException
 
         $this->_verificarObjDB();
@@ -108,7 +132,13 @@ class AuthUsuariosSite {
 
     }
 
-    //Remove a sessão ativa do usuário no banco de dados.
+    /**
+     * Remove a sessão ativa do usuário no banco de dados.
+     *
+     * @param integer $idUsuario
+     * @return void
+     * @throws DBException : Em caso de erro de banco de dados
+     */
     private function _removerSessaoAtivaUsuarioNoDB(int $idUsuario) : void{ #throw DBException
 
         $this->_verificarObjDB();
@@ -141,7 +171,13 @@ class AuthUsuariosSite {
 
     }
 
-    //Consulta a sessão do usuário no DB
+    /**
+     * Consulta a sessão do usuário no DB
+     *
+     * @param integer $idUsuario
+     * @param string $codSessao
+     * @return array
+     */
     private function _consultarSessaoDB(int $idUsuario, string $codSessao) : array{
         
         $this->_verificarObjDB();
@@ -194,7 +230,12 @@ class AuthUsuariosSite {
 
     }
 
-    //Gerar caractéres aleatórios
+    /**
+     * Gerar caractéres aleatórios
+     *
+     * @param integer $qtd: Quantidade de caracs a serem gerados
+     * @return string
+     */
     private function _gerarCharsAlea(int $qtd){
 		
 		$pos = "";		
@@ -211,7 +252,13 @@ class AuthUsuariosSite {
 		
 	}
 
-    //Registrando sessão no banco de dados
+    /**
+     * Registrando sessão no banco de dados
+     *
+     * @param integer $idUsuario
+     * @return string
+     * @throws DBException : Em caso de erro de banco de dados
+     */
     private function _registrarNovaSessaoUsuarioDB(int $idUsuario) : string { #throw DBException
         
         //Obtendo novo código
@@ -251,7 +298,14 @@ class AuthUsuariosSite {
         return $codSesAlea;
     }
 
-    //Salvando informações na memória de sessão
+    /**
+     * Salvando informações na memória de sessão
+     *
+     * @param string $codSessao
+     * @param integer $idUsuario
+     * @param string $nomeUser
+     * @return bool
+     */
     private function _registrarSessaoEmMem(string $codSessao, int $idUsuario, string $nomeUser){
 
         //Renovando ID sessão
@@ -272,6 +326,11 @@ class AuthUsuariosSite {
         return true;
     }
 
+    /**
+     * Construtor
+     *
+     * @param [mysqli] $objMysqli
+     */
     function __construct($objMysqli){
 
         //Iniciando processo de sessão caso não tenha sido iniciada.
@@ -293,7 +352,16 @@ class AuthUsuariosSite {
         $this->_definirConfigsEspecificas();
     }
         
-    //Realiza o processo de login
+    /**
+     * Realiza o processo de login
+     *
+     * @param string $usuario
+     * @param string $hashSenha
+     * @return void
+     * @throws DBException : Em caso de erro de banco de dados
+     * @throws \Exception : Em caso de erro de procedimento
+     * 
+     */
     public function efetuarLogin(string $usuario, string $hashSenha) : void{ #throw DBException, \Exception
 
         if($usuario == "")
@@ -347,7 +415,11 @@ class AuthUsuariosSite {
             
     }
 
-    //Destroi sessão apenas da memória do sistema, não entrando causando nenhum efeito do banco de dados
+    /**
+     * Destroi sessão apenas da memória do sistema, não entrando causando nenhum efeito do banco de dados
+     *
+     * @return boolean
+     */
     public function destruirSessaoApenasMemoriaSis() : bool{
         if(!$this->checkSeExisteSessaoAtivaTipica())
             return false;
@@ -359,7 +431,11 @@ class AuthUsuariosSite {
         
     }
 
-    //Realiza logou da sessão ativa do usuário caso tenha
+    /**
+     * Realiza logou da sessão ativa do usuário caso tenha
+     *
+     * @return boolean
+     */
     public function realizarLogout() : bool{
 
         //Verificando sessão na memoria do sistema
@@ -377,7 +453,11 @@ class AuthUsuariosSite {
 
     }
 
-    //Verifica se existe sessão ativa do tipo esperado
+    /**
+     * Verifica se existe sessão ativa do tipo esperado
+     *
+     * @return boolean
+     */
     public function checkSeExisteSessaoAtivaTipica() : bool{
 
         if(isset($_SESSION['codSes']) && isset($_SESSION['tipo']) && $_SESSION['tipo'] == $this->arrayCFGSEsp['TIPO_SESSAO'])
@@ -386,7 +466,13 @@ class AuthUsuariosSite {
         return false;
     }
 
-    //Além de verificar a sessão na memória. Também é verificada a integridade da sessão no banco de dados
+    /**
+     * Além de verificar a sessão na memória. Também é verificada a integridade da sessão no banco de dados
+     *
+     * @param boolean $movimentarSessao
+     * @return boolean
+     * @throws DBException : Em caso de erro de banco de dados
+     */
     public function checkSeUsuarioEstaAutenticadoDB(bool $movimentarSessao=true) : bool { #throw DBException
         
         //Verificando sessão da memória.
@@ -436,7 +522,11 @@ class AuthUsuariosSite {
         return true;
     }
 
-    //Somente será disponível de a sessão já tiver sido verificada. Ex: com o método: checkSeUsuarioEstaAutenticadoDB()
+    /**
+     * Somente será disponível de a sessão já tiver sido verificada. Ex: com o método: checkSeUsuarioEstaAutenticadoDB()
+     *
+     * @return array
+     */
     public function getArrayCacheDadosUsuarioLogado() : array{
 
         //Ainda não foi realizado o cache
@@ -450,11 +540,22 @@ class AuthUsuariosSite {
     }
     
     #GETTERS
+    /**
+     * Obtém um objeto do tipo mysqli
+     *
+     * @return [mysqli]
+     */
     public function getObjMysqli(){
         return $this->objMysqli;
     }
     
     #SETTERS
+    /**
+     * Edita o objeto do tipo mysqli
+     *
+     * @param [mysqli] $objMysqli
+     * @return void
+     */
     public function setObjMysqli($objMysqli){
         $this->objMysqli = $objMysqli;
     }

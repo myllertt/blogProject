@@ -16,13 +16,22 @@ class UsuariosSiteController extends Controlador{
     # Atributos específicos
     private $CFG_idViewPadraoTrabalho = ""; //id da view padrão de trabalho deste controlador
 
+    /**
+     * Instancia de objetos pertinentes à classe
+     *
+     * @return void
+     */
     private function _instanciaObjetos(){
 
         $this->objTrabalho = new UsuariosSite( DriverConexaoDB::getObjDB() );
 
     }
 
-    
+    /**
+     * Construtor
+     *
+     * @param [\Sistema\ProcessamentoRotas\Request] $objRequest
+     */
     function __construct($objRequest){
         parent::__construct($objRequest);
 
@@ -30,7 +39,12 @@ class UsuariosSiteController extends Controlador{
     }
 
     # Área de registro ------------------------
-    public function exibirTelaRegistro(){
+    /**
+     * Exibição de tela de registro do usuário
+     *
+     * @return void
+     */
+    public function exibirTelaRegistro() : void{
 
         #Id view específica deste método
         $strIdViewEspecMetodo = "site.us.registrar";
@@ -62,7 +76,12 @@ class UsuariosSiteController extends Controlador{
         Views::abrir($strIdViewEspecMetodo, $arrayArgs);
 
     }
-    public function processoRegistrarUsuario(){
+    /**
+     * Processo de registro do usuário
+     *
+     * @return void
+     */
+    public function processoRegistrarUsuario() : void{
 
         #Id view específica deste método
         $strIdViewEspecMetodo = "site.us.registrar";

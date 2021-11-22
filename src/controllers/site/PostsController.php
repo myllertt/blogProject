@@ -16,20 +16,34 @@ class PostsController extends Controlador{
     # Atributos específicos
     private $CFG_idViewPadraoTrabalho = ""; //id da view padrão de trabalho deste controlador
 
+    /**
+     * Instancia de objetos pertinentes à classe
+     *
+     * @return void
+     */
     private function _instanciaObjetos(){
 
         $this->objPost = new Posts( DriverConexaoDB::getObjDB() );
 
     }
 
-    
+    /**
+     * Construtor
+     *
+     * @param [\Sistema\ProcessamentoRotas\Request] $objRequest
+     */
     function __construct($objRequest){
         parent::__construct($objRequest);
 
         $this->_instanciaObjetos();
     }
 
-    public function inicio(){
+    /**
+     * Método inicial da rota post
+     *
+     * @return void
+     */
+    public function inicio() : void{
 
         header("Location: /home");
 
@@ -37,7 +51,12 @@ class PostsController extends Controlador{
 
     }
 
-    public function getPost(){
+    /**
+     * Tele de exibição de um POST específico
+     *
+     * @return void
+     */
+    public function getPost(): void{
 
         #Id view específica deste método
         $strIdViewEspecMetodo = "site.posts.post";

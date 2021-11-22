@@ -17,27 +17,46 @@ class PaginaInicialController extends Controlador{
     # Atributos específicos
     private $CFG_idViewPadraoTrabalho = "site.index"; //id da view padrão de trabalho deste controlador
 
+    /**
+     * Instancia de objetos pertinentes à classe
+     *
+     * @return void
+     */
     private function _instanciaObjetos(){
 
         $this->objPost = new Posts( DriverConexaoDB::getObjDB() );
 
     }
 
-    
+    /**
+     * Construtor
+     *
+     * @param [\Sistema\ProcessamentoRotas\Request] $objRequest
+     */
     function __construct($objRequest){
         parent::__construct($objRequest);
 
         $this->_instanciaObjetos();
     }
 
-    public function redirecionarHome(){
+    /**
+     * Redirecionamento para a página home
+     *
+     * @return void
+     */
+    public function redirecionarHome() : void{
     
         header("Location: ".Rotas::gerarLink("site.home"));
 
         exit;
     }
 
-    public function inicio(){
+    /**
+     * Método inicial da página
+     *
+     * @return void
+     */
+    public function inicio() : void{
 
         #Id view específica deste método
         $strIdViewEspecMetodo = $this->CFG_idViewPadraoTrabalho;

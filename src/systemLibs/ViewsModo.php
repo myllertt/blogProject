@@ -10,13 +10,29 @@ namespace Sistema\Views {
         //Considera o momento em que as definições de VIEWS podem ser feitas. Evitando que configurações de view sejam modificadas secundáriamente
         private static $stsModifAtivas = true; 
 
-        //Padronização de erro.
+        /**
+         * Padronização de erro.
+         *
+         * @param string $nomeMetodoAtual
+         * @param string $msgErro
+         * @param integer|null $codErro
+         * @return void
+         * @throws VwException : Erro específica do tratamento de views
+         */
         private static function throwErro(string $nomeMetodoAtual, string $msgErro, int $codErro = null) : void { //Throw VwException
             throw new Exceptions\VwException($nomeMetodoAtual." ==> ".$msgErro, $codErro);
         }
 
         //Métodos de definições ----------------------------------------
 
+        /**
+         * Definição de view
+         *
+         * @param string $idView
+         * @param string $strCaminhoInclusao : caminho físico do arquivo a ser incluído
+         * @return void
+         * @throws VwException : Erro específica do tratamento de views
+         */
         public static function definir(string $idView, string $strCaminhoInclusao) : void{ //Throw Sistema\Views\Exceptions\VwException
             
             //Verificando se a janela de modificações ainda esta aberta
@@ -48,13 +64,25 @@ namespace Sistema\Views {
 
         }
 
-        //Utilizado quando se quer finalizar as modificações
+        /**
+         * Utilizado quando se quer finalizar as modificações. Fechar a janela de modificações
+         *
+         * @return void
+         */
         public static function finalizarModificacoes() : void{
             self::$stsModifAtivas = false;
         } 
 
         //Métodos de execuções -----------------------------------------
 
+        /**
+         * Processo de invocação da view
+         *
+         * @param string $idView
+         * @param array|null $arrayArgs
+         * @return void
+         * @throws VwException : Erro específica do tratamento de views
+         */
         public static function abrir(string $idView, array $arrayArgs = null){ //Throw Sistema\Views\Exceptions\VwException
 
             //Conferindo a existencia do ID VIEW

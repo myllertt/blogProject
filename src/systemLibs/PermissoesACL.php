@@ -10,7 +10,9 @@ namespace Sistema {
 
         private $stsConfigurado; //Para saber o estado do objeto perante às suas configurações.  true = Configurado, false = em aberto.
 
-
+        /**
+         * Construtor
+         */
         function __construct(){
             
             //Iniciando
@@ -22,7 +24,12 @@ namespace Sistema {
             $this->stsConfigurado = false;
         }
 
-        //Verificando o estado da permissão. true = permitido, false = não permitido, null = não foi possível verificar
+        /**
+         * Verificando o estado da permissão.
+         *
+         * @param PermissoesACL\ACL_PERM $obj
+         * @return true = permitido, false = não permitido, null = não foi possível verificar
+         */
         public function verificarEstadoPermissao(PermissoesACL\ACL_PERM $obj){
 
             //Caso os dados de alimentação sejam inválidos
@@ -47,7 +54,12 @@ namespace Sistema {
 
 
         
-        //Adicionar objeto ao array geral
+        /**
+         * Adicionar objeto ao array geral
+         *
+         * @param PermissoesACL\ACL_PERM $obj
+         * @return boolean
+         */
         public function addObj_ACL_PERM(PermissoesACL\ACL_PERM $obj) : bool{
 
             //Certificando que o objeto esteja em aberto
@@ -64,7 +76,11 @@ namespace Sistema {
             return true;
         }
 
-        //Define a regra padrão como permitir
+        /**
+         * Define a regra padrão como permitir
+         *
+         * @return void
+         */
         public function definirRegraPadComo_permtir() : void{
 
             //Certificando que o objeto esteja em aberto
@@ -74,7 +90,11 @@ namespace Sistema {
             $this->regraPadrao = 1;
         }
 
-        //Define a regra padrão como negar
+        /**
+         * Define a regra padrão como negar
+         *
+         * @return void
+         */
         public function definirRegraPadComo_negar() : void{
 
             //Certificando que o objeto esteja em aberto
@@ -84,6 +104,11 @@ namespace Sistema {
             $this->regraPadrao = 0;
         }
 
+        /**
+         * Finaliza as configurações, neste caso impedindo alterações posteriores
+         *
+         * @return void
+         */
         public function finalizarConfigs() : void{
             $this->stsConfigurado = true;
         }
@@ -100,7 +125,12 @@ namespace Sistema\PermissoesACL {
         private $codigo;
         private $descricao;
 
-        //Verifica a cadeia de caractéres do código da permissão
+        /**
+         * Verifica a cadeia de caractéres do código da permissão
+         *
+         * @param string $str
+         * @return boolean
+         */
         private function _verificarCadeiaCarac(string $str) : bool{
 
             //Aceita apenas letras(Maiu Minu), numeros, Caracteres (./-_)
@@ -112,12 +142,22 @@ namespace Sistema\PermissoesACL {
 
         }
 
+        /**
+         * construtor
+         *
+         * @param string $codigo
+         * @param string $descricao
+         */
         function __construct(string $codigo, string $descricao = ""){
             $this->codigo = $codigo;
             $this->descricao = $descricao;
         }
 
-        //Realiza a validação dos dados inseridos neste objeto.
+        /**
+         * Realiza a validação dos dados inseridos neste objeto.
+         *
+         * @return boolean
+         */
         public function validarDados() : bool{
         
             if($this->codigo == "")
@@ -134,7 +174,12 @@ namespace Sistema\PermissoesACL {
             return true;
         }
 
-        //Método público e estatico para a validação do código.
+        /**
+         * Método público e estatico para a validação do código.
+         *
+         * @param string $codigo
+         * @return boolean
+         */
         public static function validarCodigo(string $codigo) : bool{
             return self::_verificarCadeiaCarac($codigo);
         }

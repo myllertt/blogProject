@@ -50,7 +50,11 @@ class ManipulacaoPermissoesUsAdmController extends Controlador{
         
     }
 
-    //Realiza o processo de verificar as permissões ACL para este conteúdo.
+    /**
+     * Realiza o processo de verificar as permissões ACL para este conteúdo.
+     *
+     * @return void
+     */
     private function _verificarPermissoesACL_AutoRedEExit() : void{
         
         //obtendo argumento passado pela rota.
@@ -121,7 +125,12 @@ class ManipulacaoPermissoesUsAdmController extends Controlador{
 
     # Específicos -----------------------------------
 
-    //Recebe uma string concatenada de valores e a converte em um array
+    /**
+     * Recebe uma string concatenada de valores e a converte em um array
+     *
+     * @param string $strCatPerms : String de permissões
+     * @return false(Em caso de falha)|array 
+     */
     private function _processarStrPermsParaArray(string $strCatPerms){
 
         $maxTamStrProc = 8192; //Tamanhomáximo aceito da string ($strCatPerms) a ser processado
@@ -156,7 +165,12 @@ class ManipulacaoPermissoesUsAdmController extends Controlador{
 
     }
 
-    //Converte uma array permisões simples em uma array composto. Que contem a chave código. 'valor' => ['codigo'] => 'valor'
+    /**
+     * Converte uma array permisões simples em uma array composto. Que contem a chave código. 'valor' => ['codigo'] => 'valor'
+     *
+     * @param array $array : Array simples
+     * @return array
+     */
     private function _converterArrayPermsSimples_ParaComposto(array $array) : array{
 
         if(empty($array)){
